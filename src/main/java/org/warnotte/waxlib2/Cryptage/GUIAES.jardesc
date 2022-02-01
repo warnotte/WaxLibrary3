@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="WINDOWS-1252" standalone="no"?>
+<jardesc>
+    <jar path="WaxLib/AESCrypteurGUI.jar"/>
+    <options buildIfNeeded="true" compress="true" descriptionLocation="/WaxLib/WaxLib/WaxLibrary/Cryptage/Bon/GUI/GUIAES.jardesc" exportErrors="true" exportWarnings="true" includeDirectoryEntries="true" overwrite="true" saveDescription="true" storeRefactorings="false" useSourceFolders="false"/>
+    <storedRefactorings deprecationInfo="true" structuralOnly="false"/>
+    <selectedProjects/>
+    <manifest generateManifest="false" mainClassHandleIdentifier="=WaxLib/WaxLib&lt;WaxLibrary.Cryptage.Bon.GUI{GUICryptage.java[GUICryptage" manifestLocation="/WaxLib/WaxLib/WaxLibrary/Cryptage/Bon/GUI/MANIFEST.MF" manifestVersion="1.0" reuseManifest="true" saveManifest="true" usesManifest="true">
+        <sealing sealJar="false">
+            <packagesToSeal/>
+            <packagesToUnSeal/>
+        </sealing>
+    </manifest>
+    <selectedElements exportClassFiles="true" exportJavaFiles="false" exportOutputFolder="false">
+        <javaElement handleIdentifier="=WaxLib/WaxLib&lt;WaxLibrary.Dialog"/>
+        <javaElement handleIdentifier="=WaxLib/WaxLib&lt;WaxLibrary.Cryptage.Bon.GUI{GUICryptage.java"/>
+        <file path="/WaxLib/WaxLib/WaxLibrary/Cryptage/Bon/GUI/KeyGen.png"/>
+        <javaElement handleIdentifier="=WaxLib/WaxLib&lt;WaxLibrary.FileChooser"/>
+        <file path="/WaxLib/WaxLib/WaxLibrary/Cryptage/Bon/GUI/UnLock.png"/>
+        <javaElement handleIdentifier="=WaxLib/WaxLib&lt;WaxLibrary.Cryptage.Bon{AESEncrypter.java"/>
+        <file path="/WaxLib/WaxLib/WaxLibrary/Cryptage/Bon/GUI/Lock.png"/>
+        <file path="/WaxLib/WaxLib/WaxLibrary/Cryptage/Bon/GUI/Edit.png"/>
+    </selectedElements>
+</jardesc>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<versions>
+	<version>
+		<nom>0.4.7</nom>
+			<url>
+				http://139.165.123.192/Wax/2EMSHIP%20PDF%20TO%20SEND.zip
+			</url>
+			<destination>downloads/V003.rar</destination>
+			<method>zip</method>
+	</version>
+</versions>
