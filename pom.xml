@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>io.github.warnotte</groupId>
 	<artifactId>waxlib3</artifactId>
-	<version>0.0.1</version>
+	<version>0.0.1.1-SNAPSHOT</version>
 	<name>Wab Library 3</name>
 	<description>This is my 16 years old own library for lot of purpose</description>
 	<url>https://github.com/warnotte/WaxLibrary3</url>
@@ -156,6 +156,7 @@ add-opens java.desktop/java.awt.font=ALL-UNNAMED
 	<build>
 		<plugins>
 		
+			<!-- Ne semble pas marcher -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
