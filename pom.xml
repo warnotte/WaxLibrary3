@@ -1,12 +1,30 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>io.github.warnotte</groupId>
 	<artifactId>waxlib3</artifactId>
 	<version>0.0.1</version>
 	<name>Wab Library 3</name>
 	<description>This is my 16 years old own library for lot of purpose</description>
- 	<url>https://github.com/warnotte/WaxLibrary3</url>
+	<url>https://github.com/warnotte/WaxLibrary3</url>
+
+<!-- 
+Faut rajouter ça pour Maven 
+
+add-opens java.base/java.lang=ALL-UNNAMED
+add-opens java.base/java.util=ALL-UNNAMED
+add-opens java.base/java.lang.reflect=ALL-UNNAMED
+add-opens java.base/java.text=ALL-UNNAMED
+add-opens java.desktop/java.awt.font=ALL-UNNAMED
+
+-->
  
+<!-- Il faut ajouter ceci dans les paramètre de la VM -Dgpg.passphrase=mypassphrase -->
+<!--  https://maven.apache.org/plugins/maven-gpg-plugin/usage.html -->
+
+
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>9</maven.compiler.source>
@@ -15,26 +33,33 @@
 
 
 	<licenses>
-	     <license>
-	         <name>gpl_v3</name>
-	         <url>https://www.gnu.org/licenses/gpl-3.0.html</url>
-	         <distribution>repo</distribution>
-	     </license>
-	 </licenses>
-	 
-	 <developers>
-     <developer>
-         <name>Renaud Warnotte</name>
-         <email>renaud@warnotte.be</email>
-         <organization>Renaud Warnotte</organization>
-         <organizationUrl>https://renaud.warnotte.be</organizationUrl>
-     </developer>
- 	</developers>
- 	
- 	 <organization>
-     <name>Renaud Warnotte</name>
-     <url>https://renaud.warnotte.be</url>
- 	</organization>
+		<license>
+			<name>gpl_v3</name>
+			<url>https://www.gnu.org/licenses/gpl-3.0.html</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+	<developers>
+		<developer>
+			<name>Renaud Warnotte</name>
+			<email>renaud@warnotte.be</email>
+			<organization>Renaud Warnotte</organization>
+			<organizationUrl>https://renaud.warnotte.be</organizationUrl>
+		</developer>
+	</developers>
+
+	<organization>
+		<name>Renaud Warnotte</name>
+		<url>https://renaud.warnotte.be</url>
+	</organization>
+
+	<scm>
+		<url>https://github.com/warnotte/WaxLibrary3.git</url>
+		<connection>scm:git:github.com/warnotte/WaxLibrary3.git</connection>
+		<developerConnection>scm:git:git@github.com:warnotte/WaxLibrary3.git</developerConnection>
+		<tag>HEAD</tag>
+	</scm>
 
 	<dependencies>
 
@@ -100,7 +125,7 @@
 			<version>2.0.6.1</version>
 		</dependency>
 
-		<!-- test-->
+		<!-- test -->
 		<dependency>
 			<groupId>jakarta.xml.bind</groupId>
 			<artifactId>jakarta.xml.bind-api</artifactId>
@@ -131,89 +156,101 @@
 	<build>
 		<plugins>
 		
-		
-		<plugin>
-             <groupId>org.apache.maven.plugins</groupId>
-             <artifactId>maven-release-plugin</artifactId>
-             <version>2.5.3</version>
-             <configuration>
-                 <tagNameFormat>@{project.version}</tagNameFormat>
-             </configuration>
-             <dependencies>
-                 <dependency>
-                     <groupId>org.apache.maven.shared</groupId>
-                     <artifactId>maven-invoker</artifactId>
-                     <version>2.2</version>
-                 </dependency>
-             </dependencies>
-         </plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.22.2</version>
+				<configuration>
+					<argLine>
+						--add-opens java.base/java.lang=ALL-UNNAMED
+						--add-opens java.base/java.util=ALL-UNNAMED
+						--add-opens java.base/java.lang.reflect=ALL-UNNAMED
+						--add-opens java.base/java.text=ALL-UNNAMED
+						--add-opens java.desktop/java.awt.font=ALL-UNNAMED
+					</argLine>
+				</configuration>
+			</plugin>
 
-         <plugin>
-             <groupId>org.apache.maven.plugins</groupId>
-             <artifactId>maven-javadoc-plugin</artifactId>
-             <version>3.3.1</version>
-             <executions>
-                 <execution>
-                     <id>attach-javadocs</id>
-                     <goals>
-                         <goal>jar</goal>
-                     </goals>
-                 </execution>
-             </executions>
-             <configuration>
-                 <source>9</source>
-                 <detectJavaApiLink>false</detectJavaApiLink>
-                 <additionalparam>-Xdoclint:none</additionalparam>
-                 <doclint>none</doclint>
-             </configuration>
-         </plugin>
-         <plugin>
-             <groupId>org.apache.maven.plugins</groupId>
-             <artifactId>maven-source-plugin</artifactId>
-             <version>3.0.1</version>
-             <executions>
-                 <execution>
-                     <id>attach-sources</id>
-                     <goals>
-                         <goal>jar</goal>
-                     </goals>
-                 </execution>
-             </executions>
-         </plugin>
-      <!--   <plugin>
-             <groupId>org.codehaus.mojo</groupId>
-             <artifactId>flatten-maven-plugin</artifactId>
-             <version>1.1.0</version>
-             <configuration>
-                 <updatePomFile>true</updatePomFile>
-                 <flattenMode>oss</flattenMode>
-                 <pomElements>
-                     <distributionManagement>remove</distributionManagement>
-                     <repositories>remove</repositories>
-                 </pomElements>
-             </configuration>
-             <executions>
-            
-                 <execution>
-                     <id>flatten</id>
-                     <phase>process-resources</phase>
-                     <goals>
-                         <goal>flatten</goal>
-                     </goals>
-                 </execution>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-release-plugin</artifactId>
+				<version>2.5.3</version>
+				<configuration>
+					<tagNameFormat>@{project.version}</tagNameFormat>
+				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>org.apache.maven.shared</groupId>
+						<artifactId>maven-invoker</artifactId>
+						<version>2.2</version>
+					</dependency>
+				</dependencies>
+			</plugin>
 
-                 <execution>
-                     <id>flatten.clean</id>
-                     <phase>clean</phase>
-                     <goals>
-                         <goal>clean</goal>
-                     </goals>
-                 </execution>
-             </executions>
-         </plugin>
-		 -->
-		
-		
+			<!-- Il faut ajouter ceci dans les paramètre de la VM -Dgpg.passphrase=mypassphrase -->
+			<!--  https://maven.apache.org/plugins/maven-gpg-plugin/usage.html -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-gpg-plugin</artifactId>
+				<version>1.5</version>
+				<executions>
+					<execution>
+						<id>sign-artifacts</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>sign</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<gpgArguments>
+						<arg>--pinentry-mode</arg>
+						<arg>loopback</arg>
+					</gpgArguments>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>3.3.1</version>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<source>9</source>
+					<detectJavaApiLink>false</detectJavaApiLink>
+					<additionalparam>-Xdoclint:none</additionalparam>
+					<doclint>none</doclint>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>3.0.1</version>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<!-- <plugin> <groupId>org.codehaus.mojo</groupId> <artifactId>flatten-maven-plugin</artifactId> 
+				<version>1.1.0</version> <configuration> <updatePomFile>true</updatePomFile> 
+				<flattenMode>oss</flattenMode> <pomElements> <distributionManagement>remove</distributionManagement> 
+				<repositories>remove</repositories> </pomElements> </configuration> <executions> 
+				<execution> <id>flatten</id> <phase>process-resources</phase> <goals> <goal>flatten</goal> 
+				</goals> </execution> <execution> <id>flatten.clean</id> <phase>clean</phase> 
+				<goals> <goal>clean</goal> </goals> </execution> </executions> </plugin> -->
+
+
 			<plugin>
 				<groupId>org.sonatype.plugins</groupId>
 				<artifactId>nexus-staging-maven-plugin</artifactId>
