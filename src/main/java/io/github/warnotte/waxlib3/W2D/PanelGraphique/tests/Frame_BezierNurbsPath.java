@@ -2,21 +2,23 @@ package io.github.warnotte.waxlib3.W2D.PanelGraphique.tests;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import io.github.warnotte.waxlib3.W2D.PanelGraphique.CurrentSelectionContext;
 
-import javax.swing.JCheckBox;
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-
 public class Frame_BezierNurbsPath extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4250907759229863183L;
 	private final JPanel contentPane;
 	private JPanel panel;
 	private JPanel panel_1;

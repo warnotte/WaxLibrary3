@@ -30,8 +30,8 @@ public class WaxCellEditor extends DefaultCellEditor {
     public WaxCellEditor(int min, int max) {
         super(new JTextField());
         ftf = (JTextField)getComponent();
-        minimum = new Integer(min);
-        maximum = new Integer(max);
+        minimum = (min);
+        maximum = (max);
 
         //ftf.setValue(0);
         ftf.setHorizontalAlignment(SwingConstants.TRAILING);
@@ -111,7 +111,7 @@ public class WaxCellEditor extends DefaultCellEditor {
     	if (o instanceof Integer) {
             return o;
         } else if (o instanceof Number) {
-            return new Integer(((Number)o).intValue());
+            return (((Number)o).intValue());
         } else {
             if (DEBUG) {
                 System.out.println("getCellEditorValue: o isn't a Number");

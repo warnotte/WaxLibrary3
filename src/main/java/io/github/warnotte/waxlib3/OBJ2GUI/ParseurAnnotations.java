@@ -665,10 +665,10 @@ public class ParseurAnnotations {
 		}
 		if (type_var == GUI_FIELD_TYPE.Type.SLIDER)	
 		{
-			float divider = new Float(anot.divider()); // TODO : C'est pas un float ???
-			int min = new Integer(anot.min());
-			int max = new Integer(anot.max());
-			Float vv = new Float(""+Value);
+			float divider = (float) (anot.divider()); // TODO : C'est pas un float ???
+			int min =  (anot.min());
+			int max =  (anot.max());
+			Float vv =  Float.parseFloat(""+Value);
 			
 			if (anot.slider_type()==Type_SLIDER.NORMAL)
 			{

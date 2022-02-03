@@ -198,26 +198,26 @@ public class SimpleModelListener extends BaseListener implements ActionListener,
 		if (jtf instanceof WFlatSlider)
 		{
 			NewValue = ""+((WFlatSlider) jtf).getValue();
-			Float f = new Float(NewValue);
+			Float f = Float.parseFloat(NewValue);
 			NewValue = ""+f;
 		}
 		if (jtf instanceof WSlider)
 		{
 			NewValue = ""+((WSlider) jtf).getValue();
-			Float f = new Float(NewValue)/((WSlider) jtf).divider;
+			Float f = Float.parseFloat(NewValue)/((WSlider) jtf).divider;
 			NewValue = ""+f;
 		}
 		else
 		if (jtf instanceof WRoundSlider)
 		{
 			NewValue = ""+((WRoundSlider) jtf).getValue();
-			Float f = new Float(NewValue);//((PanelRoundBT) jtf).getDivider();
+			Float f = Float.parseFloat(NewValue);//((PanelRoundBT) jtf).getDivider();
 			NewValue = ""+f;
 		}
 		if (jtf instanceof JSlider)
 		{
 			NewValue = ""+((JSlider) jtf).getValue();
-			Float f = new Float(NewValue);
+			Float f = Float.parseFloat(NewValue);
 			NewValue = ""+f;
 		}
 		
@@ -247,22 +247,22 @@ public class SimpleModelListener extends BaseListener implements ActionListener,
 			else
 			if (return_type.getName().contains("Long")) {
 				c = Long.class;
-				value[0] = new Long(""+newValue);
+				value[0] = Long.parseLong(""+newValue);
 			} else if (return_type.getName().contains("Integer")) {
 				c = Integer.class;
 				if (((String)newValue).contains("."))
 				newValue = ((String)newValue).substring(0, ((String)newValue).indexOf("."));
-				value[0] = new Integer(""+newValue);
+				value[0] = Integer.parseInt(""+newValue);
 				
 			} else if (return_type.getName().contains("Double")) {
 				c = Double.class;
-				value[0] = new Double(""+newValue);
+				value[0] = Double.parseDouble(""+newValue);
 			} else if (return_type.getName().contains("Float")) {
 				c = Float.class;
-				value[0] = new Float(""+newValue);
+				value[0] = Float.parseFloat(""+newValue);
 			} else if (return_type.getName().contains("Boolean")) {
 				c = Boolean.class;
-				value[0] = new Boolean(""+newValue);
+				value[0] = Boolean.parseBoolean(""+newValue);
 			} else if (return_type.getName().contains("String")) {
 				c = String.class;
 				value[0] = new String(""+newValue);
@@ -270,21 +270,21 @@ public class SimpleModelListener extends BaseListener implements ActionListener,
 				c = long.class;
 				if (((String)newValue).contains("."))
 				newValue = ((String)newValue).substring(0, ((String)newValue).indexOf("."));
-				value[0] = new Long(new Float(""+newValue).longValue());
+				value[0] = Long.parseLong(""+newValue);
 			} else if (return_type.getName().contains("int")) {
 				c = int.class;
 				if (((String)newValue).contains("."))
 				newValue = ((String)newValue).substring(0, ((String)newValue).indexOf("."));
-				value[0] = new Integer(new Float(""+newValue).intValue());
+				value[0] = Integer.parseInt(""+newValue);
 			} else if (return_type.getName().contains("double")) {
 				c = double.class;
-				value[0] = new Double(""+newValue);
+				value[0] = Double.parseDouble(""+newValue);
 			} else if (return_type.getName().contains("float")) {
 				c = float.class;
-				value[0] = new Float(""+newValue);
+				value[0] = Float.parseFloat(""+newValue);
 			} else if (return_type.getName().contains("boolean")) {
 				c = boolean.class;
-				value[0] = new Boolean(""+newValue);
+				value[0] = Boolean.parseBoolean(""+newValue);
 			} 
 			else
 			if (return_type.getName().contains("Color")) {

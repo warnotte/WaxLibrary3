@@ -160,7 +160,7 @@ public class Test
     	Test2 t = new Test2();
     	Hashmap_Objets_stringkey.put(6666, t);
     	Hashmap_Objets_stringkey.put(6667, t);
-    	Hashmap_Objets_stringkey.put(6669, new Integer(456));
+    	Hashmap_Objets_stringkey.put(6669, 456);
     	
     	HashSet.add(new Test2());
     	HashSet.add(new Test2());
