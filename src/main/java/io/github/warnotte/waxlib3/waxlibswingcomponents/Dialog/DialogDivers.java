@@ -23,23 +23,8 @@ public class DialogDivers
 
 	public static void main(String args[]) throws Exception
 	{
-	//	DialogDivers.LoadDialog(null, "xml", "F:\\projets\\OptiViewV3.5\\Datas\\Models", "Salut");
-		DialogDivers.LoadDialog(null, new String[]{"xml", "mpp", "id3"}, "F:\\projets\\OptiViewV3.5\\Datas\\Models");
-	//	DialogDivers.LoadDialog(null, "", "F:\\projets\\OptiViewV3.5\\Datas\\Models", "Salut");
-	/*	
-		
-		DialogDivers.Show_HowMuchDialog(new JFrame(), "Combien ?", 48.5);
-		
-		
-		System.err.println("Retour save = "+DialogDivers.SaveDialog(null, "xml", "F:\\projets\\OptiViewV3.5\\Datas\\Models", "Salut"));
-		System.err.println("Retour save = "+DialogDivers.SaveDialog(null, new String[]{"xml", "mpp", "id3"}, "F:\\projets\\OptiViewV3.5\\Datas\\Models", "Salut", null));
-		System.err.println("Retour save = "+DialogDivers.SaveDialog(null, "", "F:\\projets\\OptiViewV3.5\\Datas\\Models", "Salut"));
-		
-		System.err.println("Retour save = "+DialogDivers.SaveDialog(null, "xml", "E:\\", "Titre de la fenetre", "prefixefichier_"));
-		
-		DialogDivers.Show_HowMuchDialog(new JFrame(), "Combien ?", 48.5);
-		File directory = DialogDivers.ChooseDirectoryDialog(".");
-		System.err.println("Directory = "+directory);*/
+		DialogDivers.LoadDialog(null, new String[]{"xml", "mpp", "id3"}, "F:\\projets\\Datas\\Models");
+
 	}
 	
 	public static File ChooseDirectoryDialog(String directory)

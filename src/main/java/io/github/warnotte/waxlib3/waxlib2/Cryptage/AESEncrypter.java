@@ -31,12 +31,11 @@ public class AESEncrypter
 	    0x0f, 0x15, 0x16, 0x17 };
     */
     
-    
-    
+   
     static byte[] keyBytes = new byte[] {
-	 (byte) 0xA9,  (byte)0xC3, 0x12,  (byte)0x91,  (byte)0xc0, 0x73, 0x5c, 0x3f, 
-    0x47,  (byte)0xc5, 0x1, 0x39,  (byte)0xbf, 0x4b, 0x67,  (byte)0x97, 
-    };
+    		 (byte) 0xA0,  (byte)0xC0, 0x10,  (byte)0x90,  (byte)0xc0, 0x70, 0x50, 0x30, 
+    	    0x40,  (byte)0xc0, 0x0, 0x30,  (byte)0xbf, 0x40, 0x60,  (byte)0x90, 
+    	    };
 
     static SecretKeySpec keyIn = new SecretKeySpec(keyBytes, "AES");
     
@@ -235,31 +234,13 @@ public class AESEncrypter
     
     public static void main(String[] args) throws Exception {
 	
-	//String xmlin = FiletoString("f:\\upload\\SCHEMA_ATELIER.XML");
-	
-	//System.exit(-1);
-/*	String filename = "F:\\Projets\\OptiViewV3.5\\Datas\\key.key";
-	//AESEncrypter.writeNewKey("F:\\Upload\\Crypteur\\key.key");
-	SecretKey key = AESEncrypter.getKeyFromFile(filename);
-	byte[] cle = key.getEncoded();
-	
-	System.err.println("Lenght is :"+cle.length);
-        for (int i = 0; i < cle.length; i++) {
-            System.err.printf("0x%x, ",cle[i]);
-            if ((i+1)%8==0) 
-        	System.err.println("");
-	}*/
 	
     	AESEncrypter enc = new AESEncrypter();
-    	
-    /*	String xmlin = FiletoString("f:\\upload\\WaxDLLAnalyser.exe");
-    	String xmlcry = enc.encrypt(xmlin);
-    	StringToFile("e:\\souvenirs.CRY", xmlcry);
-	xmlcry = "";*/
-	String xmlcry = FiletoString("F:\\Projets\\OptiViewV3.5\\Datas\\Models\\Premontage\\SchemasXML\\SCHEMA_ATELIER.CRY");
+  
+	String xmlcry = FiletoString("F:\\Projets\\XXXXX\\R.CRY");
 	String xmldecry = enc.decrypt(xmlcry);
 	System.err.println(""+xmldecry);
-	//StringToFile("F:\\Upload\\Crypteur\\souvenirsdec.jpg", xmldecry);
+
     }
     
     public static String FiletoString(String filename) throws IOException

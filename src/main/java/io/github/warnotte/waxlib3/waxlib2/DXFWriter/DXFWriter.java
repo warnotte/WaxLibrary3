@@ -36,13 +36,13 @@ public class DXFWriter extends PrintStreamWriter {
 		writer.EndBlock();
 		
 		//writer.CreateBlock("BLOCK_PS");
-		//writer.includeDXFEntity("Datas\\Models\\Novarka\\DXFPlans\\DXFBlocksDetails\\2_P_S_BLOCK.dxf");
+		//writer.includeDXFEntity("Datas\\Models\\DXFPlans\\DXFBlocksDetails\\2_P_S_BLOCK.dxf");
 	//	writer.EndBlock();
 		
 		writer.EndSection();
 		
 		writer.createSection("ENTITIES");
-		writer.includeDXFEntity("Datas\\Models\\Novarka\\DXFPlans\\fond_plan_NOVARKA_A.dxf");
+		writer.includeDXFEntity("Datas\\Models\\DXFPlans\\fond_plan_A.dxf");
 		
 		writer.setLayer(2);
 		writer.DrawCircle(50, 50, 50, 7, true);

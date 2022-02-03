@@ -27,7 +27,7 @@ public class DXFFileFilterEntitesOnly
 	public static void main(String[] args) throws Exception
 	{
 		// Nettoye les fichier avec les blocks. (px contenir tout un fichier "qui sort d'autocad")
-		// processdirectory("Datas//Models//Novarka//DXFPlans//DXFBlocksDetails");
+		// processdirectory("Datas//Models//DXFPlans//DXFBlocksDetails");
 		// Nettoye les fichier de plans (ne doit plus contenir que l'interieur des entities)
 		//processdirectoryFondPlan("Datas//Models//Novarka//DXFPlans//");
 		processdirectoryFondPlan("Datas//Models//Premontage//DXFPlans//");
