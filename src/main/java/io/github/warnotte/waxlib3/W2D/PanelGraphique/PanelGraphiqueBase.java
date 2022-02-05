@@ -107,7 +107,7 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 
 	private boolean	DisableSelectable;
 
-    public synchronized boolean isDisableSelectable()
+	public synchronized boolean isDisableSelectable()
 	{
 		return DisableSelectable;
 	}
