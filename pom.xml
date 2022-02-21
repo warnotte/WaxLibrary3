@@ -155,6 +155,45 @@ add-opens java.desktop/java.awt.font=ALL-UNNAMED
 	<build>
 		<plugins>
 		
+		<!-- Without that, Log4j2 has problem -->
+		<plugin>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>3.2.0 </version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+            <configuration>
+            <!-- Not adding this filter will result in no log output when passing java -cp xxx.jar -->
+              <filters>
+                <filter>
+                    <artifact>*:*</artifact>
+                    <excludes>
+                        <exclude>**/Log4j2Plugins.dat</exclude>
+                    </excludes>
+                </filter>
+              </filters>
+            
+              <artifactSet>
+                <excludes>
+                  <exclude>classworlds:classworlds</exclude>
+                  <exclude>junit:junit</exclude>
+                  <exclude>jmock:*</exclude>
+                  <exclude>*:xml-apis</exclude>
+                  <exclude>org.apache.maven:lib:tests</exclude>
+                  <!-- <exclude>log4j:log4j:jar:</exclude> -->
+                  <exclude>META-INF /*.SF</exclude>
+                  <exclude>META-INF/*.DSA</exclude>
+                  <exclude>META-INF/*.RSA</exclude>
+                </excludes>
+              </artifactSet>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+		
 			<!-- Ne semble pas marcher -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
