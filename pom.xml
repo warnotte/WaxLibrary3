@@ -10,7 +10,7 @@
 	<url>https://github.com/warnotte/WaxLibrary3</url>
 
 <!-- 
-Faut rajouter ça pour Maven 
+Faut rajouter ça pour Maven dans les paramatre
 
 add-opens java.base/java.lang=ALL-UNNAMED
 add-opens java.base/java.util=ALL-UNNAMED
@@ -288,7 +288,7 @@ add-opens java.desktop/java.awt.font=ALL-UNNAMED
 			<plugin>
 				<groupId>org.sonatype.plugins</groupId>
 				<artifactId>nexus-staging-maven-plugin</artifactId>
-				<version>1.6.9</version>
+				<version>1.6.8</version> <!-- Des bug avec les version suivante semblent exister -->
 				<extensions>true</extensions>
 				<configuration>
 					<serverId>ossrh</serverId>
