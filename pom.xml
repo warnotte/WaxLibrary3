@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>io.github.warnotte</groupId>
 	<artifactId>waxlib3</artifactId>
-	<version>0.0.1.1</version>
+	<version>0.0.1.2</version>
 	<name>Wab Library 3</name>
 	<description>This is my 16 years old own library for lot of purpose</description>
 	<url>https://github.com/warnotte/WaxLibrary3</url>
@@ -288,7 +288,7 @@ add-opens java.desktop/java.awt.font=ALL-UNNAMED
 			<plugin>
 				<groupId>org.sonatype.plugins</groupId>
 				<artifactId>nexus-staging-maven-plugin</artifactId>
-				<version>1.6.8</version>
+				<version>1.6.9</version>
 				<extensions>true</extensions>
 				<configuration>
 					<serverId>ossrh</serverId>
