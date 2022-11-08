@@ -46,6 +46,8 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
+import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
+
 import io.github.warnotte.waxlib3.W2D.PanelGraphique.Nurbs.NurbsCurve;
 import io.github.warnotte.waxlib3.W2D.PanelGraphique.Nurbs.NurbsPath;
 import io.github.warnotte.waxlib3.W2D.PanelGraphique.Nurbs.NurbsPoint;
@@ -1536,6 +1538,212 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 		return retour;
 	}
 	
+	
+	/**
+	 * Fast and easy way to draw an arrow with a text in his middle
+	 * @param g
+	 * @param string String to display in middle of the arrow
+	 * @param angleBeta Angle of the string to display
+	 * @param X1 First point of arrow X position
+	 * @param Y1 First point of arrow Y position
+	 * @param X2 Second point of arrow X position
+	 * @param Y2 Second point of arrow X position
+	 * @param offsetX Offset of the arrow on his X axis (default 0) - Permet de decaller la fleches pour montrer un objet reel en la décallant pour ne pas avoir une superposition
+	 * @param offsetY Offset of the arrow on his Y axis (default 0) - Permet de decaller la fleches pour montrer un objet reel en la décallant pour ne pas avoir une superposition
+	 * @param offsetTexte Offset of the text (0 means text is in the middle of the arrow)
+	 */
+	protected void drawArrowWithString(Graphics2D g, String string, float angleBeta, float X1, float Y1, float X2, float Y2, float offsetX, float offsetY, float offsetTexte)
+	{
+		drawArrowWithString(g, string, angleBeta, X1, Y1, X2, Y2, offsetX, offsetY, offsetTexte, 0.1f);
+	}
+	
+	/**
+	 * Fast and easy way to draw an arrow with a text in his middle
+	 * @param g
+	 * @param string String to display in middle of the arrow
+	 * @param angleBeta Angle of the string to display
+	 * @param X1 First point of arrow X position
+	 * @param Y1 First point of arrow Y position
+	 * @param X2 Second point of arrow X position
+	 * @param Y2 Second point of arrow X position
+	 * @param offsetX Offset of the arrow on his X axis (default 0) - Permet de decaller la fleches pour montrer un objet reel en la décallant pour ne pas avoir une superposition
+	 * @param offsetY Offset of the arrow on his Y axis (default 0) - Permet de decaller la fleches pour montrer un objet reel en la décallant pour ne pas avoir une superposition
+	 * @param offsetTexte Offset of the text (0 means text is in the middle of the arrow)
+	 */
+	protected void drawArrowWithString(Graphics2D g, String string, double angleBeta, double X1, double Y1, double X2, double Y2, double offsetX, double offsetY, double offsetTexte)
+	{
+		drawArrowWithString(g, string, angleBeta, X1, Y1, X2, Y2, offsetX, offsetY, offsetTexte, 0.1f);
+	}
+	
+	/**
+	 * Fast and easy way to draw an arrow with a text in his middle
+	 * @param g
+	 * @param string String to display in middle of the arrow
+	 * @param angleBeta Angle of the string to display
+	 * @param X1 First point of arrow X position
+	 * @param Y1 First point of arrow Y position
+	 * @param X2 Second point of arrow X position
+	 * @param Y2 Second point of arrow X position
+	 * @param offsetX Offset of the arrow on his X axis (default 0) - Permet de decaller la fleches pour montrer un objet reel en la décallant pour ne pas avoir une superposition
+	 * @param offsetY Offset of the arrow on his Y axis (default 0) - Permet de decaller la fleches pour montrer un objet reel en la décallant pour ne pas avoir une superposition
+	 * @param offsetTexte Offset of the text (0 means text is in the middle of the arrow)
+	 * @param arrowSize size of the arrow for the display (default 0.1)
+	 */
+	protected void drawArrowWithString(Graphics2D g, String string, double angleBeta, double X1, double Y1, double X2, double Y2, double offsetX, double offsetY, double offsetTexte, double arrowSize)
+	{
+		drawArrowWithString(g, string, (float) angleBeta, (float) X1, (float) Y1, (float) X2, (float) Y2, (float) offsetX, (float) offsetY, (float) offsetTexte, (float) arrowSize);
+	}
+	
+	/**
+	 * Fast and easy way to draw an arrow with a text in his middle
+	 * @param g
+	 * @param string String to display in middle of the arrow
+	 * @param angleBeta Angle of the string to display
+	 * @param X1 First point of arrow X position
+	 * @param Y1 First point of arrow Y position
+	 * @param X2 Second point of arrow X position
+	 * @param Y2 Second point of arrow X position
+	 * @param offsetX Offset of the arrow on his X axis (default 0) - Permet de decaller la fleches pour montrer un objet reel en la décallant pour ne pas avoir une superposition
+	 * @param offsetY Offset of the arrow on his Y axis (default 0) - Permet de decaller la fleches pour montrer un objet reel en la décallant pour ne pas avoir une superposition
+	 * @param offsetTexte Offset of the text (0 means text is in the middle of the arrow)
+	 * @param arrowSize size of the arrow for the display (default 0.1)
+	 */
+	protected void drawArrowWithString(Graphics2D g, String string, float angleBeta, float X1, float Y1, float X2, float Y2, float offsetX, float offsetY, float offsetTexte, float arrowSize)
+	{
+		// TODO : I'm not sure offsetX and offsetY shouldn't be one and only one variable
+		// TODO : put that in graphicsbase
+		Vector2D v = getPerpendicularPoint(new Vector2D(X1, Y1), new Vector2D(X2, Y2), offsetTexte);
+		//drawStringOLD(g, string, offsetX+ (float)v.getX(),offsetY+(float)v.getY(),  angleBeta, AlignTexteX.CENTER, AlignTexteY.CENTER, false, 1.0f);
+		// TODO : Bug avec windows si scale a 150%
+		drawStringOLD(g, string, offsetX+ (float)v.getX(),offsetY+(float)v.getY(), angleBeta, AlignTexteX.CENTER, AlignTexteY.CENTER, false, 1.0f, false, Color.black);
+		//drawString44(g, string, offsetX+ (float)v.getX(),offsetY+(float)v.getY(), angleBeta, AlignTexteX.CENTER, AlignTexteY.CENTER, false, 1.0f, false, Color.black);
+		//drawString(g, string, offsetX+ (float)v.getX(),offsetY+(float)v.getY(), angleBeta, AlignTexteX.CENTER, AlignTexteY.CENTER, false, 1.0f, false, Color.black);
+		drawArrow2(g, new Point2D.Double(X1+offsetX,Y1+offsetY), new Point2D.Double(X2+offsetX,Y2+offsetY), true, true, false, 0.1f);
+	}
+	
+	
+
+	/**
+	 * Permet de dessiner un axe X Y en bas a gauche de la fenetre
+	 * @param g
+	 * @param arrowLen
+	 * @param XaxisLbl
+	 * @param YaxisLbl
+	 */
+	protected void drawAxisInLocalView(Graphics2D g, float arrowLen, String XaxisLbl, String YaxisLbl, float arrowsize) {
+		drawArrowLocal(g,
+				new Point2D.Double(10,getHeight()-20),
+				new Point2D.Double(10+arrowLen,getHeight()-20), 
+				arrowsize,
+				arrowsize,
+				false,
+				true,
+				false,
+				20.0f
+				);
+		g.drawString(XaxisLbl, arrowLen-10, getHeight()-25);
+		
+		drawArrowLocal(g,
+				new Point2D.Double(10,getHeight()-20),
+				new Point2D.Double(10,getHeight()-20-10-arrowLen), 
+				arrowsize,
+				arrowsize,
+				false,
+				true,
+				false,
+				20.0f
+				);
+		g.drawString(YaxisLbl, 20, getHeight()-15-arrowLen);
+	}
+	
+	/**
+	 * Permet de dessiner un fleche sans transformation de coordonée 
+	 * @param g
+	 * @param pt1
+	 * @param pt2
+	 * @param scaleArrow1
+	 * @param scaleArrow2
+	 * @param enableArrowPt1
+	 * @param enableArrowPt2
+	 * @param enableMiddleArrow
+	 * @param scale
+	 */
+	private void drawArrowLocal(Graphics2D g, Point2D pt1, Point2D pt2, float scaleArrow1, float scaleArrow2, boolean enableArrowPt1, boolean enableArrowPt2,  boolean enableMiddleArrow, float scale)
+	{
+		//g.setColor(Color.BLACK);
+		Line2D shape = new Line2D.Float(pt1, pt2);
+		
+		float angle1 = (float) getAngle(pt1, pt2);
+
+		//scale * = 2;
+		Path2D tri = new Path2D.Float();
+		//	float scale = 1f;
+			tri.moveTo(scale * 0.0, scale * -1.0);
+			tri.lineTo(scale * -1.0, scale * 1.0);
+			tri.lineTo(scale * 0.0, scale * 0.0f);
+			tri.lineTo(scale * 1.0, scale * 1.0);
+			tri.lineTo(scale * 0.0, scale * -1.0);
+
+			g.draw(shape);
+
+		AffineTransform at2;
+
+		Color old = g.getColor();
+
+		if (enableArrowPt1 == true)
+		{
+			at2 = new AffineTransform();
+			at2.translate(pt1.getX(), pt1.getY());
+			at2.scale(scaleArrow1, scaleArrow1);
+			at2.rotate(Math.toRadians(-angle1 - 90));
+			at2.translate(0, scale);
+			
+			Shape trshape = at2.createTransformedShape(tri);
+			g.fill(trshape);
+			g.setColor(g.getColor().darker());
+			g.draw(trshape);
+			g.setColor(old);
+		}
+
+		if (enableArrowPt2 == true)
+		{
+			at2 = new AffineTransform();
+			at2.translate(pt2.getX(), pt2.getY());
+			at2.scale(scaleArrow2, scaleArrow2);
+			at2.rotate(Math.toRadians(-angle1 + 90));
+			at2.translate(0, scale);
+			Shape trshape = at2.createTransformedShape(tri);
+
+			g.fill(trshape);
+			g.setColor(g.getColor().darker());
+			g.draw(trshape);
+			g.setColor(old);
+		}
+		
+		if (enableMiddleArrow == true)
+		{
+			at2 = new AffineTransform();
+			at2.translate((pt2.getX()+pt1.getX())/2, (pt2.getY()+pt1.getY())/2);
+			at2.scale(scaleArrow2, scaleArrow2);
+			at2.rotate(Math.toRadians(-angle1 + 90));
+		//	at2.translate(0, scale);
+			Shape trshape = at2.createTransformedShape(tri);
+
+			g.fill(trshape);
+			g.setColor(g.getColor().darker());
+			g.draw(trshape);
+			g.setColor(old);
+		}
+		
+		
+		g.setColor(old);
+		
+		return;
+	}
+	
+	
+	
+	
 	/**
 	 * @param color_tache
 	 * @return
@@ -1667,6 +1875,24 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 	{
 		return View2D_Utils.createLineLength(line, longueurarabotter);
 	}
+	
+	/**
+	 *  Compute a point placed perpendicularly at the middle of the segment composed of A and B, with an offset.
+	 * @param A Point numero 1
+	 * @param B Point numero 2
+	 * @param distance distance from the segment 
+	 * @return
+	 */
+	protected Vector2D getPerpendicularPoint(Vector2D A, Vector2D B, float distance)
+	{
+		Vector2D M = A.add(B).scalarMultiply(0.5);
+		Vector2D p = A.subtract(B);
+		Vector2D n = new Vector2D(-p.getY(), p.getX());
+		int norm_length = (int) Math.sqrt((n.getX() * n.getX()) + (n.getY() * n.getY()));
+		n = new Vector2D(n.getX()/norm_length, n.getY()/norm_length);
+		return (M.add(n.scalarMultiply(distance) ));
+	}
+	
 	
 	/**
 	 * Give middle point
