@@ -1104,6 +1104,30 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 			}
 			g.drawGlyphVector(gv, 0, 0);
 			
+		
+			/*
+			Ca a l'air mieux que le truc au dessus, mais y'a toujours un cas qui marche pas (Porte Busque, vue du dessus, les fleches rouges du bateau.
+			frc = g.getFontRenderContext();
+			
+			gv = g.getFont().createGlyphVector(frc, text);
+			length = gv.getNumGlyphs();
+			for (int i = 0; i < length; i++) {
+			  Point2D p = gv.getGlyphPosition(i);
+			  AffineTransform at5 = AffineTransform.getTranslateInstance(0,0);
+			  at5.preConcatenate(at2);
+			  
+			  //at.rotate((double) i / (double) (length - 1) * Math.PI / 3);
+			  Shape glyph = gv.getGlyphOutline(i);
+			  Shape transformedGlyph = at2.createTransformedShape(glyph);
+			  g.fill(transformedGlyph);
+			}
+		
+			*/
+			
+			
+			
+			
+			
 			//g.setTransform(at4);
 			//g.drawString(text, 0,0);
 		}
