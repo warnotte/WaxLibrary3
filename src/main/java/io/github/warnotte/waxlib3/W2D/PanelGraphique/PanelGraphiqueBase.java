@@ -1389,8 +1389,10 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 
 			gv.setGlyphTransform(0, at2);
 
-			for (int i = 1; i < length; i++)
-			{
+
+		
+			for (int i = 1; i < length; i++) {
+
 
 				gv.setGlyphTransform(i, at4);
 			}
@@ -1950,6 +1952,7 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 		Shape	shp_str		= drawString(g, string, offsetX + (float) v.getX(), offsetY + (float) v.getY(), angleBeta, AlignTexteX.CENTER, AlignTexteY.CENTER, false, 1.0f, false, Color.black);
 		Shape	shp_arrow	= drawArrow2(g, new Point2D.Double(X1 + offsetX, Y1 + offsetY), new Point2D.Double(X2 + offsetX, Y2 + offsetY), true, true, false, 0.1f);
 		return shp_str;
+
 	}
 
 	/**
