@@ -211,7 +211,7 @@ public class VUE2D_TestBed extends PanelGraphiqueBaseBase implements KeyListener
 		if (contxt.getSelection().contains(txt12)) g.setColor(Color.MAGENTA); else g.setColor(Color.BLACK);
 		Shape shp_txt12 = drawString(g, "Rotate4", 140, 90, ang, AlignTexteX.LEFT, AlignTexteY.BOTTOM, false, 1.0f, true);
 		
-		g.setColor(new Color(0,127,0,127));
+		g.setColor(new Color(127,127,0,127));
 		g.fill(at.createTransformedShape(shp_txt2));
 		
 		
@@ -274,6 +274,7 @@ public class VUE2D_TestBed extends PanelGraphiqueBaseBase implements KeyListener
 		addToSelectableObject(shp_txt20, txt20);
 		addToSelectableObject(shp_txt21, txt21);
 		
+		//setEnableSelectionDrawDebug(true);
 		g.setColor(Color.BLACK);
 		
 		g.drawString(String.format("XY : %d,  %d",  (int)MouseX, (int)MouseY), 10,10);

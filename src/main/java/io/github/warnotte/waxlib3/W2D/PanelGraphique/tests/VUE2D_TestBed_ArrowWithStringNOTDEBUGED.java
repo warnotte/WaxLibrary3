@@ -144,28 +144,87 @@ public class VUE2D_TestBed_ArrowWithStringNOTDEBUGED extends PanelGraphiqueBaseB
 	//	Angle=Angle+1.0;
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-
-		java.awt.Shape shp= new Rectangle2D.Double(10,10,50,50);
-
-		g.draw(at.createTransformedShape(shp));
-		
-		drawString(g, "Bonjour", 10, 10);
 		
 		at.rotate(Math.toRadians(0));
 		
+		setEnableSelectionDrawDebug(true);
 		Font old_font = g.getFont();
 		
-		g.setFont(new Font("Impact", Font.BOLD, 18));
+		//g.setFont(new Font("Impact", Font.BOLD, 20));
+		g.setColor(Color.BLACK);
+		drawStringOLD(g, "OLD1false", 0, -15, 45, AlignTexteX.CENTER, AlignTexteY.CENTER, false, 1.0f);
+		drawStringOLD(g, "OLD2false", 0, 0, 0, AlignTexteX.CENTER, AlignTexteY.CENTER, false, 1.0f);
+		drawStringOLD(g, "OLD3false", 0, 15, -45, AlignTexteX.CENTER, AlignTexteY.CENTER, false, 1.0f);
+
+		g.setColor(Color.RED);
+		drawStringOLD(g, "OLD1true", 0, -15+75, 45, AlignTexteX.CENTER, AlignTexteY.CENTER, true, 1.0f);
+		drawStringOLD(g, "OLD2true", 0, 0+75, 0, AlignTexteX.CENTER, AlignTexteY.CENTER, true, 1.0f);
+		drawStringOLD(g, "OLD3true", 0, 15+75, -45, AlignTexteX.CENTER, AlignTexteY.CENTER, true, 1.0f);
+
 		
-		drawStringOLD(g, "Hello1", -100, -50, 45, AlignTexteX.CENTER, AlignTexteY.CENTER, false, 1.0f);
-		drawStringOLD(g, "Hello2", -100, 0, 0, AlignTexteX.CENTER, AlignTexteY.CENTER, false, 1.0f);
-		drawStringOLD(g, "Hello3", -100, 50, -45, AlignTexteX.CENTER, AlignTexteY.CENTER, false, 1.0f);
-	
-		at.rotate(15);
-		drawString(g, "MIAM1", 100, -50, 45, AlignTexteX.CENTER, AlignTexteY.BOTTOM, false, 1.0f);
-		drawString(g, "MIAM2", 100, 0, 0, AlignTexteX.CENTER, AlignTexteY.CENTER, false, 1.0f);
-		drawString(g, "MIAM3", 100, 50, -45, AlignTexteX.CENTER, AlignTexteY.TOP, false, 1.0f);
-		at.rotate(-15);
+
+		AffineTransform old_at = (AffineTransform) at.clone();
+		AffineTransform at2 = new AffineTransform();
+		at2.translate(-100, 50);
+		at2.rotate(Math.toRadians(0));
+		at.concatenate(at2);
+		g.setColor(Color.BLACK);
+		drawString(g, "NewFalse1", 0, -15, 45, AlignTexteX.CENTER, AlignTexteY.BOTTOM, false, 1.0f, true, Color.gray);
+		drawString(g, "NewFalse2", 0, 0, 0, AlignTexteX.CENTER, AlignTexteY.CENTER, false, 2.0f);
+		drawString(g, "NewFalse3", 0, 15, -45, AlignTexteX.CENTER, AlignTexteY.TOP, false, 1.0f);
+		at = old_at;
+		
+		
+		old_at = (AffineTransform) at.clone();
+		at2 = new AffineTransform();
+		at2.translate(-100, -50);
+		at2.rotate(Math.toRadians(0));
+		at.concatenate(at2);
+		g.setColor(Color.RED);
+		drawString(g, "NewTrue1", 0, -15, 45, AlignTexteX.CENTER, AlignTexteY.BOTTOM, true, 1.0f, true, Color.gray);
+		drawString(g, "NewTrue2", 0, 0, 0, AlignTexteX.CENTER, AlignTexteY.CENTER, true, 1.0f);
+		drawString(g, "NewTure3", 0, 15, -45, AlignTexteX.CENTER, AlignTexteY.TOP, true, 1.0f);
+		at = old_at;
+		
+		old_at = (AffineTransform) at.clone();
+		at2 = new AffineTransform();
+		at2.translate(100, 0);
+		at2.rotate(Math.toRadians(0+ang));
+		at.concatenate(at2);
+		g.setColor(Color.BLACK);
+		drawString(g, "NewFalse1", 0, -15, 45, AlignTexteX.CENTER, AlignTexteY.BOTTOM, false, 1.0f, true, Color.gray);
+		drawString(g, "NewFalse2", 0, 0, 0, AlignTexteX.CENTER, AlignTexteY.CENTER, false, 1.0f);
+		drawString(g, "NewFalse3", 0, 15, -45, AlignTexteX.CENTER, AlignTexteY.TOP, false, 1.0f);
+		at = old_at;
+		
+		
+		old_at = (AffineTransform) at.clone();
+		at2 = new AffineTransform();
+		at2.translate(100, -75);
+		at2.rotate(Math.toRadians(0+ang));
+		at.concatenate(at2);
+		g.setColor(Color.RED);
+		drawString(g, "Newtrue1", 0, -15, 45, AlignTexteX.CENTER, AlignTexteY.BOTTOM, true, 1.0f, true, Color.gray);
+		drawString(g, "Newtrue2", 0, 0, 0, AlignTexteX.CENTER, AlignTexteY.CENTER, true, 1.0f);
+		drawString(g, "Newtrue3", 0, 15, -45, AlignTexteX.CENTER, AlignTexteY.TOP, true, 1.0f);
+		at = old_at;
+		
+		
+		
+		old_at = (AffineTransform) at.clone();
+		at2 = new AffineTransform();
+		at2.translate(10, 0);
+		at2.rotate(Math.toRadians(0));
+		at.concatenate(at2);
+		g.setColor(Color.BLACK);
+		drawString(g, "OLDfalse1", 0, -15, 45, AlignTexteX.CENTER, AlignTexteY.BOTTOM, false, 1.0f, true, Color.gray);
+		drawString(g, "OLDfalse2", 0, 0, 0, AlignTexteX.CENTER, AlignTexteY.CENTER, false, 1.0f);
+		drawString(g, "OLDfalse3", 0, 15, -45, AlignTexteX.CENTER, AlignTexteY.TOP, false, 1.0f);
+		
+		at = old_at;
+		
+		
+		
 		g.setFont(old_font);
 		
 
@@ -176,6 +235,10 @@ public class VUE2D_TestBed_ArrowWithStringNOTDEBUGED extends PanelGraphiqueBaseB
 		
 		
 	}
+	
+	
+	
+	
 
 	/*
 	 * (non-Javadoc)

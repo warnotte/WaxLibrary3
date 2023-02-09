@@ -25,6 +25,7 @@ import java.awt.event.MouseMotionListener;
 import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphVector;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.NoninvertibleTransformException;
@@ -55,59 +56,58 @@ import io.github.warnotte.waxlib3.W2D.PanelGraphique.Nurbs.NurbsPoint;
 public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentListener, KeyListener, MouseListener, MouseMotionListener
 {
 	/**
-     *
-     */
-	private static final long						serialVersionUID			= -8780048115222887324L;
+	 *
+	 */
+	private static final long serialVersionUID = -8780048115222887324L;
 
-	protected CurrentSelectionContext				contxt						= null;
-	protected ConfigurationGeneral					config						= new ConfigurationGeneral();
-	private ConfigurationColor						colorConfig					= new ConfigurationColor();
+	protected CurrentSelectionContext	contxt		= null;
+	protected ConfigurationGeneral		config		= new ConfigurationGeneral();
+	private ConfigurationColor			colorConfig	= new ConfigurationColor();
 
-	//  BufferedImage grid = null; // @jve:decl-index=0:
-	protected Random								rand						= new Random();																				// @jve:decl-index=0:
-	protected double								accumx;
-	protected double								accumy;
+	protected Random	rand	= new Random();	// @jve:decl-index=0:
+	protected double	accumx;
+	protected double	accumy;
 
-	protected boolean								LockScrollY					= false;
-	protected boolean								LockScrollX					= false;
+	protected boolean	LockScrollY	= false;
+	protected boolean	LockScrollX	= false;
 
-	protected double								MouseY;																													// Actual position of mice (with scroll and zoom)
-	protected double								MouseX;
-	public double									MouseDX						= 0;																							// Actual Displacement during drag (with scroll and zoom);
-	public double									MouseDY						= 0;
+	protected double	MouseY;			// Actual position of mice (with scroll and zoom)
+	protected double	MouseX;
+	public double		MouseDX	= 0;	// Actual Displacement during drag (with scroll and zoom);
+	public double		MouseDY	= 0;
 
-	protected  boolean								CTRL;
-	protected double								lockX						= -1;
-	protected double								lockY						= -1;
-	public  boolean									SHIFT;
-	protected double								oldmousex;
-	protected double								oldmousey;
-	protected boolean								MOUSEINSIDE;
+	protected boolean	CTRL;
+	protected double	lockX	= -1;
+	protected double	lockY	= -1;
+	public boolean		SHIFT;
+	protected double	oldmousex;
+	protected double	oldmousey;
+	protected boolean	MOUSEINSIDE;
 
-	protected Point2D								displacement				= null;																						//Deplacement lors du move.
+	protected Point2D displacement = null; //Deplacement lors du move.
 
-	protected double								ScrollX						= 0;
-	protected double								ScrollY						= 0;
-	protected double								Zoom						= 10.0d;
+	protected double	ScrollX	= 0;
+	protected double	ScrollY	= 0;
+	protected double	Zoom	= 10.0d;
 	// TODO : Si on change l'angle, plein de truc bug (le scrolling par exemple), la selection etc ....
-	protected double								Angle						= 0;
-	protected double								ZoomMin						= 0.3f;
-	protected double								ZoomMax						= 200f;
-	protected boolean 								invertXAxis 			    = false;
-	protected boolean 								invertYAxis 			    = true;
+	protected double	Angle		= 0;
+	protected double	ZoomMin		= 0.3f;
+	protected double	ZoomMax		= 200f;
+	protected boolean	invertXAxis	= false;
+	protected boolean	invertYAxis	= true;
 
-	Stroke											drawingStroke_Boundarybox	= new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 50, new float[] { 9 }, 0);	//  @jve:decl-index=0:
+	Stroke drawingStroke_Boundarybox = new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 50, new float[] { 9 }, 0); //  @jve:decl-index=0:
 
-	Stroke											drawingStroke_Helplines		= new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 50, new float[] { 5 }, 0);
-	protected AffineTransform						at							= null;
-	protected Rectangle								Vision;
+	Stroke						drawingStroke_Helplines	= new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 50, new float[] { 5 }, 0);
+	protected AffineTransform	at						= null;
+	protected Rectangle			Vision;
 
-	protected ArrayList<SelectionTuple<Shape, ?>>	selectableObject				= new ArrayList<SelectionTuple<Shape, ?>>();
+	protected ArrayList<SelectionTuple<Shape, ?>> selectableObject = new ArrayList<SelectionTuple<Shape, ?>>();
 
-	protected Map<Shape, Object>					map_selectableShapeObject		= new HashMap<>();
-	protected Map<Object, Shape>					map_selectableObjectShape		= new HashMap<>();
+	protected Map<Shape, Object>	map_selectableShapeObject	= new HashMap<>();
+	protected Map<Object, Shape>	map_selectableObjectShape	= new HashMap<>();
 
-	private boolean	DisableSelectable;
+	private boolean DisableSelectable;
 
 	public synchronized boolean isDisableSelectable()
 	{
@@ -121,60 +121,62 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 
 	protected void addToSelectableObject(SelectionTuple<Shape, Object> selectionTuple)
 	{
-    	if (DisableSelectable==false)
-    	{
-    		getSelectableObject().add(selectionTuple);
-    		map_selectableShapeObject.put(selectionTuple.getShape(), selectionTuple.getUserObject());
-    		map_selectableObjectShape.put(selectionTuple.getUserObject(), selectionTuple.getShape());
-    		
-    	}
+		if (DisableSelectable == false)
+		{
+			getSelectableObject().add(selectionTuple);
+			map_selectableShapeObject.put(selectionTuple.getShape(), selectionTuple.getUserObject());
+			map_selectableObjectShape.put(selectionTuple.getUserObject(), selectionTuple.getShape());
+		}
 	}
+
 	protected void addToSelectableObject(List<SelectionTuple<Shape, Object>> selection_tuple)
 	{
-		for (Iterator<SelectionTuple<Shape, Object>> iterator = selection_tuple.iterator(); iterator.hasNext();) {
-			SelectionTuple<Shape, Object> o=  iterator.next();
+		for (Iterator<SelectionTuple<Shape, Object>> iterator = selection_tuple.iterator(); iterator.hasNext();)
+		{
+			SelectionTuple<Shape, Object> o = iterator.next();
 			addToSelectableObject(o);
 		}
 	}
-	
+
 	protected void addToSelectableObject(List<Shape> selection_shapes, Object object)
 	{
-		for (Iterator<Shape> iterator = selection_shapes.iterator(); iterator.hasNext();) {
-			Shape shape = iterator.next();
-			SelectionTuple<Shape, Object> o = new SelectionTuple<>(shape, object);
+		for (Iterator<Shape> iterator = selection_shapes.iterator(); iterator.hasNext();)
+		{
+			Shape							shape	= iterator.next();
+			SelectionTuple<Shape, Object>	o		= new SelectionTuple<>(shape, object);
 			addToSelectableObject(o);
 		}
 	}
+
 	protected void addToSelectableObject(Shape selection_shapes, Object object)
 	{
 		addToSelectableObject(new SelectionTuple<Shape, Object>(selection_shapes, object));
 	}
-	
-	
-	
-	
-	BufferedImage				fBugImage				= null;
+
+	View2D_Utils v2dUtils = new View2D_Utils();
+
+	BufferedImage fBugImage = null;
 
 	protected static boolean DEBUG_VERBOSE = true;
-		
+
 	@SuppressWarnings("unused")
 	private PanelGraphiqueBase()
 	{
 
 	}
 
-	
 	public PanelGraphiqueBase(CurrentSelectionContext contxt)
 	{
 		this.addComponentListener(this);
-		
+
 		// Je me demande pourquoi j'ai foutu ces 3 merdeuse ligne, car apr�s le programme
 		// n'accepte plus les tabulations. 
-	//	KeyboardFocusManager kfm = KeyboardFocusManager.getCurrentKeyboardFocusManager();
-	//	kfm.setDefaultFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, Collections.EMPTY_SET);
-	//	kfm.setDefaultFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, Collections.EMPTY_SET);
+		//	KeyboardFocusManager kfm = KeyboardFocusManager.getCurrentKeyboardFocusManager();
+		//	kfm.setDefaultFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, Collections.EMPTY_SET);
+		//	kfm.setDefaultFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, Collections.EMPTY_SET);
 		this.contxt = contxt;
 	}
+	
 
 	public PanelGraphiqueBase(CurrentSelectionContext contxt, ConfigurationGeneral config, ConfigurationColor colorConfig)
 	{
@@ -184,34 +186,32 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 		if (colorConfig != null)
 			this.setColorConfig(colorConfig);
 	}
-	
+
 	public void componentResized(ComponentEvent e)
 	{
-		/*System.err.println("Resizing Panel, remaking a bufferedimage");
-		myBufferedImage = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_RGB);*/
+		/*
+		 * System.err.println("Resizing Panel, remaking a bufferedimage");
+		 * myBufferedImage = new BufferedImage(getWidth(), getHeight(),
+		 * BufferedImage.TYPE_INT_RGB);
+		 */
 	}
-	
-	
+
 	public void componentMoved(ComponentEvent e)
 	{
 		// TODO Auto-generated method stub
-		
+
 	}
 
-
-	
 	public void componentShown(ComponentEvent e)
 	{
 		// TODO Auto-generated method stub
-		
+
 	}
 
-
-	
 	public void componentHidden(ComponentEvent e)
 	{
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	protected void dessineGrandeCroix(Graphics2D g, double x, double y)
@@ -224,8 +224,8 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 
 		g.setStroke(drawingStroke_Helplines);
 		g.setColor(Color.BLUE);
-		int w = getWidth();
-		int h = getHeight();
+		int	w	= getWidth();
+		int	h	= getHeight();
 		g.drawLine(0, (int) y, w, (int) y);
 		g.drawLine((int) x, 0, (int) x, h);
 		g.setStroke(new BasicStroke(1.0f));
@@ -237,28 +237,28 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
 		g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
 
-		int w = getWidth();
-		int h = getHeight();
+		int	w	= getWidth();
+		int	h	= getHeight();
 
-		double space = config.getGRID_SIZE() * Zoom;
-		double ox = ((ScrollX * Zoom) % (space));
-		double oy = ((ScrollY * Zoom) % (space));
+		double	space	= config.getGRID_SIZE() * Zoom;
+		double	ox		= ((ScrollX * Zoom) % (space));
+		double	oy		= ((ScrollY * Zoom) % (space));
 
 		//	if (LockScrollX==1)
 		//		ox=0;
-		
-		
 
 		g.translate(ox, oy);
-		
+
 		g.translate(w / 2, h / 2);
-		
+
 		g.setColor(getColorConfig().getCOLOR_GRILLE_1().getColor());
 		for (double x = 0; x < w / 2 + space; x += space)
 		{
-		/*	Line2D.Double line1 = new Line2D.Double(x, -(h / 2.0 + space),  x,  (h / 2.0 + space));
-			Line2D.Double line2 = new Line2D.Double(-x,-(h / 2.0 + space), -x,  (h / 2 + space));
-		*/	g.drawLine((int) x, (int) -(h / 2 + space), (int) x, (int) (h / 2 + space));
+			/*
+			 * Line2D.Double line1 = new Line2D.Double(x, -(h / 2.0 + space), x,
+			 * (h / 2.0 + space)); Line2D.Double line2 = new
+			 * Line2D.Double(-x,-(h / 2.0 + space), -x, (h / 2 + space));
+			 */ g.drawLine((int) x, (int) -(h / 2 + space), (int) x, (int) (h / 2 + space));
 			g.drawLine((int) -x, (int) -(h / 2 + space), (int) -x, (int) (h / 2 + space));
 		}
 		for (double y = 0; y < h / 2 + space; y += space)
@@ -266,17 +266,17 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 			g.drawLine((int) -(w / 2 + space), (int) y, (int) (w / 2 + space), (int) y);
 			g.drawLine((int) -(w / 2 + space), (int) -y, (int) (w / 2 + space), (int) -y);
 		}
-		
+
 		g.translate(-ox, -oy);
-		
+
 		g.translate(-w / 2, -h / 2);
 
 		if (DrawCentralAxis == true)
 		{
 			g.setColor(Color.BLACK);
-			int y = (int)((ScrollY * Zoom) + h / 2.0);
-			int x = (int)((ScrollX * Zoom) + w / 2.0);
-			g.drawLine(0,  y, w, y);
+			int	y	= (int) ((ScrollY * Zoom) + h / 2.0);
+			int	x	= (int) ((ScrollX * Zoom) + w / 2.0);
+			g.drawLine(0, y, w, y);
 			g.drawLine(x, 0, x, h);
 		}
 
@@ -303,8 +303,8 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 
 	public BufferedImage getImage()
 	{
-		BufferedImage myBufferedImage = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_RGB);
-		Graphics2D myGraphics2D = myBufferedImage.createGraphics();
+		BufferedImage	myBufferedImage	= new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_RGB);
+		Graphics2D		myGraphics2D	= myBufferedImage.createGraphics();
 		// myGraphics2D.setRenderingHint(RenderingHints.KEY_INTERPOLATION,RenderingHints.VALUE_INTERPOLATION_BICUBIC);
 		// myGraphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 		// RenderingHints.VALUE_ANTIALIAS_ON);
@@ -314,64 +314,70 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 		// return ImageUtilities.ImagetoBufferedImage(createImage(getWidth(),
 		// getHeight()));
 	}
-	
-	public static BufferedImage ImagetoBufferedImage(Image image) {
-	      if (image instanceof BufferedImage) {
-	          return (BufferedImage)image;
-	      }
-	  
-	      // This code ensures that all the pixels in the image are loaded
-	      image = new ImageIcon(image).getImage();
-	  
-	      // Determine if the image has transparent pixels; for this method's
-	      // implementation, see e661 Determining If an Image Has Transparent Pixels
-	      boolean hasAlpha = true;//hasAlpha(image);
-	  
-	      // Create a buffered image with a format that's compatible with the screen
-	      BufferedImage bimage = null;
-	   //   GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-	      try {
-	          // Determine the type of transparency of the new buffered image
-	         /* int transparency = Transparency.OPAQUE;
-	          if (hasAlpha) {
-	              transparency = Transparency.BITMASK;
-	          }*/
-	  
-	          // Create the buffered image
-	       //   GraphicsDevice gs = ge.getDefaultScreenDevice();
-	    //      GraphicsConfiguration gc = gs.getDefaultConfiguration();
-	       //   bimage = gc.createCompatibleImage(
-	     //         image.getWidth(null), image.getHeight(null), transparency);
-	      } catch (HeadlessException e) {
-	          // The system does not have a screen
-	      }
-	  
-	      if (bimage == null) {
-	          // Create a buffered image using the default color model
-	          int type = BufferedImage.TYPE_INT_RGB;
-	          if (hasAlpha) {
-	              type = BufferedImage.TYPE_INT_ARGB;
-	          }
-	      //    ImageIcon ii = new ImageIcon(image);
-	          bimage = new BufferedImage( image.getWidth(null), image.getHeight(null), type);
-	      }
-	  
-	      // Copy image to buffered image
-	      Graphics g = bimage.createGraphics();
-	  
-	      // Paint the image onto the buffered image
-	      g.drawImage(image, 0, 0, null);
-	      g.dispose();
-	  
-	      return bimage;
-	  }
+
+	public static BufferedImage ImagetoBufferedImage(Image image)
+	{
+		if (image instanceof BufferedImage)
+		{
+			return (BufferedImage) image;
+		}
+
+		// This code ensures that all the pixels in the image are loaded
+		image = new ImageIcon(image).getImage();
+
+		// Determine if the image has transparent pixels; for this method's
+		// implementation, see e661 Determining If an Image Has Transparent Pixels
+		boolean hasAlpha = true;//hasAlpha(image);
+
+		// Create a buffered image with a format that's compatible with the screen
+		BufferedImage bimage = null;
+		//   GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+		try
+		{
+			// Determine the type of transparency of the new buffered image
+			/*
+			 * int transparency = Transparency.OPAQUE; if (hasAlpha) {
+			 * transparency = Transparency.BITMASK; }
+			 */
+
+			// Create the buffered image
+			//   GraphicsDevice gs = ge.getDefaultScreenDevice();
+			//      GraphicsConfiguration gc = gs.getDefaultConfiguration();
+			//   bimage = gc.createCompatibleImage(
+			//         image.getWidth(null), image.getHeight(null), transparency);
+		} catch (HeadlessException e)
+		{
+			// The system does not have a screen
+		}
+
+		if (bimage == null)
+		{
+			// Create a buffered image using the default color model
+			int type = BufferedImage.TYPE_INT_RGB;
+			if (hasAlpha)
+			{
+				type = BufferedImage.TYPE_INT_ARGB;
+			}
+			//    ImageIcon ii = new ImageIcon(image);
+			bimage = new BufferedImage(image.getWidth(null), image.getHeight(null), type);
+		}
+
+		// Copy image to buffered image
+		Graphics g = bimage.createGraphics();
+
+		// Paint the image onto the buffered image
+		g.drawImage(image, 0, 0, null);
+		g.dispose();
+
+		return bimage;
+	}
 
 	public void drawArrow(Graphics2D g2d, float xCenter, float yCenter, float x, float y, float stroke)
 	{
-		double aDir = Math.atan2(xCenter - x, yCenter - y);
-		float i1 = (36 * stroke) + (stroke * 2);
-		float i2 = (20 * stroke) + stroke; // make the arrow head the same size regardless of the length length
-		Path2D tmpPoly = new Path2D.Double();
+		double	aDir	= Math.atan2(xCenter - x, yCenter - y);
+		float	i1		= (36 * stroke) + (stroke * 2);
+		float	i2		= (20 * stroke) + stroke;				// make the arrow head the same size regardless of the length length
+		Path2D	tmpPoly	= new Path2D.Double();
 		tmpPoly.moveTo(x, y); // arrow tip
 		tmpPoly.lineTo(x + xCor(i1, aDir + .5) / 2, y + yCor(i1, aDir + .5) / 2);
 		tmpPoly.lineTo(x + xCor(i2, aDir) / 2, y + yCor(i2, aDir) / 2);
@@ -384,8 +390,8 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 	protected void drawMoveCursor(Graphics2D g, int x, int y)
 	{
 
-		Point2D src = new Point2D.Double(x, y);
-		Point2D dst = new Point2D.Double(x, y);
+		Point2D	src	= new Point2D.Double(x, y);
+		Point2D	dst	= new Point2D.Double(x, y);
 		dst = at.transform(src, dst);
 		//int xx = (int)dst.getX();
 		//int yy = (int)dst.getY();
@@ -431,8 +437,8 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 	{
 
 		g.setStroke(new BasicStroke(2.0f));
-		Line2D l = new Line2D.Double(x, y, x + w, y + h);
-		Shape l2 = at.createTransformedShape(l);
+		Line2D	l	= new Line2D.Double(x, y, x + w, y + h);
+		Shape	l2	= at.createTransformedShape(l);
 		g.draw(l2);
 
 		l.setLine(x, y, x - w, y + h);
@@ -503,12 +509,12 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 		ScrollX = scrollX;
 	}
 
-	public  synchronized double getScrollY()
+	public synchronized double getScrollY()
 	{
 		return ScrollY;
 	}
 
-	public  synchronized void setScrollY(double scrollY)
+	public synchronized void setScrollY(double scrollY)
 	{
 		ScrollY = scrollY;
 	}
@@ -525,20 +531,21 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 
 	public void save(File file) throws IOException
 	{
-		save(file, "BMP") ;
+		save(file, "BMP");
 	}
-	
+
 	public void save(File file, String EXTENSIONformat) throws IOException
 	{
-		BufferedImage tamponSauvegarde = new BufferedImage(this.getWidth(), this.getHeight(), BufferedImage.TYPE_3BYTE_BGR);
-		Graphics g = tamponSauvegarde.getGraphics();
+		BufferedImage	tamponSauvegarde	= new BufferedImage(this.getWidth(), this.getHeight(), BufferedImage.TYPE_3BYTE_BGR);
+		Graphics		g					= tamponSauvegarde.getGraphics();
 		g.setColor(Color.WHITE);
 		g.fillRect(0, 0, this.getWidth(), this.getHeight());
 		this.paint(g);
 		ImageIO.write(tamponSauvegarde, EXTENSIONformat, file);
 	}
+	
 
-	public void savePDF(File file)/* throws IOException, DocumentException*/
+	public void savePDF(File file)/* throws IOException, DocumentException */
 	{
 		/*
 		 * BufferedImage tamponSauvegarde = new BufferedImage( this.getWidth(),
@@ -547,84 +554,45 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 		 * g.fillRect(0, 0, this.getWidth(), this.getHeight()); this.paint(g);
 		 */
 
-/*		Document doc = new Document(PageSize.A0);
-
-		@SuppressWarnings("unused")
-		PdfWriter out = null;
-
-		out = PdfWriter.getInstance(doc, new FileOutputStream(file));
-
-		doc.open();
-
-		// iText font != java.awt.Font ! 
-		FontFactory.registerDirectories(); // register all fonts in the usual 
-
-		doc.addTitle("EOL Report");
-		doc.addCreationDate();
-		doc.addCreator("Warnotte R.");
-		doc.addProducer();
-
-		Paragraph p = new Paragraph("EOL Report");
-		p.setAlignment(1);
-		try
-		{
-			doc.add(p);
-		} catch (DocumentException e1)
-		{
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-
-		BufferedImage img = new BufferedImage(this.getWidth(), this.getHeight(), BufferedImage.TYPE_INT_ARGB);
-		Graphics2D img2D = img.createGraphics();
-		Dimension dim = this.getSize();
-		this.setSize(dim.width, dim.height);
-
-		//	this.print(img2D);
-		this.paint(img2D);
-		this.setSize(dim.width, dim.height);
-		//	float viewWidth = out.getPageSize().getWidth() - doc.leftMargin() - doc.rightMargin(); 
-
-		p = new Paragraph();
-		com.itextpdf.text.Image itextImg;
-		try
-		{
-			itextImg = com.itextpdf.text.Image.getInstance(img, Color.BLUE, false);
-			p.add(itextImg);
-			doc.add(p);
-		} catch (BadElementException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (DocumentException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		// restore old LAF 
-		//pnl.setUI(old); 
-
-		///// trailing text 
-		try
-		{
-			doc.add(new Paragraph("E O L Support structure"));
-		} catch (DocumentException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		doc.close();
-*/
+		/*
+		 * Document doc = new Document(PageSize.A0);
+		 * @SuppressWarnings("unused") PdfWriter out = null; out =
+		 * PdfWriter.getInstance(doc, new FileOutputStream(file)); doc.open();
+		 * // iText font != java.awt.Font ! FontFactory.registerDirectories();
+		 * // register all fonts in the usual doc.addTitle("EOL Report");
+		 * doc.addCreationDate(); doc.addCreator("Warnotte R.");
+		 * doc.addProducer(); Paragraph p = new Paragraph("EOL Report");
+		 * p.setAlignment(1); try { doc.add(p); } catch (DocumentException e1) {
+		 * // TODO Auto-generated catch block e1.printStackTrace(); }
+		 * BufferedImage img = new BufferedImage(this.getWidth(),
+		 * this.getHeight(), BufferedImage.TYPE_INT_ARGB); Graphics2D img2D =
+		 * img.createGraphics(); Dimension dim = this.getSize();
+		 * this.setSize(dim.width, dim.height); // this.print(img2D);
+		 * this.paint(img2D); this.setSize(dim.width, dim.height); // float
+		 * viewWidth = out.getPageSize().getWidth() - doc.leftMargin() -
+		 * doc.rightMargin(); p = new Paragraph(); com.itextpdf.text.Image
+		 * itextImg; try { itextImg = com.itextpdf.text.Image.getInstance(img,
+		 * Color.BLUE, false); p.add(itextImg); doc.add(p); } catch
+		 * (BadElementException e) { // TODO Auto-generated catch block
+		 * e.printStackTrace(); } catch (DocumentException e) { // TODO
+		 * Auto-generated catch block e.printStackTrace(); } // restore old LAF
+		 * //pnl.setUI(old); ///// trailing text try { doc.add(new
+		 * Paragraph("E O L Support structure")); } catch (DocumentException e)
+		 * { // TODO Auto-generated catch block e.printStackTrace(); }
+		 * doc.close();
+		 */
 	}
 
-	/*
-	 * Transforme la coordon�e en bonne coordonn�e (avec zoom et translation)
+	/**
+	 * Transforme la coordonée en bonne coordonnée (avec zoom et translation)
+	 * @param X
+	 * @param Y
+	 * @return
 	 */
 	public Point2D convertViewXYtoRealXY(double X, double Y)
 	{
-		double x = X;
-		double y = Y;
+		double	x	= X;
+		double	y	= Y;
 
 		// x = (x-((LockScrollX==false)?0:getWidth()/2))/Zoom-((LockScrollX==false)?0:ScrollX);
 		// y = (y-((LockScrollX==false)?0:getWidth()/2))/Zoom-((LockScrollY==false)?0:ScrollY);
@@ -639,9 +607,11 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 		if (LockScrollY == true)
 			y = (Y) / Zoom;
 
-		if (invertYAxis==true) y=-y;
-		if (invertXAxis==true) x=-x;
-		
+		if (invertYAxis == true)
+			y = -y;
+		if (invertXAxis == true)
+			x = -x;
+
 		Point2D p = new Point2D.Double(x, y);
 
 		if (Math.abs((Angle % 180) - 5) > 5)
@@ -668,24 +638,19 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 		return p;
 	}
 
-	/*
-	 * protected double RealToWorldCoord(double x, double ScrollX,double width)
-	 * { return (x-width/2)/Zoom-ScrollX; } protected double
-	 * WorldToRealCoord(double x, double ScrollX, double width) { return
-	 * ((x+ScrollX)*Zoom+width/2); }
+	
+
+	/**
+	 * Transforme la coordonée en bonne coordonnée (avec zoom et translation)
+	 * @param X
+	 * @param Y
+	 * @return
 	 */
 
-	/*
-	 * Transforme la coordon�e en bonne coordonn�e (avec zoom et translation)
-	 */
-
-	/*
-	 * Transforme la coordon�e en bonne coordonn�e (avec zoom et translation)
-	 */
 	public Point2D convertRealXYToViewXY(double X, double Y)
 	{
-		double x = X;
-		double y = Y;
+		double	x	= X;
+		double	y	= Y;
 
 		// Facteur pour mettre le dessin centr� 
 		x += this.ScrollX;
@@ -694,9 +659,11 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 		x *= this.Zoom;
 		y *= this.Zoom;
 
-		if (invertYAxis==true) y=-y;
-		if (invertXAxis==true) x=-x;
-		
+		if (invertYAxis == true)
+			y = -y;
+		if (invertXAxis == true)
+			x = -x;
+
 		Point2D p = new Point2D.Double(x, y);
 
 		Rectangle2D p2 = new Rectangle2D.Double(X, Y, 1, 1);
@@ -719,10 +686,10 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 	protected void dessineBoundingBox(Graphics2D g, Rectangle2D rect, double offset)
 	{
 
-		double x = rect.getX();
-		double y = rect.getY();
-		double w = rect.getWidth();
-		double h = rect.getHeight();
+		double	x	= rect.getX();
+		double	y	= rect.getY();
+		double	w	= rect.getWidth();
+		double	h	= rect.getHeight();
 
 		g.setColor(Color.BLACK);
 		g.setStroke(drawingStroke_Boundarybox);
@@ -730,8 +697,8 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 		offset /= at.getScaleX();
 		offset += 1;
 
-		Rectangle2D l = new Rectangle2D.Double(x - offset, y - offset, (int) (w - x) + offset * 2, (int) (h - y) + offset * 2);
-		Shape lM = at.createTransformedShape(l);
+		Rectangle2D	l	= new Rectangle2D.Double(x - offset, y - offset, (int) (w - x) + offset * 2, (int) (h - y) + offset * 2);
+		Shape		lM	= at.createTransformedShape(l);
 
 		g.draw(lM);
 
@@ -755,9 +722,7 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 
 		String str = String.format("World Mouse %d, %d\r\n", (int) MouseX, (int) MouseY);
 		g.drawString(str, 0, 20);
-		
-		
-		
+
 		// MouseX
 
 	}
@@ -767,16 +732,18 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 
 		int MarginToView = 0;
 		// Recupere la view actuelle du buffer (x,y,w,h)
-		int X = (int) ScrollX;
-		int Y = (int) ScrollY;
-		
-		if (invertYAxis==true) Y=Y*-1;
-		if (invertXAxis==true) X=X*-1;
+		int	X	= (int) ScrollX;
+		int	Y	= (int) ScrollY;
 
-		int ww = this.getWidth();
-		int hh = this.getHeight();
-		Point2D p = this.convertViewXYtoRealXY(ww, hh);
-		Point2D p2 = this.convertViewXYtoRealXY(X, Y);
+		if (invertYAxis == true)
+			Y = Y * -1;
+		if (invertXAxis == true)
+			X = X * -1;
+
+		int		ww	= this.getWidth();
+		int		hh	= this.getHeight();
+		Point2D	p	= this.convertViewXYtoRealXY(ww, hh);
+		Point2D	p2	= this.convertViewXYtoRealXY(X, Y);
 
 		if (LockScrollX == true)
 			p2.setLocation(0, p2.getY());
@@ -795,8 +762,8 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 			YY = 0;
 
 		Vision = new Rectangle(X - 1, Y - 1, (int) p.getX() - XX - MarginToView, (int) p.getY() - YY - MarginToView);
-		
-	//	System.err.println("Vision = "+Vision);
+
+		//	System.err.println("Vision = "+Vision);
 	}
 
 	public Rectangle Recupere_Rectangle_Vue()
@@ -813,8 +780,8 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 		{
 			for (int j = -size; j <= size; j++)
 			{
-				double distance = (i * i) + (j * j);
-				float alpha = opacity;
+				double	distance	= (i * i) + (j * j);
+				float	alpha		= opacity;
 				if (distance > 0.0d)
 					alpha = (float) (1.0f / ((distance * size) * opacity));
 				g2.setComposite(AlphaComposite.SrcOver.derive(alpha));
@@ -829,8 +796,8 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 	protected void drawArrowSansLigne(Graphics2D g, double Mx, double My, double theta)
 	{
 
-		int ss = 8;
-		Polygon p2 = new Polygon();
+		int		ss	= 8;
+		Polygon	p2	= new Polygon();
 		p2.addPoint(0, 0);
 		p2.addPoint(-ss, -ss);
 		p2.addPoint(-ss, ss);
@@ -843,14 +810,13 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 		at2.rotate(theta);
 		Shape t = at2.createTransformedShape(p2);
 		g.fill(t);
-
 	}
 
 	public double getAngle(Point2D pt1, Point2D pt2)
 	{
-		double radians = (Math.atan2(pt2.getY() - pt1.getY(), pt2.getX() - pt1.getX()) * 180) / Math.PI;
-		double degrees = Math.floor(radians);
-		double dd = (degrees % 360 + 360) % 360;
+		double	radians	= (Math.atan2(pt2.getY() - pt1.getY(), pt2.getX() - pt1.getX()) * 180) / Math.PI;
+		double	degrees	= Math.floor(radians);
+		double	dd		= (degrees % 360 + 360) % 360;
 		dd = 360 - dd;
 		if (dd == 360)
 			dd = 0;
@@ -858,10 +824,17 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 	}
 
 	/**
+	 * Draw text using glyphvector
+	 * 
 	 * @param g
+	 *            Graphics2D
 	 * @param text
+	 *            the text itself
 	 * @param x
+	 *            x position of the text
 	 * @param y
+	 *            y position of the text
+	 * @return Shape of the text (a rectangle with rotation or not)
 	 */
 	protected Shape drawString(Graphics2D g, String text, float x, float y)
 	{
@@ -869,12 +842,23 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 	}
 
 	/**
+	 * Draw text using glyphvector
+	 * 
 	 * @param g
+	 *            Graphics2D
 	 * @param text
+	 *            the text itself
 	 * @param x
+	 *            x position of the text
 	 * @param y
-	 * @param centered
-	 *            centre le texte au millieu du texte (pour les rotation aussi).
+	 *            y position of the text
+	 * @param ang
+	 *            angle of the text
+	 * @param alignX
+	 *            Alignment X for the text
+	 * @param alignY
+	 *            Alignment Y for the text
+	 * @return Shape of the text (a rectangle with rotation or not)
 	 */
 	protected Shape drawString(Graphics2D g, String text, float x, float y, AlignTexteX alignX, AlignTexteY alignY)
 	{
@@ -882,70 +866,373 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 	}
 
 	/**
+	 * Draw text using glyphvector
+	 * 
 	 * @param g
+	 *            Graphics2D
 	 * @param text
+	 *            the text itself
 	 * @param x
+	 *            x position of the text
 	 * @param y
-	 * @param centered
-	 *            centre le texte au millieu du texte (pour les rotation aussi).
+	 *            y position of the text
+	 * @param ang
+	 *            angle of the text
+	 * @param alignX
+	 *            Alignment X for the text
+	 * @param alignY
+	 *            Alignment Y for the text
 	 * @param txtCantChangeSize
-	 *            Le texte va-t-il avoir sa taille modifier par le facteur de
-	 *            zoom ?
+	 *            Text can have fixed size when zooming or not
+	 * @return Shape of the text (a rectangle with rotation or not)
 	 */
 	protected Shape drawString(Graphics2D g, String text, float x, float y, AlignTexteX alignX, AlignTexteY alignY, boolean txtCantChangeSize)
 	{
 		return drawString(g, text, x, y, 0, alignX, alignY, txtCantChangeSize);
 	}
 
+	/**
+	 * Draw text using glyphvector
+	 * 
+	 * @param g
+	 *            Graphics2D
+	 * @param text
+	 *            the text itself
+	 * @param x
+	 *            x position of the text
+	 * @param y
+	 *            y position of the text
+	 * @param ang
+	 *            angle of the text
+	 * @param alignX
+	 *            Alignment X for the text
+	 * @param alignY
+	 *            Alignment Y for the text
+	 * @param txtCantChangeSize
+	 *            Text can have fixed size when zooming or not
+	 * @return Shape of the text (a rectangle with rotation or not)
+	 */
+
 	protected Shape drawString(Graphics2D g, String text, double x, double y, AlignTexteX alignX, AlignTexteY alignY, boolean txtCantChangeSize)
 	{
 		return drawString(g, text, (float) x, (float) y, 0, alignX, alignY, txtCantChangeSize);
 	}
 
+	/**
+	 * Draw text using glyphvector
+	 * 
+	 * @param g
+	 *            Graphics2D
+	 * @param text
+	 *            the text itself
+	 * @param x
+	 *            x position of the text
+	 * @param y
+	 *            y position of the text
+	 * @param ang
+	 *            angle of the text
+	 * @param alignX
+	 *            Alignment X for the text
+	 * @param alignY
+	 *            Alignment Y for the text
+	 * @param txtCantChangeSize
+	 *            Text can have fixed size when zooming or not
+	 * @return Shape of the text (a rectangle with rotation or not)
+	 */
+
 	protected Shape drawString(Graphics2D g, String text, int x, int y, float ang, AlignTexteX alignX, AlignTexteY alignY, boolean txtCantChangeSize)
 	{
 		return drawString(g, text, (float) x, (float) y, ang, alignX, alignY, txtCantChangeSize);
 	}
-	
+
+	/**
+	 * Draw text using glyphvector
+	 * 
+	 * @param g
+	 *            Graphics2D
+	 * @param text
+	 *            the text itself
+	 * @param x
+	 *            x position of the text
+	 * @param y
+	 *            y position of the text
+	 * @param ang
+	 *            angle of the text
+	 * @param alignX
+	 *            Alignment X for the text
+	 * @param alignY
+	 *            Alignment Y for the text
+	 * @param txtCantChangeSize
+	 *            Text can have fixed size when zooming or not
+	 * @return Shape of the text (a rectangle with rotation or not)
+	 */
+
 	protected Shape drawString(Graphics2D g, String text, float x, float y, float ang, AlignTexteX alignX, AlignTexteY alignY, boolean txtCantChangeSize)
 	{
-		return drawString( g,  text,  x,  y,  ang,  alignX, alignY,  txtCantChangeSize, 1.0f);
+		return drawString(g, text, x, y, ang, alignX, alignY, txtCantChangeSize, 1.0f);
 	}
 
-	/*
-	protected Rectangle2D drawString(Graphics2D g, String text, float x, float y, float ang, AlignTexteX alignX, AlignTexteY alignY, boolean txtCantChangeSize, float Size)
-	{
-		return drawString(g,  text,  x,  y,  ang,  alignX, alignY,  txtCantChangeSize,  Size, false);
-	}*/
-	
+	/**
+	 * Draw text using glyphvector
+	 * 
+	 * @param g
+	 *            Graphics2D
+	 * @param text
+	 *            the text itself
+	 * @param x
+	 *            x position of the text
+	 * @param y
+	 *            y position of the text
+	 * @param ang
+	 *            angle of the text
+	 * @param alignX
+	 *            Alignment X for the text
+	 * @param alignY
+	 *            Alignment Y for the text
+	 * @param txtCantChangeSize
+	 *            Text can have fixed size when zooming or not
+	 * @param Size
+	 *            size of the text
+	 * @return Shape of the text (a rectangle with rotation or not)
+	 */
 	protected Shape drawString(Graphics2D g, String text, float x, float y, float ang, AlignTexteX alignX, AlignTexteY alignY, boolean txtCantChangeSize, float Size)
 	{
-		return drawString(g,  text,  x,  y,  ang,  alignX, alignY,  txtCantChangeSize,  Size, false);
+		return drawString(g, text, x, y, ang, alignX, alignY, txtCantChangeSize, Size, false);
 	}
-	
+
+	/**
+	 * Draw text using glyphvector
+	 * 
+	 * @param g
+	 *            Graphics2D
+	 * @param text
+	 *            the text itself
+	 * @param x
+	 *            x position of the text
+	 * @param y
+	 *            y position of the text
+	 * @param ang
+	 *            angle of the text
+	 * @param alignX
+	 *            Alignment X for the text
+	 * @param alignY
+	 *            Alignment Y for the text
+	 * @param txtCantChangeSize
+	 *            Text can have fixed size when zooming or not
+	 * @param Size
+	 *            size of the text
+	 * @param drawBackGround
+	 *            Draw a rectangle below text
+	 * @return Shape of the text (a rectangle with rotation or not)
+	 */
 	protected Shape drawString(Graphics2D g, String text, float x, float y, float ang, AlignTexteX alignX, AlignTexteY alignY, boolean txtCantChangeSize, float Size, boolean drawBackGround)
 	{
 		return drawString(g, text, x, y, ang, alignX, alignY, txtCantChangeSize, Size, drawBackGround, Color.white);
 	}
-	
+
+	/**
+	 * Draw text using glyphvector
+	 * 
+	 * @param g
+	 *            Graphics2D
+	 * @param text
+	 *            the text itself
+	 * @param x
+	 *            x position of the text
+	 * @param y
+	 *            y position of the text
+	 * @param ang
+	 *            angle of the text
+	 * @param alignX
+	 *            Alignment X for the text
+	 * @param alignY
+	 *            Alignment Y for the text
+	 * @param txtCantChangeSize
+	 *            Text can have fixed size when zooming or not
+	 * @param Size
+	 *            size of the text
+	 * @param drawBackGround
+	 *            Draw a rectangle below text
+	 * @param backGroundColor
+	 *            Color for the drawBackground
+	 * @return Shape of the text (a rectangle with rotation or not)
+	 */
+	protected Shape drawString(Graphics2D g, String text, float x, float y, float ang, AlignTexteX alignX, AlignTexteY alignY, boolean txtCantChangeSize, float Size, boolean drawBackGround, Color backGroundColor)
+	{
+		return drawString(g, text, x, y, ang, alignX, alignY, txtCantChangeSize, Size, drawBackGround, backGroundColor, true);
+	}
+
+	/**
+	 * Draw a text
+	 * 
+	 * @param g
+	 *            Graphics2D
+	 * @param text
+	 *            the text itself
+	 * @param x
+	 *            x position of the text
+	 * @param y
+	 *            y position of the text
+	 * @param ang
+	 *            angle of the text
+	 * @param alignX
+	 *            Alignment X for the text
+	 * @param alignY
+	 *            Alignment Y for the text
+	 * @param txtCantChangeSize
+	 *            Text can have fixed size when zooming or not
+	 * @param Size
+	 *            size of the text
+	 * @param drawBackGround
+	 *            Draw a rectangle below text
+	 * @param backGroundColor
+	 *            Color for the drawBackground
+	 * @param useGlyph
+	 *            Use Glyph method for better text with at and rotation
+	 * @return Shape of the text (a rectangle with rotation or not)
+	 */
+	protected Shape drawString(Graphics2D g, String text, float x, float y, float ang, AlignTexteX alignX, AlignTexteY alignY, boolean txtCantChangeSize, float Size, boolean drawBackGround, Color backGroundColor, boolean useGlyph)
+	{
+		float	sx	= (float) Zoom;
+		float	sy	= (float) Zoom;
+
+		if (txtCantChangeSize == true)
+		{
+			sx = 1.0f / Size;
+			sy = 1.0f / Size;
+		}
+
+		if ((invertXAxis == false) && (invertYAxis == false))
+		{
+		}
+		;
+		if ((invertXAxis == false) && (invertYAxis == true))
+		{
+			sy = -sy;
+		}
+		;
+		if ((invertXAxis == true) && (invertYAxis == false))
+		{
+			sx = -sx;
+		}
+		;
+		if ((invertXAxis == true) && (invertYAxis == true))
+		{
+			sx = -sx;
+			sy = -sy;
+		}
+		;
+
+		float recenterx = 0, recentery = 0;
+		if ((alignX != AlignTexteX.LEFT) || (alignY != AlignTexteY.BOTTOM))
+		{
+			float txt_with = g.getFontMetrics().stringWidth(text);
+			if (alignX == AlignTexteX.CENTER)
+				recenterx = +(txt_with / 2f / sx);
+			if (alignX == AlignTexteX.RIGHT)
+				recenterx = +(txt_with / sx);
+			if (alignY == AlignTexteY.CENTER)
+				recentery = -(g.getFontMetrics().getFont().getSize() / 3f / sy);
+			if (alignY == AlignTexteY.TOP)
+				recentery = -(g.getFontMetrics().getFont().getSize() / sy);
+		}
+
+		AffineTransform at2 = new AffineTransform();
+		at2.concatenate(at);
+
+		AffineTransform at3 = new AffineTransform();
+
+		at3.translate(x, y);
+		at3.scale(1f / sx, 1f / sy);
+		at3.rotate(Math.toRadians(ang));
+		at3.translate(-recenterx * sx, -recentery * sy);
+
+		at2.concatenate(at3);
+
+		Shape rect_texte = g.getFontMetrics().getStringBounds(text, g);
+		rect_texte = at3.createTransformedShape(rect_texte);//.getBounds2D();
+
+		if (drawBackGround == true)
+		{
+			Rectangle2D	rect_texteM	= g.getFontMetrics().getStringBounds(text, g);
+			Rectangle2D	rect_texte2	= (Rectangle2D) rect_texteM.clone();
+
+			float	elargX	= 4;
+			float	elargY	= 2;
+			/*
+			 * if (txtCantChangeSize == true) { elargX = 3; elargY = 1; }
+			 */
+
+			rect_texte2.setRect(rect_texte2.getX() - elargX / 2.0f, rect_texte2.getY() - elargY / 2.0f, rect_texte2.getWidth() + elargX, rect_texte2.getHeight() + elargY);
+			Shape shp_rect_texte2 = at2.createTransformedShape(rect_texte2);
+			// Dessine un cadre en dessous.
+			Stroke old_Stroke = g.getStroke();
+			g.setColor(backGroundColor);
+			g.fill(shp_rect_texte2);
+			g.setColor(Color.BLACK);
+			g.setStroke(new BasicStroke(1.0f));
+			g.draw(shp_rect_texte2);
+
+			g.setStroke(old_Stroke);
+		}
+		// Dessine le texte
+		Color colorCurrent = g.getColor();
+		g.setColor(colorCurrent);
+		FontRenderContext	frc		= g.getFontRenderContext();
+		GlyphVector			gv		= g.getFont().createGlyphVector(frc, text);
+		int					length	= gv.getNumGlyphs();
+
+		// Methode rapide mais qui ne permet pas de faire certains truc que l'autre bazard du dessous fait.
+		if (useGlyph == false)
+		{
+			AffineTransform oldat = (AffineTransform) g.getTransform().clone();
+			g.setTransform(at2);
+			g.drawString(text, 0, 0);
+			g.setTransform(oldat);
+		} else
+		{
+			// Ca a l'air mieux que le truc au dessus, mais y'a toujours un cas qui marche pas (Porte Busque, vue du dessus, les fleches rouges du bateau.
+			frc = g.getFontRenderContext();
+			gv = g.getFont().createGlyphVector(frc, text);
+			length = gv.getNumGlyphs();
+			for (int i = 0; i < length; i++)
+			{
+				Point2D p = gv.getGlyphPosition(i);
+				// JE pense que c'est inutile
+				AffineTransform at5 = AffineTransform.getTranslateInstance(0, 0);
+				at5.preConcatenate(at2);
+				//at.rotate((double) i / (double) (length - 1) * Math.PI / 3);
+				Shape	glyph				= gv.getGlyphOutline(i);
+				Shape	transformedGlyph	= at2.createTransformedShape(glyph);
+				g.fill(transformedGlyph);
+			}
+
+		}
+
+		return rect_texte;
+	}
+
 	/**
 	 * @param g
 	 * @param text
 	 * @param x
 	 * @param y
 	 * @param ang
-	 * @param centered centre le texte au millieu du texte (pour les rotation aussi).
-	 * @param txtCantChangeSize Le texte va-t-il avoir sa taille modifier par le facteur de zoom ?
-	 * @return 
+	 * @param centered
+	 *            centre le texte au millieu du texte (pour les rotation aussi).
+	 * @param txtCantChangeSize
+	 *            Le texte va-t-il avoir sa taille modifier par le facteur de
+	 *            zoom ?
+	 * @return
 	 */
-	protected Shape drawString(Graphics2D g, String text, float x, float y, float ang, AlignTexteX alignX, AlignTexteY alignY, boolean txtCantChangeSize, float Size, boolean drawBackGround, Color backGroundColor)
+	protected Shape drawString_AFTER_OLD(Graphics2D g, String text, float x, float y, float ang, AlignTexteX alignX, AlignTexteY alignY, boolean txtCantChangeSize, float Size, boolean drawBackGround, Color backGroundColor)
 	{
-		// TODO : Gerer le SCALE
+		// TODO : Gerer le SCALE 
 		AffineTransform oldat = (AffineTransform) g.getTransform().clone();
 
-		//System.err.println("Focus : "+isFocusOwner());
-		float sx = (float) at.getScaleX();
-		float sy = (float) at.getScaleY();
+		// at.getScaleX() fait chier quand on rotate AT
+		float	sx	= (float) at.getScaleX();
+		float	sy	= (float) at.getScaleY();
 
 		if (txtCantChangeSize == true)
 		{
@@ -957,23 +1244,26 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 		{
 			if ((invertXAxis == false) && (invertYAxis == false))
 			{
-				
-			};
+
+			}
+			;
 			if ((invertXAxis == false) && (invertYAxis == true))
 			{
 				sy = -sy;
-			};
+			}
+			;
 			if ((invertXAxis == true) && (invertYAxis == false))
 			{
 				sx = -sx;
-			};
+			}
+			;
 			if ((invertXAxis == true) && (invertYAxis == true))
 			{
 				ang += 180;
-			};
+			}
+			;
 		}
 
-		
 		float recenterx = 0, recentery = 0;
 		if ((alignX != AlignTexteX.LEFT) || (alignY != AlignTexteY.BOTTOM))
 		{
@@ -992,28 +1282,28 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 		at2.concatenate(at);
 
 		AffineTransform at3 = new AffineTransform();
-		
+
 		at3.translate(x, y);
 		at3.scale(1f / sx, 1f / sy);
 		at3.rotate(Math.toRadians(ang));
 		at3.translate(-recenterx * sx, -recentery * sy);
 
 		at2.concatenate(at3);
-	
+
 		Shape rect_texte = g.getFontMetrics().getStringBounds(text, g);
 		rect_texte = at3.createTransformedShape(rect_texte).getBounds2D();
-	
+
 		//g.setTransform(at2);
 
 		Color colorCurrent = g.getColor();
 
 		if (drawBackGround == true)
 		{
-			Rectangle2D rect_texteM = g.getFontMetrics().getStringBounds(text, g);
-			Rectangle2D rect_texte2 = (Rectangle2D) rect_texteM.clone();
+			Rectangle2D	rect_texteM	= g.getFontMetrics().getStringBounds(text, g);
+			Rectangle2D	rect_texte2	= (Rectangle2D) rect_texteM.clone();
 
-			float elargX = 4;
-			float elargY = 2;
+			float	elargX	= 4;
+			float	elargY	= 2;
 
 			if (txtCantChangeSize == true)
 			{
@@ -1030,142 +1320,105 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 			g.setColor(Color.BLACK);
 			g.setStroke(new BasicStroke(1.0f));
 			g.draw(shp_rect_texte2);
-			
+
 			g.setStroke(old_Stroke);
 		}
 		// Dessine le texte
 		g.setColor(colorCurrent);
-		
-		FontRenderContext frc = g.getFontRenderContext();
-		
-		GlyphVector gv = g.getFont().createGlyphVector(frc, text);
-		
-		int length = gv.getNumGlyphs();
-		
 
-		
+		FontRenderContext frc = g.getFontRenderContext();
+
+		GlyphVector gv = g.getFont().createGlyphVector(frc, text);
+
+		int length = gv.getNumGlyphs();
+
 		// Methode rapide mais qui ne permet pas de faire certains truc que l'autre bazard du dessous fait.
-//		if (true)
+		//		if (true)
 		{
 			AffineTransform at4 = new AffineTransform();
 			//at4.concatenate(at2);
-			
+
 			//at4.scale(1/ sx * Zoom,  1 / sy * Zoom);
 			//at4.rotate(Math.toRadians(ang));
 			//if (txtCantChangeSize == true)
 			{
-				
-			if ((invertXAxis == false) && (invertYAxis == false))
-			{
-				at4.scale(1/ sx * Zoom,  1 / sy * Zoom);
-			
-				//angle = 45;
-				at4.rotate(Math.toRadians(ang));
-				
-			};
-			if ((invertXAxis == false) && (invertYAxis == true))
-			{
-			//	sy = -sy;
-				
-				at4.scale(1/ sx * Zoom,  1 / -sy * Zoom);
-				
-			  at4.rotate(Math.toRadians(ang));
-				
-			};
-			if ((invertXAxis == true) && (invertYAxis == false))
-			{
-			//	sx = -sx;
-				
-				at4.scale(1/ -sx * Zoom,  1 / sy * Zoom);
-				
-				at4.rotate(Math.toRadians(ang));
-			};
-			if ((invertXAxis == true) && (invertYAxis == true))
-			{
-			//	ang += 180;
-				
-				at4.scale(1/ sx * Zoom,  1 / sy * Zoom);
-				// AJOUT LE 28-09-2021 pour un bug si on fait une rotation de AT
-				at4.rotate(Math.toRadians(ang+180));
-			};
-			
+
+				if ((invertXAxis == false) && (invertYAxis == false))
+				{
+					at4.scale(1 / sx * Zoom, 1 / sy * Zoom);
+
+					//angle = 45;
+					at4.rotate(Math.toRadians(ang));
+
+				}
+				;
+				if ((invertXAxis == false) && (invertYAxis == true))
+				{
+					//	sy = -sy;
+
+					at4.scale(1 / sx * Zoom, 1 / -sy * Zoom);
+
+					at4.rotate(Math.toRadians(ang));
+
+				}
+				;
+				if ((invertXAxis == true) && (invertYAxis == false))
+				{
+					//	sx = -sx;
+
+					at4.scale(1 / -sx * Zoom, 1 / sy * Zoom);
+
+					at4.rotate(Math.toRadians(ang));
+				}
+				;
+				if ((invertXAxis == true) && (invertYAxis == true))
+				{
+					//	ang += 180;
+
+					at4.scale(1 / sx * Zoom, 1 / sy * Zoom);
+					// AJOUT LE 28-09-2021 pour un bug si on fait une rotation de AT
+					at4.rotate(Math.toRadians(ang + 180));
+				}
+				;
+
 			}
 
-		//	AffineTransform att = AffineTransform.getRotateInstance(Math.toRadians(45));
-			
-			
-		//	System.err.println("Ang = "+(extractAngle(at)));
-			
+			//	AffineTransform att = AffineTransform.getRotateInstance(Math.toRadians(45));
+
+			//	System.err.println("Ang = "+(extractAngle(at)));
+
 			gv.setGlyphTransform(0, at2);
-			
-			for (int i = 1; i < length; i++) {
-				
+
+			for (int i = 1; i < length; i++)
+			{
+
 				gv.setGlyphTransform(i, at4);
 			}
 			g.drawGlyphVector(gv, 0, 0);
-			
-		
-			/*
-			Ca a l'air mieux que le truc au dessus, mais y'a toujours un cas qui marche pas (Porte Busque, vue du dessus, les fleches rouges du bateau.
-			frc = g.getFontRenderContext();
-			
-			gv = g.getFont().createGlyphVector(frc, text);
-			length = gv.getNumGlyphs();
-			for (int i = 0; i < length; i++) {
-			  Point2D p = gv.getGlyphPosition(i);
-			  AffineTransform at5 = AffineTransform.getTranslateInstance(0,0);
-			  at5.preConcatenate(at2);
-			  
-			  //at.rotate((double) i / (double) (length - 1) * Math.PI / 3);
-			  Shape glyph = gv.getGlyphOutline(i);
-			  Shape transformedGlyph = at2.createTransformedShape(glyph);
-			  g.fill(transformedGlyph);
-			}
-		
-			*/
-			
-			
-			
-			
-			
-			//g.setTransform(at4);
-			//g.drawString(text, 0,0);
-		}
-//		else
-		{
-	/*
-			for (int i = 0; i < length; i++) {
-			//	gv.setGlyphTransform(i, at2);
-			//  Point2D p = gv.getGlyphPosition(i);
-			  Shape shp = gv.getGlyphOutline(i, 0, 0);
-			  shp = at2.createTransformedShape(shp);
-			//  g.setColor(Color.YELLOW);
-			//  g.fill(shp);
-			//  g.setStroke(new BasicStroke(8.0f));
-			//  g.setColor(Color.BLUE);
-			  g.fill(shp);
-			//  g.setStroke(new BasicStroke(1.0f));
-			}*/
+
 		}
 
 		//g.setTransform(oldat);
 		return rect_texte;
 	}
-		
+
 	protected Shape drawStringOLD(Graphics2D g, String text, float x, float y, float ang, AlignTexteX alignX, AlignTexteY alignY, boolean txtCantChangeSize, float Size)
 	{
 		return drawStringOLD(g, text, x, y, ang, alignX, alignY, txtCantChangeSize, Size, false, Color.BLUE);
 	}
-	
+
 	/**
 	 * @param g
 	 * @param text
 	 * @param x
 	 * @param y
 	 * @param ang
-	 * @param centered centre le texte au millieu du texte (pour les rotation aussi).
-	 * @param txtCantChangeSize Le texte va-t-il avoir sa taille modifier par le facteur de zoom ?
-	 * @return 
+	 * @param centered
+	 *            centre le texte au millieu du texte (pour les rotation aussi).
+	 * @param txtCantChangeSize
+	 *            Le texte va-t-il avoir sa taille modifier par le facteur de
+	 *            zoom ?
+	 * @return
 	 */
 	protected Shape drawStringOLD(Graphics2D g, String text, float x, float y, float ang, AlignTexteX alignX, AlignTexteY alignY, boolean txtCantChangeSize, float Size, boolean drawBackGround, Color backGroundColor)
 	{
@@ -1174,23 +1427,23 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 
 		//System.err.println("Focus : "+isFocusOwner());
 		// Cette valeur de scale pourrait sembler bonne, mais si on fait une rotation de AT alors le scale est pas bon.
-		float sx = (float) at.getScaleX();
-		float sy = (float) at.getScaleY();
+		float	sx	= (float) at.getScaleX();
+		float	sy	= (float) at.getScaleY();
 
-		sx = (float)Zoom;
-		sy = (float)Zoom;
-		
+		sx = (float) Zoom;
+		sy = (float) Zoom;
+
 		if (txtCantChangeSize == true)
 		{
 			sx = 1.0f / Size;
 			sy = 1.0f / Size;
 		}
 
-	//	if (txtCantChangeSize == true)
+		//	if (txtCantChangeSize == true)
 		{
 			if ((invertXAxis == false) && (invertYAxis == false))
 			{
-				
+
 			}
 			;
 			if ((invertXAxis == false) && (invertYAxis == true))
@@ -1209,7 +1462,6 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 			}
 			;
 		}
-		
 
 		/*
 		 * if (isFocusOwner()==false) { // TODO : Bug si on sort de la fenetre
@@ -1217,7 +1469,6 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 		 * encore plus at2.translate(1, 56); }
 		 */
 
-		
 		float recenterx = 0, recentery = 0;
 		if ((alignX != AlignTexteX.LEFT) || (alignY != AlignTexteY.BOTTOM))
 		{
@@ -1242,22 +1493,21 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 		at3.translate(-recenterx * sx, -recentery * sy);
 
 		at2.concatenate(at3);
-	
+
 		Shape rect_texte = g.getFontMetrics().getStringBounds(text, g);
 		rect_texte = at3.createTransformedShape(rect_texte).getBounds2D();
 
-		
 		g.setTransform(at2);
 
 		Color colorCurrent = g.getColor();
 
 		if (drawBackGround == true)
 		{
-			Rectangle2D rect_texteM = g.getFontMetrics().getStringBounds(text, g);
-			Rectangle2D rect_texte2 = (Rectangle2D) rect_texteM.clone();
+			Rectangle2D	rect_texteM	= g.getFontMetrics().getStringBounds(text, g);
+			Rectangle2D	rect_texte2	= (Rectangle2D) rect_texteM.clone();
 
-			float elargX = 4;
-			float elargY = 2;
+			float	elargX	= 4;
+			float	elargY	= 2;
 
 			if (txtCantChangeSize == true)
 			{
@@ -1282,16 +1532,14 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 		// Dessine le texte
 		g.drawString(text, 0, 0);
 
-		
-	/*Shape rect_texte = g.getFontMetrics().getStringBounds(text, g);
-		rect_texte = at2.createTransformedShape(rect_texte).getBounds2D();
-
-		try {
-			rect_texte = at.createInverse().createTransformedShape(rect_texte);
-		} catch (NoninvertibleTransformException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}*/
+		/*
+		 * Shape rect_texte = g.getFontMetrics().getStringBounds(text, g);
+		 * rect_texte = at2.createTransformedShape(rect_texte).getBounds2D();
+		 * try { rect_texte =
+		 * at.createInverse().createTransformedShape(rect_texte); } catch
+		 * (NoninvertibleTransformException e) { // TODO Auto-generated catch
+		 * block e.printStackTrace(); }
+		 */
 		g.setTransform(old);
 
 		/*
@@ -1303,6 +1551,7 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 
 	/**
 	 * Déconne si on rotate AT
+	 * 
 	 * @param g
 	 * @param text
 	 * @param x
@@ -1323,12 +1572,12 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 
 		//System.err.println("Focus : "+isFocusOwner());
 		// Cette valeur de scale pourrait sembler bonne, mais si on fait une rotation de AT alors le scale est pas bon.
-		float sx = (float) at.getScaleX();
-		float sy = (float) at.getScaleY();
+		float	sx	= (float) at.getScaleX();
+		float	sy	= (float) at.getScaleY();
 
 		//sx = (float)Zoom;
 		//sy = (float)Zoom;
-		
+
 		if (txtCantChangeSize == true)
 		{
 			sx = 1.0f / Size;
@@ -1339,7 +1588,7 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 		{
 			if ((invertXAxis == false) && (invertYAxis == false))
 			{
-				
+
 			}
 			;
 			if ((invertXAxis == false) && (invertYAxis == true))
@@ -1358,7 +1607,6 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 			}
 			;
 		}
-		
 
 		/*
 		 * if (isFocusOwner()==false) { // TODO : Bug si on sort de la fenetre
@@ -1366,7 +1614,6 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 		 * encore plus at2.translate(1, 56); }
 		 */
 
-		
 		float recenterx = 0, recentery = 0;
 		if ((alignX != AlignTexteX.LEFT) || (alignY != AlignTexteY.BOTTOM))
 		{
@@ -1391,22 +1638,21 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 		at3.translate(-recenterx * sx, -recentery * sy);
 
 		at2.concatenate(at3);
-	
+
 		Shape rect_texte = g.getFontMetrics().getStringBounds(text, g);
 		rect_texte = at3.createTransformedShape(rect_texte).getBounds2D();
 
-		
 		g.setTransform(at2);
 
 		Color colorCurrent = g.getColor();
 
 		if (drawBackGround == true)
 		{
-			Rectangle2D rect_texteM = g.getFontMetrics().getStringBounds(text, g);
-			Rectangle2D rect_texte2 = (Rectangle2D) rect_texteM.clone();
+			Rectangle2D	rect_texteM	= g.getFontMetrics().getStringBounds(text, g);
+			Rectangle2D	rect_texte2	= (Rectangle2D) rect_texteM.clone();
 
-			float elargX = 4;
-			float elargY = 2;
+			float	elargX	= 4;
+			float	elargY	= 2;
 
 			if (txtCantChangeSize == true)
 			{
@@ -1431,16 +1677,14 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 		// Dessine le texte
 		g.drawString(text, 0, 0);
 
-		
-	/*Shape rect_texte = g.getFontMetrics().getStringBounds(text, g);
-		rect_texte = at2.createTransformedShape(rect_texte).getBounds2D();
-
-		try {
-			rect_texte = at.createInverse().createTransformedShape(rect_texte);
-		} catch (NoninvertibleTransformException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}*/
+		/*
+		 * Shape rect_texte = g.getFontMetrics().getStringBounds(text, g);
+		 * rect_texte = at2.createTransformedShape(rect_texte).getBounds2D();
+		 * try { rect_texte =
+		 * at.createInverse().createTransformedShape(rect_texte); } catch
+		 * (NoninvertibleTransformException e) { // TODO Auto-generated catch
+		 * block e.printStackTrace(); }
+		 */
 		g.setTransform(old);
 
 		/*
@@ -1473,39 +1717,41 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 	{
 		return drawArrow2(g, pt1, pt2, 1.0f, 1.0f, enableArrowPt1, enableArrowPt2, enableMiddleArrow);
 	}
+
 	protected Shape drawArrow2(Graphics2D g, Point2D pt1, Point2D pt2, boolean enableArrowPt1, boolean enableArrowPt2, boolean enableMiddleArrow, float scale)
 	{
 		return drawArrow2(g, pt1, pt2, 1.0f, 1.0f, enableArrowPt1, enableArrowPt2, enableMiddleArrow, scale);
 	}
-	
+
 	protected Shape drawArrow2(Graphics2D g, Point2D pt1, Point2D pt2, float scaleArrow1, float scaleArrow2, boolean enableArrowPt1, boolean enableArrowPt2)
 	{
-		return drawArrow2(g, pt1, pt2, scaleArrow1, scaleArrow2, enableArrowPt1, enableArrowPt2,  false);
+		return drawArrow2(g, pt1, pt2, scaleArrow1, scaleArrow2, enableArrowPt1, enableArrowPt2, false);
 	}
-	
-	protected Shape drawArrow2(Graphics2D g, Point2D pt1, Point2D pt2, float scaleArrow1, float scaleArrow2, boolean enableArrowPt1, boolean enableArrowPt2,  boolean enableMiddleArrow)
+
+	protected Shape drawArrow2(Graphics2D g, Point2D pt1, Point2D pt2, float scaleArrow1, float scaleArrow2, boolean enableArrowPt1, boolean enableArrowPt2, boolean enableMiddleArrow)
 	{
-		return drawArrow2(g, pt1, pt2, scaleArrow1, scaleArrow2, enableArrowPt1, enableArrowPt2,  enableMiddleArrow, 1);
+		return drawArrow2(g, pt1, pt2, scaleArrow1, scaleArrow2, enableArrowPt1, enableArrowPt2, enableMiddleArrow, 1);
 	}
-	protected Shape drawArrow2(Graphics2D g, Point2D pt1, Point2D pt2, float scaleArrow1, float scaleArrow2, boolean enableArrowPt1, boolean enableArrowPt2,  boolean enableMiddleArrow, float scale)
+
+	protected Shape drawArrow2(Graphics2D g, Point2D pt1, Point2D pt2, float scaleArrow1, float scaleArrow2, boolean enableArrowPt1, boolean enableArrowPt2, boolean enableMiddleArrow, float scale)
 	{
 		//g.setColor(Color.BLACK);
 		Line2D shape = new Line2D.Float(pt1, pt2);
-		
+
 		float angle1 = (float) getAngle(pt1, pt2);
 
 		//scale * = 2;
 		Path2D tri = new Path2D.Float();
 		//	float scale = 1f;
-			tri.moveTo(scale * 0.0, scale * -1.0);
-			tri.lineTo(scale * -1.0, scale * 1.0);
-			tri.lineTo(scale * 0.0, scale * 0.0f);
-			tri.lineTo(scale * 1.0, scale * 1.0);
-			tri.lineTo(scale * 0.0, scale * -1.0);
+		tri.moveTo(scale * 0.0, scale * -1.0);
+		tri.lineTo(scale * -1.0, scale * 1.0);
+		tri.lineTo(scale * 0.0, scale * 0.0f);
+		tri.lineTo(scale * 1.0, scale * 1.0);
+		tri.lineTo(scale * 0.0, scale * -1.0);
 
-			Shape trshape = at.createTransformedShape(shape);
-			Shape retour = shape;
-			g.draw(trshape);
+		Shape	trshape	= at.createTransformedShape(shape);
+		Shape	retour	= shape;
+		g.draw(trshape);
 
 		AffineTransform at2;
 
@@ -1518,7 +1764,7 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 			at2.scale(scaleArrow1, scaleArrow1);
 			at2.rotate(Math.toRadians(-angle1 - 90));
 			at2.translate(0, scale);
-			
+
 			trshape = at2.createTransformedShape(tri);
 			g.fill(trshape);
 			g.setColor(g.getColor().darker());
@@ -1540,14 +1786,14 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 			g.draw(trshape);
 			g.setColor(old);
 		}
-		
+
 		if (enableMiddleArrow == true)
 		{
 			at2 = new AffineTransform(at);
-			at2.translate((pt2.getX()+pt1.getX())/2, (pt2.getY()+pt1.getY())/2);
+			at2.translate((pt2.getX() + pt1.getX()) / 2, (pt2.getY() + pt1.getY()) / 2);
 			at2.scale(scaleArrow2, scaleArrow2);
 			at2.rotate(Math.toRadians(-angle1 + 90));
-		//	at2.translate(0, scale);
+			//	at2.translate(0, scale);
 			trshape = at2.createTransformedShape(tri);
 
 			g.fill(trshape);
@@ -1555,133 +1801,177 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 			g.draw(trshape);
 			g.setColor(old);
 		}
-		
-		
+
 		g.setColor(old);
-		
+
 		return retour;
 	}
-	
-	
+
 	/**
 	 * Fast and easy way to draw an arrow with a text in his middle
+	 * 
 	 * @param g
-	 * @param string String to display in middle of the arrow
-	 * @param angleBeta Angle of the string to display
-	 * @param X1 First point of arrow X position
-	 * @param Y1 First point of arrow Y position
-	 * @param X2 Second point of arrow X position
-	 * @param Y2 Second point of arrow X position
-	 * @param offsetX Offset of the arrow on his X axis (default 0) - Permet de decaller la fleches pour montrer un objet reel en la décallant pour ne pas avoir une superposition
-	 * @param offsetY Offset of the arrow on his Y axis (default 0) - Permet de decaller la fleches pour montrer un objet reel en la décallant pour ne pas avoir une superposition
-	 * @param offsetTexte Offset of the text (0 means text is in the middle of the arrow)
+	 * @param string
+	 *            String to display in middle of the arrow
+	 * @param angleBeta
+	 *            Angle of the string to display
+	 * @param X1
+	 *            First point of arrow X position
+	 * @param Y1
+	 *            First point of arrow Y position
+	 * @param X2
+	 *            Second point of arrow X position
+	 * @param Y2
+	 *            Second point of arrow X position
+	 * @param offsetX
+	 *            Offset of the arrow on his X axis (default 0) - Permet de
+	 *            decaller la fleches pour montrer un objet reel en la décallant
+	 *            pour ne pas avoir une superposition
+	 * @param offsetY
+	 *            Offset of the arrow on his Y axis (default 0) - Permet de
+	 *            decaller la fleches pour montrer un objet reel en la décallant
+	 *            pour ne pas avoir une superposition
+	 * @param offsetTexte
+	 *            Offset of the text (0 means text is in the middle of the
+	 *            arrow)
 	 */
-	protected void drawArrowWithString(Graphics2D g, String string, float angleBeta, float X1, float Y1, float X2, float Y2, float offsetX, float offsetY, float offsetTexte)
+	protected Shape drawArrowWithString(Graphics2D g, String string, float angleBeta, float X1, float Y1, float X2, float Y2, float offsetX, float offsetY, float offsetTexte)
 	{
-		drawArrowWithString(g, string, angleBeta, X1, Y1, X2, Y2, offsetX, offsetY, offsetTexte, 0.1f);
+		return drawArrowWithString(g, string, angleBeta, X1, Y1, X2, Y2, offsetX, offsetY, offsetTexte, 0.1f);
 	}
-	
+
 	/**
 	 * Fast and easy way to draw an arrow with a text in his middle
+	 * 
 	 * @param g
-	 * @param string String to display in middle of the arrow
-	 * @param angleBeta Angle of the string to display
-	 * @param X1 First point of arrow X position
-	 * @param Y1 First point of arrow Y position
-	 * @param X2 Second point of arrow X position
-	 * @param Y2 Second point of arrow X position
-	 * @param offsetX Offset of the arrow on his X axis (default 0) - Permet de decaller la fleches pour montrer un objet reel en la décallant pour ne pas avoir une superposition
-	 * @param offsetY Offset of the arrow on his Y axis (default 0) - Permet de decaller la fleches pour montrer un objet reel en la décallant pour ne pas avoir une superposition
-	 * @param offsetTexte Offset of the text (0 means text is in the middle of the arrow)
+	 * @param string
+	 *            String to display in middle of the arrow
+	 * @param angleBeta
+	 *            Angle of the string to display
+	 * @param X1
+	 *            First point of arrow X position
+	 * @param Y1
+	 *            First point of arrow Y position
+	 * @param X2
+	 *            Second point of arrow X position
+	 * @param Y2
+	 *            Second point of arrow X position
+	 * @param offsetX
+	 *            Offset of the arrow on his X axis (default 0) - Permet de
+	 *            decaller la fleches pour montrer un objet reel en la décallant
+	 *            pour ne pas avoir une superposition
+	 * @param offsetY
+	 *            Offset of the arrow on his Y axis (default 0) - Permet de
+	 *            decaller la fleches pour montrer un objet reel en la décallant
+	 *            pour ne pas avoir une superposition
+	 * @param offsetTexte
+	 *            Offset of the text (0 means text is in the middle of the
+	 *            arrow)
 	 */
-	protected void drawArrowWithString(Graphics2D g, String string, double angleBeta, double X1, double Y1, double X2, double Y2, double offsetX, double offsetY, double offsetTexte)
+	protected Shape drawArrowWithString(Graphics2D g, String string, double angleBeta, double X1, double Y1, double X2, double Y2, double offsetX, double offsetY, double offsetTexte)
 	{
-		drawArrowWithString(g, string, angleBeta, X1, Y1, X2, Y2, offsetX, offsetY, offsetTexte, 0.1f);
+		return drawArrowWithString(g, string, angleBeta, X1, Y1, X2, Y2, offsetX, offsetY, offsetTexte, 0.1f);
 	}
-	
+
 	/**
 	 * Fast and easy way to draw an arrow with a text in his middle
+	 * 
 	 * @param g
-	 * @param string String to display in middle of the arrow
-	 * @param angleBeta Angle of the string to display
-	 * @param X1 First point of arrow X position
-	 * @param Y1 First point of arrow Y position
-	 * @param X2 Second point of arrow X position
-	 * @param Y2 Second point of arrow X position
-	 * @param offsetX Offset of the arrow on his X axis (default 0) - Permet de decaller la fleches pour montrer un objet reel en la décallant pour ne pas avoir une superposition
-	 * @param offsetY Offset of the arrow on his Y axis (default 0) - Permet de decaller la fleches pour montrer un objet reel en la décallant pour ne pas avoir une superposition
-	 * @param offsetTexte Offset of the text (0 means text is in the middle of the arrow)
-	 * @param arrowSize size of the arrow for the display (default 0.1)
+	 * @param string
+	 *            String to display in middle of the arrow
+	 * @param angleBeta
+	 *            Angle of the string to display
+	 * @param X1
+	 *            First point of arrow X position
+	 * @param Y1
+	 *            First point of arrow Y position
+	 * @param X2
+	 *            Second point of arrow X position
+	 * @param Y2
+	 *            Second point of arrow X position
+	 * @param offsetX
+	 *            Offset of the arrow on his X axis (default 0) - Permet de
+	 *            decaller la fleches pour montrer un objet reel en la décallant
+	 *            pour ne pas avoir une superposition
+	 * @param offsetY
+	 *            Offset of the arrow on his Y axis (default 0) - Permet de
+	 *            decaller la fleches pour montrer un objet reel en la décallant
+	 *            pour ne pas avoir une superposition
+	 * @param offsetTexte
+	 *            Offset of the text (0 means text is in the middle of the
+	 *            arrow)
+	 * @param arrowSize
+	 *            size of the arrow for the display (default 0.1)
 	 */
-	protected void drawArrowWithString(Graphics2D g, String string, double angleBeta, double X1, double Y1, double X2, double Y2, double offsetX, double offsetY, double offsetTexte, double arrowSize)
+	protected Shape drawArrowWithString(Graphics2D g, String string, double angleBeta, double X1, double Y1, double X2, double Y2, double offsetX, double offsetY, double offsetTexte, double arrowSize)
 	{
-		drawArrowWithString(g, string, (float) angleBeta, (float) X1, (float) Y1, (float) X2, (float) Y2, (float) offsetX, (float) offsetY, (float) offsetTexte, (float) arrowSize);
+		return drawArrowWithString(g, string, (float) angleBeta, (float) X1, (float) Y1, (float) X2, (float) Y2, (float) offsetX, (float) offsetY, (float) offsetTexte, (float) arrowSize);
 	}
-	
+
 	/**
 	 * Fast and easy way to draw an arrow with a text in his middle
+	 * 
 	 * @param g
-	 * @param string String to display in middle of the arrow
-	 * @param angleBeta Angle of the string to display
-	 * @param X1 First point of arrow X position
-	 * @param Y1 First point of arrow Y position
-	 * @param X2 Second point of arrow X position
-	 * @param Y2 Second point of arrow X position
-	 * @param offsetX Offset of the arrow on his X axis (default 0) - Permet de decaller la fleches pour montrer un objet reel en la décallant pour ne pas avoir une superposition
-	 * @param offsetY Offset of the arrow on his Y axis (default 0) - Permet de decaller la fleches pour montrer un objet reel en la décallant pour ne pas avoir une superposition
-	 * @param offsetTexte Offset of the text (0 means text is in the middle of the arrow)
-	 * @param arrowSize size of the arrow for the display (default 0.1)
+	 * @param string
+	 *            String to display in middle of the arrow
+	 * @param angleBeta
+	 *            Angle of the string to display
+	 * @param X1
+	 *            First point of arrow X position
+	 * @param Y1
+	 *            First point of arrow Y position
+	 * @param X2
+	 *            Second point of arrow X position
+	 * @param Y2
+	 *            Second point of arrow X position
+	 * @param offsetX
+	 *            Offset of the arrow on his X axis (default 0) - Permet de
+	 *            decaller la fleches pour montrer un objet reel en la décallant
+	 *            pour ne pas avoir une superposition
+	 * @param offsetY
+	 *            Offset of the arrow on his Y axis (default 0) - Permet de
+	 *            decaller la fleches pour montrer un objet reel en la décallant
+	 *            pour ne pas avoir une superposition
+	 * @param offsetTexte
+	 *            Offset of the text (0 means text is in the middle of the
+	 *            arrow)
+	 * @param arrowSize
+	 *            size of the arrow for the display (default 0.1)
 	 */
-	protected void drawArrowWithString(Graphics2D g, String string, float angleBeta, float X1, float Y1, float X2, float Y2, float offsetX, float offsetY, float offsetTexte, float arrowSize)
+	protected Shape drawArrowWithString(Graphics2D g, String string, float angleBeta, float X1, float Y1, float X2, float Y2, float offsetX, float offsetY, float offsetTexte, float arrowSize)
 	{
 		// TODO : I'm not sure offsetX and offsetY shouldn't be one and only one variable
 		// TODO : put that in graphicsbase
 		Vector2D v = getPerpendicularPoint(new Vector2D(X1, Y1), new Vector2D(X2, Y2), offsetTexte);
 		//drawStringOLD(g, string, offsetX+ (float)v.getX(),offsetY+(float)v.getY(),  angleBeta, AlignTexteX.CENTER, AlignTexteY.CENTER, false, 1.0f);
 		// TODO : Bug avec windows si scale a 150%
-		drawStringOLD(g, string, offsetX+ (float)v.getX(),offsetY+(float)v.getY(), angleBeta, AlignTexteX.CENTER, AlignTexteY.CENTER, false, 1.0f, false, Color.black);
+		//drawStringOLD(g, string, offsetX+ (float)v.getX(),offsetY+(float)v.getY(), angleBeta, AlignTexteX.CENTER, AlignTexteY.CENTER, false, 1.0f, false, Color.black);
 		//drawString44(g, string, offsetX+ (float)v.getX(),offsetY+(float)v.getY(), angleBeta, AlignTexteX.CENTER, AlignTexteY.CENTER, false, 1.0f, false, Color.black);
-		//drawString(g, string, offsetX+ (float)v.getX(),offsetY+(float)v.getY(), angleBeta, AlignTexteX.CENTER, AlignTexteY.CENTER, false, 1.0f, false, Color.black);
-		drawArrow2(g, new Point2D.Double(X1+offsetX,Y1+offsetY), new Point2D.Double(X2+offsetX,Y2+offsetY), true, true, false, 0.1f);
+		Shape	shp_str		= drawString(g, string, offsetX + (float) v.getX(), offsetY + (float) v.getY(), angleBeta, AlignTexteX.CENTER, AlignTexteY.CENTER, false, 1.0f, false, Color.black);
+		Shape	shp_arrow	= drawArrow2(g, new Point2D.Double(X1 + offsetX, Y1 + offsetY), new Point2D.Double(X2 + offsetX, Y2 + offsetY), true, true, false, 0.1f);
+		return shp_str;
 	}
-	
-	
 
 	/**
 	 * Permet de dessiner un axe X Y en bas a gauche de la fenetre
+	 * 
 	 * @param g
 	 * @param arrowLen
 	 * @param XaxisLbl
 	 * @param YaxisLbl
 	 */
-	protected void drawAxisInLocalView(Graphics2D g, float arrowLen, String XaxisLbl, String YaxisLbl, float arrowsize) {
-		drawArrowLocal(g,
-				new Point2D.Double(10,getHeight()-20),
-				new Point2D.Double(10+arrowLen,getHeight()-20), 
-				arrowsize,
-				arrowsize,
-				false,
-				true,
-				false,
-				20.0f
-				);
-		g.drawString(XaxisLbl, arrowLen-10, getHeight()-25);
-		
-		drawArrowLocal(g,
-				new Point2D.Double(10,getHeight()-20),
-				new Point2D.Double(10,getHeight()-20-10-arrowLen), 
-				arrowsize,
-				arrowsize,
-				false,
-				true,
-				false,
-				20.0f
-				);
-		g.drawString(YaxisLbl, 20, getHeight()-15-arrowLen);
+	protected void drawAxisInLocalView(Graphics2D g, float arrowLen, String XaxisLbl, String YaxisLbl, float arrowsize)
+	{
+		drawArrowLocal(g, new Point2D.Double(10, getHeight() - 20), new Point2D.Double(10 + arrowLen, getHeight() - 20), arrowsize, arrowsize, false, true, false, 20.0f);
+		g.drawString(XaxisLbl, arrowLen - 10, getHeight() - 25);
+
+		drawArrowLocal(g, new Point2D.Double(10, getHeight() - 20), new Point2D.Double(10, getHeight() - 20 - 10 - arrowLen), arrowsize, arrowsize, false, true, false, 20.0f);
+		g.drawString(YaxisLbl, 20, getHeight() - 15 - arrowLen);
 	}
-	
+
 	/**
-	 * Permet de dessiner un fleche sans transformation de coordonée 
+	 * Permet de dessiner un fleche sans transformation de coordonée
+	 * 
 	 * @param g
 	 * @param pt1
 	 * @param pt2
@@ -1692,23 +1982,23 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 	 * @param enableMiddleArrow
 	 * @param scale
 	 */
-	private void drawArrowLocal(Graphics2D g, Point2D pt1, Point2D pt2, float scaleArrow1, float scaleArrow2, boolean enableArrowPt1, boolean enableArrowPt2,  boolean enableMiddleArrow, float scale)
+	private void drawArrowLocal(Graphics2D g, Point2D pt1, Point2D pt2, float scaleArrow1, float scaleArrow2, boolean enableArrowPt1, boolean enableArrowPt2, boolean enableMiddleArrow, float scale)
 	{
 		//g.setColor(Color.BLACK);
 		Line2D shape = new Line2D.Float(pt1, pt2);
-		
+
 		float angle1 = (float) getAngle(pt1, pt2);
 
 		//scale * = 2;
 		Path2D tri = new Path2D.Float();
 		//	float scale = 1f;
-			tri.moveTo(scale * 0.0, scale * -1.0);
-			tri.lineTo(scale * -1.0, scale * 1.0);
-			tri.lineTo(scale * 0.0, scale * 0.0f);
-			tri.lineTo(scale * 1.0, scale * 1.0);
-			tri.lineTo(scale * 0.0, scale * -1.0);
+		tri.moveTo(scale * 0.0, scale * -1.0);
+		tri.lineTo(scale * -1.0, scale * 1.0);
+		tri.lineTo(scale * 0.0, scale * 0.0f);
+		tri.lineTo(scale * 1.0, scale * 1.0);
+		tri.lineTo(scale * 0.0, scale * -1.0);
 
-			g.draw(shape);
+		g.draw(shape);
 
 		AffineTransform at2;
 
@@ -1721,7 +2011,7 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 			at2.scale(scaleArrow1, scaleArrow1);
 			at2.rotate(Math.toRadians(-angle1 - 90));
 			at2.translate(0, scale);
-			
+
 			Shape trshape = at2.createTransformedShape(tri);
 			g.fill(trshape);
 			g.setColor(g.getColor().darker());
@@ -1743,14 +2033,14 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 			g.draw(trshape);
 			g.setColor(old);
 		}
-		
+
 		if (enableMiddleArrow == true)
 		{
 			at2 = new AffineTransform();
-			at2.translate((pt2.getX()+pt1.getX())/2, (pt2.getY()+pt1.getY())/2);
+			at2.translate((pt2.getX() + pt1.getX()) / 2, (pt2.getY() + pt1.getY()) / 2);
 			at2.scale(scaleArrow2, scaleArrow2);
 			at2.rotate(Math.toRadians(-angle1 + 90));
-		//	at2.translate(0, scale);
+			//	at2.translate(0, scale);
 			Shape trshape = at2.createTransformedShape(tri);
 
 			g.fill(trshape);
@@ -1758,27 +2048,19 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 			g.draw(trshape);
 			g.setColor(old);
 		}
-		
-		
+
 		g.setColor(old);
-		
+
 		return;
 	}
-	
-	
-	
-	
+
 	/**
 	 * @param color_tache
 	 * @return
 	 */
 	protected Color invertColorValues(Color color_tache)
 	{
-		Color textColor = new Color(
-				255-color_tache.getRed(),
-                255-color_tache.getGreen(),
-                255-color_tache.getBlue(),
-                color_tache.getAlpha());
+		Color textColor = new Color(255 - color_tache.getRed(), 255 - color_tache.getGreen(), 255 - color_tache.getBlue(), color_tache.getAlpha());
 		return textColor;
 	}
 
@@ -1788,41 +2070,31 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 	 */
 	protected Color invertColorRGB(Color color_tache)
 	{
-		Color textColor = new Color(
-				255-color_tache.getBlue(),
-                255-color_tache.getGreen(),
-                255-color_tache.getRed(),
-                color_tache.getAlpha());
+		Color textColor = new Color(255 - color_tache.getBlue(), 255 - color_tache.getGreen(), 255 - color_tache.getRed(), color_tache.getAlpha());
 		return textColor;
 	}
 
-
-	
 	/**
 	 * @param string
 	 * @return
-	 * @throws IOException 
+	 * @throws IOException
 	 */
 	public BufferedImage loadImage(String string) throws IOException
 	{
 		BufferedImage image = ImageIO.read(new File(string));
-		
-		BufferedImage convertedImage = null;
-		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment ();
-		GraphicsDevice gd = ge.getDefaultScreenDevice ();
-		GraphicsConfiguration gc = gd.getDefaultConfiguration ();
-		convertedImage = gc.createCompatibleImage (image.getWidth (), 
-				image.getHeight (), 
-				image.getTransparency () );
-		Graphics2D g2d = convertedImage.createGraphics ();
-		g2d.drawImage ( image, 0, 0, image.getWidth (), image.getHeight (), null );
+
+		BufferedImage			convertedImage	= null;
+		GraphicsEnvironment		ge				= GraphicsEnvironment.getLocalGraphicsEnvironment();
+		GraphicsDevice			gd				= ge.getDefaultScreenDevice();
+		GraphicsConfiguration	gc				= gd.getDefaultConfiguration();
+		convertedImage = gc.createCompatibleImage(image.getWidth(), image.getHeight(), image.getTransparency());
+		Graphics2D g2d = convertedImage.createGraphics();
+		g2d.drawImage(image, 0, 0, image.getWidth(), image.getHeight(), null);
 		g2d.dispose();
 		return convertedImage;
 	}
 
-
 	/**
-	 * 
 	 * @param g
 	 * @param img_ship2
 	 * @param x
@@ -1831,13 +2103,12 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 	 * @param scaleMultiplier
 	 * @return
 	 */
-	public Shape drawImage(Graphics2D g, BufferedImage img_ship2, float x, float y, float angle, float scaleMultiplier, boolean zoomIndependantScale)	{
+	public Shape drawImage(Graphics2D g, BufferedImage img_ship2, float x, float y, float angle, float scaleMultiplier, boolean zoomIndependantScale)
+	{
 		return drawImage(g, img_ship2, x, y, img_ship2.getWidth(), img_ship2.getHeight(), angle, scaleMultiplier, zoomIndependantScale);
 	}
 
-
 	/**
-	 * 
 	 * @param g
 	 * @param img_ship2
 	 * @param x
@@ -1851,35 +2122,36 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 	public Shape drawImage(Graphics2D g, BufferedImage img_ship2, float x, float y, float w, float h, float angle, float scaleMultiplier, boolean zoomIndependantScale)
 	{
 		AffineTransform at2 = new AffineTransform(at);
-	
+
 		//zoomIndependantScale=true;
-		float img_w = img_ship2.getWidth();
-		float img_h = img_ship2.getHeight();
-		
-		float sX = w/img_w;
-		float sY = h/img_h;
-		
+		float	img_w	= img_ship2.getWidth();
+		float	img_h	= img_ship2.getHeight();
+
+		float	sX	= w / img_w;
+		float	sY	= h / img_h;
+
 		at2.translate(x, y);
 		if (zoomIndependantScale)
 		{
 			// Zoom independant scale
-			at2.scale(1.0/Zoom, 1.0/Zoom);
+			at2.scale(1.0 / Zoom, 1.0 / Zoom);
 		}
-		at2.scale(sX, sY);	
+		at2.scale(sX, sY);
 		at2.scale(scaleMultiplier, scaleMultiplier);
-		at2.rotate(Math.toRadians(angle));	
-		at2.translate(-img_w/2, -img_h/2);
-		
+		at2.rotate(Math.toRadians(angle));
+		at2.translate(-img_w / 2, -img_h / 2);
+
 		// Bordure
-		Rectangle2D rect = new Rectangle2D.Double(0, 0, w/sX, h/sY);
-		Shape shp = at2.createTransformedShape(rect);
-		
+		Rectangle2D	rect	= new Rectangle2D.Double(0, 0, w / sX, h / sY);
+		Shape		shp		= at2.createTransformedShape(rect);
+
 		g.drawImage(img_ship2, at2, this);
 		return shp;
 	}
-	
+
 	/**
 	 * Deplace la ligne parallement de offsetPixels (positif ou negatif).
+	 * 
 	 * @param line
 	 * @param offsetPixels
 	 * @return
@@ -1888,9 +2160,10 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 	{
 		return View2D_Utils.createLineParallel(line, offsetPixels);
 	}
-	
+
 	/**
 	 * Supprime une distance a un segment (a gauche et a droite).
+	 * 
 	 * @param line
 	 * @param longueurarabotter
 	 * @return
@@ -1899,57 +2172,62 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 	{
 		return View2D_Utils.createLineLength(line, longueurarabotter);
 	}
-	
+
 	/**
-	 *  Compute a point placed perpendicularly at the middle of the segment composed of A and B, with an offset.
-	 * @param A Point numero 1
-	 * @param B Point numero 2
-	 * @param distance distance from the segment 
+	 * Compute a point placed perpendicularly at the middle of the segment
+	 * composed of A and B, with an offset.
+	 * 
+	 * @param A
+	 *            Point numero 1
+	 * @param B
+	 *            Point numero 2
+	 * @param distance
+	 *            distance from the segment
 	 * @return
 	 */
 	protected Vector2D getPerpendicularPoint(Vector2D A, Vector2D B, float distance)
 	{
-		Vector2D M = A.add(B).scalarMultiply(0.5);
-		Vector2D p = A.subtract(B);
-		Vector2D n = new Vector2D(-p.getY(), p.getX());
-		int norm_length = (int) Math.sqrt((n.getX() * n.getX()) + (n.getY() * n.getY()));
-		n = new Vector2D(n.getX()/norm_length, n.getY()/norm_length);
-		return (M.add(n.scalarMultiply(distance) ));
+		Vector2D	M			= A.add(B).scalarMultiply(0.5);
+		Vector2D	p			= A.subtract(B);
+		Vector2D	n			= new Vector2D(-p.getY(), p.getX());
+		int			norm_length	= (int) Math.sqrt((n.getX() * n.getX()) + (n.getY() * n.getY()));
+		n = new Vector2D(n.getX() / norm_length, n.getY() / norm_length);
+		return (M.add(n.scalarMultiply(distance)));
 	}
-	
-	
+
 	/**
 	 * Give middle point
+	 * 
 	 * @param pt1
 	 * @param pt2
 	 * @return
 	 */
 	public static Point2D interpolate(Point2D pt1, Point2D pt2)
 	{
-		return new Point2D.Double((pt1.getX() + pt2.getX()) / 2,(pt1.getY() + pt2.getY()) / 2);
+		return new Point2D.Double((pt1.getX() + pt2.getX()) / 2, (pt1.getY() + pt2.getY()) / 2);
 	}
-	
+
 	public static Point2D interpolate(double X1, double Y1, double X2, double Y2)
 	{
-		return new Point2D.Double((X1 + X2) / 2,(Y1 + Y2) / 2);
+		return new Point2D.Double((X1 + X2) / 2, (Y1 + Y2) / 2);
 	}
-	
+
 	public static Point2D interpolate(Line2D line)
 	{
-		return interpolate(line.getP1(),  line.getP2());
+		return interpolate(line.getP1(), line.getP2());
 	}
-	
+
 	public static Point2D interpolate(Line2D line, double delta)
 	{
-		return interpolate(line.getP1(),  line.getP2(), delta);
+		return interpolate(line.getP1(), line.getP2(), delta);
 	}
-	
+
 	public static Point2D interpolate(Point2D pt1, Point2D pt2, double delta)
 	{
-		double x = pt1.getX() * (1.0 - delta) + pt2.getX() * (delta);
-		double y = pt1.getY() * (1.0 - delta) + pt2.getY() * (delta);
-		
-		return new Point2D.Double(x,y);
+		double	x	= pt1.getX() * (1.0 - delta) + pt2.getX() * (delta);
+		double	y	= pt1.getY() * (1.0 - delta) + pt2.getY() * (delta);
+
+		return new Point2D.Double(x, y);
 	}
 
 	public static synchronized boolean isDEBUG_VERBOSE()
@@ -1972,19 +2250,23 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 		return selectableObject;
 	}
 
-	public synchronized boolean isInvertXAxis() {
+	public synchronized boolean isInvertXAxis()
+	{
 		return invertXAxis;
 	}
 
-	public synchronized void setInvertXAxis(boolean invertXAxis) {
+	public synchronized void setInvertXAxis(boolean invertXAxis)
+	{
 		this.invertXAxis = invertXAxis;
 	}
 
-	public synchronized boolean isInvertYAxis() {
+	public synchronized boolean isInvertYAxis()
+	{
 		return invertYAxis;
 	}
 
-	public synchronized void setInvertYAxis(boolean invertYAxis) {
+	public synchronized void setInvertYAxis(boolean invertYAxis)
+	{
 		this.invertYAxis = invertYAxis;
 	}
 
@@ -1996,95 +2278,84 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 	public void setColorConfig(ConfigurationColor colorConfig)
 	{
 		this.colorConfig = colorConfig;
-		
-		
+
 	}
-	
-	
+
 	/**************************
-	 * 
-	 * 
 	 * Gestion des Nurbs Path
-	 * 
-	 * 
 	 **************************/
-	
+
 	/**
 	 * @param g
 	 * @param curve1
-	 * @param drawControlNode 
+	 * @param drawControlNode
 	 */
 	public List<Shape> drawNurbsCurve(Graphics2D g, NurbsCurve curve1, float Thickness, Stroke stroke, Color color)
 	{
-			Shape shpCurve = at.createTransformedShape(curve1.getShape());
-			Stroke oldStroke = g.getStroke();
-		    g.setStroke(stroke);
+		Shape	shpCurve	= at.createTransformedShape(curve1.getShape());
+		Stroke	oldStroke	= g.getStroke();
+		g.setStroke(stroke);
 
-			if (contxt.getSelection().contains(curve1))
-				g.setColor(Color.magenta);
-			else
-				g.setColor(color);
-			
-			g.draw(shpCurve);
-			g.setStroke(oldStroke);
-			
-			// Pour la selection....
-			List<Shape> retour_list = null;
-			//double longueur = 0;
-			
-			retour_list = curve1.getCollisionShapeList( Thickness);
-			/*
-			for (int j = 0; j < curve1.getLines_rectangles().size(); j++)
-			{
-				GeneralPath l = curve1.getLines_rectangles().get(j);
-				retour_list.add(l);
-				//longueur+=curve1.getLength();
-			}*/
-			
-			return retour_list;
+		if (contxt.getSelection().contains(curve1))
+			g.setColor(Color.magenta);
+		else
+			g.setColor(color);
+
+		g.draw(shpCurve);
+		g.setStroke(oldStroke);
+
+		// Pour la selection....
+		List<Shape> retour_list = null;
+		//double longueur = 0;
+
+		retour_list = curve1.getCollisionShapeList(Thickness);
+		/*
+		 * for (int j = 0; j < curve1.getLines_rectangles().size(); j++) {
+		 * GeneralPath l = curve1.getLines_rectangles().get(j);
+		 * retour_list.add(l); //longueur+=curve1.getLength(); }
+		 */
+
+		return retour_list;
 	}
-	
+
 	protected List<SelectionTuple<Shape, Object>> drawNurbsControlPoints(Graphics2D g, NurbsCurve curve1, Color colorIn, Color colorOut, Color dashedLineColor)
 	{
-		float dash1[] = {10.0f};
-	    BasicStroke dashed =
-	    new BasicStroke(2.0f,
-	                        BasicStroke.CAP_BUTT,
-	                        BasicStroke.JOIN_MITER,
-	                        10.0f, dash1, 0.0f);
-	    return drawNurbsControlPoints( g,  curve1,  colorIn,  colorOut,  dashedLineColor, dashed);
+		float		dash1[]	= { 10.0f };
+		BasicStroke	dashed	= new BasicStroke(2.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f, dash1, 0.0f);
+		return drawNurbsControlPoints(g, curve1, colorIn, colorOut, dashedLineColor, dashed);
 	}
-	
+
 	protected List<SelectionTuple<Shape, Object>> drawNurbsControlPoints(Graphics2D g, NurbsCurve curve1, Color colorIn, Color colorOut, Color dashedLineColor, Stroke dashLineStroke)
 	{
 		List<SelectionTuple<Shape, Object>> retour_shapes = new ArrayList<>();
-		
-		if (dashLineStroke!=null)
+
+		if (dashLineStroke != null)
 			g.setStroke(dashLineStroke);
-		
+
 		g.setColor(dashedLineColor);
 
-		NurbsPoint pt1 = curve1.getPt1();
-		NurbsPoint pt2 = curve1.getPt2();
-		NurbsPoint pt3 = curve1.getPt3();
-		NurbsPoint pt4 = curve1.getPt4();
-		
-		Line2D.Double l1 = new Line2D.Double(pt2.getX(), pt2.getY(), pt1.getX(), pt1.getY());
-		Line2D.Double l2 = new Line2D.Double(pt3.getX(), pt3.getY(), pt4.getX(), pt4.getY());
+		NurbsPoint	pt1	= curve1.getPt1();
+		NurbsPoint	pt2	= curve1.getPt2();
+		NurbsPoint	pt3	= curve1.getPt3();
+		NurbsPoint	pt4	= curve1.getPt4();
 
-		g.draw(at.createTransformedShape(l1));		
-		g.draw(at.createTransformedShape(l2));	
+		Line2D.Double	l1	= new Line2D.Double(pt2.getX(), pt2.getY(), pt1.getX(), pt1.getY());
+		Line2D.Double	l2	= new Line2D.Double(pt3.getX(), pt3.getY(), pt4.getX(), pt4.getY());
+
+		g.draw(at.createTransformedShape(l1));
+		g.draw(at.createTransformedShape(l2));
 		g.setStroke(new BasicStroke(1.0f));
-	
+
 		retour_shapes.add(new SelectionTuple<Shape, Object>(drawNurbsControlPoint(g, pt2, colorIn, colorOut), pt2));
 		retour_shapes.add(new SelectionTuple<Shape, Object>(drawNurbsControlPoint(g, pt3, colorIn, colorOut), pt3));
-		
+
 		return retour_shapes;
 	}
 
-	protected Shape drawNurbsPoint(Graphics2D g, NurbsPoint np, Color colorIn, Color colorOut) {
-		double scale = 4.0;
-		Ellipse2D rect = new Ellipse2D.Double(np.getX()-0.5*scale, np.getY()-0.5*scale, 1.0*scale, 1.0*scale);
+	protected Shape drawNurbsPoint(Graphics2D g, NurbsPoint np, Color colorIn, Color colorOut)
+	{
+		double		scale	= 4.0;
+		Ellipse2D	rect	= new Ellipse2D.Double(np.getX() - 0.5 * scale, np.getY() - 0.5 * scale, 1.0 * scale, 1.0 * scale);
 		if (contxt.getSelection().contains(np))
 			g.setColor(Color.MAGENTA);
 		else
@@ -2099,131 +2370,133 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 		return rect;
 
 	}
-	
+
 	/**
 	 * Draw one control point
+	 * 
 	 * @param g
 	 * @param np
 	 * @return
 	 */
-	protected Shape drawNurbsControlPoint(Graphics2D g, NurbsPoint np, Color colorIn, Color colorOut) {
+	protected Shape drawNurbsControlPoint(Graphics2D g, NurbsPoint np, Color colorIn, Color colorOut)
+	{
 
 		AffineTransform at1 = new AffineTransform();
 		at1.translate(np.getX(), np.getY());
-		
-		double scaleshpControlPoint = 2.0;
-		Shape shpControlPoint = new Ellipse2D.Double(-0.5*scaleshpControlPoint, -0.5*scaleshpControlPoint, 1.0*scaleshpControlPoint, +1.0*scaleshpControlPoint);
 
-		 Shape shpPoint_ = at1.createTransformedShape(shpControlPoint);
+		double	scaleshpControlPoint	= 2.0;
+		Shape	shpControlPoint			= new Ellipse2D.Double(-0.5 * scaleshpControlPoint, -0.5 * scaleshpControlPoint, 1.0 * scaleshpControlPoint, +1.0 * scaleshpControlPoint);
+
+		Shape shpPoint_ = at1.createTransformedShape(shpControlPoint);
 		if (contxt.getSelection().contains(np))
 			g.setColor(Color.magenta);
 		else
 			g.setColor(Color.white);
-		
+
 		g.fill(at.createTransformedShape(shpPoint_));
 		g.setColor(Color.black);
 		g.setStroke(new BasicStroke(2.0f));
 		g.draw(at.createTransformedShape(shpPoint_));
 		g.setStroke(new BasicStroke(1.0f));
-	
+
 		return shpPoint_;
 
 	}
-	
-	
+
 	/**
-	 * TODO : C'est bien joli mais pas faciement customisable cot� client de la lib...
-	 * Dessine un nurbsPath complet (affichage et gestion de la selection comprise).
+	 * TODO : C'est bien joli mais pas faciement customisable cot� client de la
+	 * lib... Dessine un nurbsPath complet (affichage et gestion de la selection
+	 * comprise).
+	 * 
 	 * @param g
 	 * @param DrawCurve
 	 * @param DrawControlNode
 	 * @param DrawNode
-	 * @param resizeableWithZoom 
+	 * @param resizeableWithZoom
 	 */
-	public void drawNurbsPath(Graphics2D g, NurbsPath npath, boolean DrawCurve,  boolean DrawControlNode,  boolean DrawNode, boolean resizeableWithZoom)
+	public void drawNurbsPath(Graphics2D g, NurbsPath npath, boolean DrawCurve, boolean DrawControlNode, boolean DrawNode, boolean resizeableWithZoom)
 	{
-		
+
 		// TODO : Gestion de resizeableWithZoom
-		float Zoom_= (float) Zoom;
+		float Zoom_ = (float) Zoom;
 		// TODO : Probleme de detection de thickness de ligne, ca risque de bouffer le cpu :(
-		if (resizeableWithZoom==true)
-			Zoom_= 1f;
-		
+		if (resizeableWithZoom == true)
+			Zoom_ = 1f;
+
 		// Test 3 : 3 eme methode.
-		if (DrawCurve) {
-			
-			
+		if (DrawCurve)
+		{
 
-			float dash1[] = { 2.5f * Zoom_ };
-			BasicStroke dashedIn = new BasicStroke((0.5f*Zoom_ ), BasicStroke.CAP_ROUND,
-					BasicStroke.JOIN_MITER, (2.5f ), dash1, 0.0f);
-			
-			Color colorOut = Color.BLACK;
-			Color colorIn = Color.WHITE;
+			float		dash1[]		= { 2.5f * Zoom_ };
+			BasicStroke	dashedIn	= new BasicStroke((0.5f * Zoom_), BasicStroke.CAP_ROUND, BasicStroke.JOIN_MITER, (2.5f), dash1, 0.0f);
 
-			for (int i = 0; i < npath.getCurves().size(); i++) {
+			Color	colorOut	= Color.BLACK;
+			Color	colorIn		= Color.WHITE;
+
+			for (int i = 0; i < npath.getCurves().size(); i++)
+			{
 				NurbsCurve curve = npath.getCurves().get(i);
-				
-				float thickness = (curve.getThicknessDetection() *Zoom_);
-				BasicStroke dashedOut = new BasicStroke((thickness),
-						BasicStroke.CAP_ROUND, BasicStroke.JOIN_MITER);
-				List<Shape> selection_shapes = drawNurbsCurve(g, curve, curve.getThicknessDetection()/2.0f, dashedOut, colorOut);
+
+				float		thickness			= (curve.getThicknessDetection() * Zoom_);
+				BasicStroke	dashedOut			= new BasicStroke((thickness), BasicStroke.CAP_ROUND, BasicStroke.JOIN_MITER);
+				List<Shape>	selection_shapes	= drawNurbsCurve(g, curve, curve.getThicknessDetection() / 2.0f, dashedOut, colorOut);
 				addToSelectableObject(selection_shapes, curve);
-				drawNurbsCurve(g, curve,thickness, dashedIn, colorIn);
+				drawNurbsCurve(g, curve, thickness, dashedIn, colorIn);
 
 			}
 			/*
-			for (int i = 0; i < npath.getCurves().size(); i++) {
-				NurbsCurve curve = npath.getCurves().get(i);
-				float thickness = (curve.getThicknessDetection() );
-				drawNurbsCurve(g, curve, thickness, dashedIn, colorIn);
-			}*/
+			 * for (int i = 0; i < npath.getCurves().size(); i++) { NurbsCurve
+			 * curve = npath.getCurves().get(i); float thickness =
+			 * (curve.getThicknessDetection() ); drawNurbsCurve(g, curve,
+			 * thickness, dashedIn, colorIn); }
+			 */
 		}
 
 		if (DrawControlNode)
-			for (int i = 0; i < npath.getCurves().size(); i++) {
-				NurbsCurve curve = npath.getCurves().get(i);
-				List<SelectionTuple<Shape, Object>> ret = drawNurbsControlPoints(g, curve, Color.WHITE, Color.BLACK, Color.BLUE);
+			for (int i = 0; i < npath.getCurves().size(); i++)
+			{
+				NurbsCurve							curve	= npath.getCurves().get(i);
+				List<SelectionTuple<Shape, Object>>	ret		= drawNurbsControlPoints(g, curve, Color.WHITE, Color.BLACK, Color.BLUE);
 				addToSelectableObject(ret);
 			}
-		if (DrawNode == true) {
+		if (DrawNode == true)
+		{
 			List<NurbsPoint> list_points = npath.getPoints();
-			for (Iterator<NurbsPoint> iterator = list_points.iterator(); iterator.hasNext();) {
+			for (Iterator<NurbsPoint> iterator = list_points.iterator(); iterator.hasNext();)
+			{
 				NurbsPoint nurbsPoint = iterator.next();
 				addToSelectableObject(new SelectionTuple<Shape, Object>(drawNurbsPoint(g, nurbsPoint, Color.RED, Color.BLACK), nurbsPoint));
 			}
 		}
 	}
-	
-	
-	
+
 	/**
 	 * Clamp v pour qu'ils soit toujours entre 0 et 1
+	 * 
 	 * @param v
 	 * @return
 	 */
-	double clamp(double v)		//////
-	{		//////
-	  double t = v < 0 ? 0 : v;		//////
-	  return t > 1.0 ? 1.0 : t;		//////
-	}		//////
-	
+	double clamp(double v) //////
+	{ //////
+		double t = v < 0 ? 0 : v; //////
+		return t > 1.0 ? 1.0 : t; //////
+
+	} //////
+
 	/**
-	 * 
-	 * @param ratio -1 to 1
+	 * @param ratio
+	 *            -1 to 1
 	 */
 	protected Color mapGrayScaleTORGB(float ratio)
 	{
 		//float Quantize = 8.0f;
 		//ratio = ((int)(ratio * Quantize)) / Quantize; 
-		
-		double red   = clamp(1.5 - Math.abs(2.0 * ratio - 1.0)); //////
-		double green = clamp(1.5 - Math.abs(2.0 * ratio));//////
-		double blue  = clamp(1.5 - Math.abs(2.0 * ratio + 1.0));		//////
-		
-		return new Color((int)(255*red), (int)(255*green), (int)(255*blue));
+
+		double	red		= clamp(1.5 - Math.abs(2.0 * ratio - 1.0));	//////
+		double	green	= clamp(1.5 - Math.abs(2.0 * ratio));		//////
+		double	blue	= clamp(1.5 - Math.abs(2.0 * ratio + 1.0));	//////
+
+		return new Color((int) (255 * red), (int) (255 * green), (int) (255 * blue));
 	}
-	
-	
-	
+
 }
