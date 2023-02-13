@@ -2175,7 +2175,14 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 	{
 		return View2D_Utils.createLineLength(line, longueurarabotter);
 	}
+	
+	public static Line2D.Double createLineLength(Line2D.Double line, double longueurarabotterGauche, double longueurarabotterDroite)
+	{
+		return View2D_Utils.createLineLength(line, longueurarabotterGauche, longueurarabotterDroite);
+	}
 
+	
+	
 	/**
 	 * Compute a point placed perpendicularly at the middle of the segment
 	 * composed of A and B, with an offset.

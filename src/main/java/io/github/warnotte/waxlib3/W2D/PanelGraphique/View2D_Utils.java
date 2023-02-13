@@ -81,6 +81,12 @@ public class View2D_Utils
 		//return createLineLengthEugen(line, (float)longueurarabotter);
 	}
 	
+	public static Line2D.Double createLineLength(Line2D.Double line, double delta1, double delta2)
+	{
+		return createLineLengthWax(line, delta1, delta2);
+	}
+	
+	
 	/**
 	 * Merci Eugen pour cette méthode :)
 	 * @param line
@@ -144,6 +150,63 @@ public class View2D_Utils
 		y2=(y2-iy1)*scale+iy1;
 		return new Line2D.Double(x1, y1, x2, y2);
 	}
+	
+	
+	// TODO : Ceci devrait être mis dans WaxLib3
+	private static Line2D.Double createLineLengthEugen(Line2D.Double line, double delta1, double delta2)
+	{
+
+		double x1 = line.x1;
+		double x2 = line.x2;
+		double y1 = line.y1;
+		double y2 = line.y2;
+
+		double tan = (y2 - y1) / (x2 - x1);
+		double alpha = Math.atan(tan);
+		int signX = 1, signY = 1;
+
+		if (x2 <= x1 && y2 >= y1)
+		{
+			signX = -1;
+			signY = -1;
+		}
+		if (x2 <= x1 && y2 <= y1)
+		{
+			signX = -1;
+			signY = -1;
+		}
+		double mca = Math.cos(alpha);
+		double msa = Math.sin(alpha);
+		return new Line2D.Double(x1 + signX * delta1 * mca, y1 + signY * delta1 * msa, x2 - signX * delta2 * mca, y2 - signY * delta2 * msa);
+	}
+	
+	// TODO : Ceci devrait être mis dans WaxLib3
+	private static Line2D.Double createLineLengthWax(Line2D.Double line, double delta1, double delta2)
+	{
+		double x1 = line.x1;
+		double x2 = line.x2;
+		double y1 = line.y1;
+		double y2 = line.y2;
+		// Point du millieu 
+		double ix1 = (x1 + x2) / 2.0;
+		double iy1 = (y1 + y2) / 2.0;
+		//Point2D interp = interpolate(line.getP1(), line.getP2());
+		// 1) Calcule le scale factor
+		// Longueur actuelle
+		double L = Math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
+		// Calcul le scale
+		double scale1 = 1.0 / (L / (L - delta1 * 2));
+		double scale2 = 1.0 / (L / (L - delta2 * 2));
+		//2) Translation du millieu du segment vers 0, 0 (on garde la position qlq part ou l'offset de deplacement)
+		//3) Multiplication des coordon�es par le facteur d'�chelle.
+		//4) Translation du millieu du segment vers la position de d�part du millieu de segment.
+		x1=(x1-ix1)*scale1+ix1;
+		x2=(x2-ix1)*scale2+ix1;
+		y1=(y1-iy1)*scale1+iy1;
+		y2=(y2-iy1)*scale2+iy1;
+		return new Line2D.Double(x1, y1, x2, y2);
+	}
+	
 	
 	public static double getAngleRadians(Point2D.Double p1, Point2D.Double p2)
 	{
