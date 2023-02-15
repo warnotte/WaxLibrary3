@@ -12,6 +12,7 @@ import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.HeadlessException;
 import java.awt.Image;
+import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
@@ -2159,7 +2160,7 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 	 * @param offsetPixels
 	 * @return
 	 */
-	public static Line2D.Double createLineParallel(Line2D.Double line, double offsetPixels)
+	public Line2D.Double createLineParallel(Line2D.Double line, double offsetPixels)
 	{
 		return View2D_Utils.createLineParallel(line, offsetPixels);
 	}
@@ -2171,16 +2172,142 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 	 * @param longueurarabotter
 	 * @return
 	 */
-	public static Line2D.Double createLineLength(Line2D.Double line, double longueurarabotter)
+	public Line2D.Double createLineLength(Line2D.Double line, double longueurarabotter)
 	{
 		return View2D_Utils.createLineLength(line, longueurarabotter);
 	}
 	
-	public static Line2D.Double createLineLength(Line2D.Double line, double longueurarabotterGauche, double longueurarabotterDroite)
+	public Line2D.Double createLineLength(Line2D.Double line, double longueurarabotterGauche, double longueurarabotterDroite)
 	{
 		return View2D_Utils.createLineLength(line, longueurarabotterGauche, longueurarabotterDroite);
 	}
 
+	
+	
+
+	
+
+	/**
+	 * - Vérifie que les 2 segments ne sont pas cote a cote. (ou l'un touchant l'autre). 
+	 * - Vérifie si la pente est la meme. (donc 2 droite parallelle).
+	 * - Vérifie ensuite si un des 2 points de l'autre segments est contenu dans le premier
+	 * 
+	 * @param XA1 point 1 ligne A
+	 * @param YA1
+	 * @param XB1 point 2 ligne A
+	 * @param YB1
+	 * @param XA2 point 1 ligne B
+	 * @param YA2
+	 * @param XB2 point 2 ligne B
+	 * @param YB2
+	 * @return
+	 */
+	public boolean isSegmentNeighboor(double XA1, double YA1, double XB1, double YB1, double XA2, double YA2, double XB2, double YB2)
+	{
+		return View2D_Utils.isSegmentNeighboor(XA1, YA1, XB1, YB1, XA2, YA2, XB2, YB2);
+
+	}
+	
+	public double [] intersectionDroites(Line2D l1, Line2D l2)
+	{
+		return View2D_Utils.intersectionDroites(l1, l2);
+	}
+
+	/**
+	 * Renvoye le point d'intersection entre 2 droites ou NULL s'il n'y en a pas.
+	 * @param X1
+	 * @param Y1
+	 * @param X2
+	 * @param Y2
+	 * @param X3
+	 * @param Y3
+	 * @param X4
+	 * @param Y4
+	 * @return
+	 */
+	public double [] intersectionDroitesIncluse(double X1, double Y1, double X2, double Y2, double X3, double Y3, double X4, double Y4)
+	{
+		return View2D_Utils.intersectionDroitesIncluse(X1, Y1, X2, Y2, X3, Y3, X4, Y4);
+	}
+	
+	/**
+	 * Test l'intersection exclusive entre 2 droites. 
+	 * @param XA1
+	 * @param YA1
+	 * @param XB1
+	 * @param YB1
+	 * @param XA2
+	 * @param YA2
+	 * @param XB2
+	 * @param YB2
+	 * @return
+	 */
+	public boolean isIntersectExclusif(double XA1, double YA1, double XB1, double YB1, double XA2, double YA2, double XB2, double YB2)
+	{
+		return View2D_Utils.isIntersectExclusif(XA1, YA1, XB1, YB1, XA2, YA2, XB2, YB2);
+
+	}
+
+	
+
+	public boolean testIntersectionNonIncluse(double L1X, double L1Y, double L2X, double L2Y,
+			double L1Xb, double L1Yb, double L2Xb, double L2Yb)
+	{
+		return View2D_Utils.testIntersectionNonIncluse(L1X, L1Y, L2X, L2Y, L1Xb, L1Yb, L2Xb, L2Yb);
+	}
+	
+	/**
+	 * Verifie que 2 Segments intersectionnent � l'interieur (cad pas au extremit� des segments);
+	 * Il faut qu'ils se touchent vraiment, pas qu'ils soient juste coll� l'un � l'autre.
+	 *  
+	 * @param line1
+	 * @param line2
+	 * @return
+	 */
+	public boolean testIntersectionNonIncluse(Line2D line1, Line2D line2)
+	{
+		return View2D_Utils.testIntersectionNonIncluse(line1, line2);
+	}
+
+	/**
+	 * Retourne la longueur de chevauchement de 2 lignes (en prenant soin de verifier avant que ca se chevauche bien ...)
+	 * @param Xa1
+	 * @param Ya1
+	 * @param Xb1
+	 * @param Yb1
+	 * @param Xa2
+	 * @param Ya2
+	 * @param Xb2
+	 * @param Yb2
+	 * @return
+	 */
+	public double getOverlapLength(double Xa1, double Ya1, double Xb1, double Yb1, double Xa2, double Ya2, double Xb2, double Yb2)
+	{
+		return View2D_Utils.getOverlapLength(Xa1, Ya1, Xb1, Yb1, Xa2, Ya2, Xb2, Yb2);
+	}
+
+	public boolean LineContainsPointIncluse(Line2D line1, Point2D p1)
+	{
+		return View2D_Utils.LineContainsPointIncluse(line1, p1);
+	}
+	
+	/**
+	 * METHODS TO CALCULATE THE AREA AND CENTROID OF A POLYGON INSERT THEM INTO
+	 * THE CORRESPONDING CLASS
+	 **/
+	public double SignedPolygonArea(ArrayList<Point> polygon)
+	{
+		return View2D_Utils.SignedPolygonArea(polygon);
+	}
+
+	/* CENTROID */
+	public Point2D PolygonCenterOfMass(ArrayList<Point> polygon, int N)
+	{
+		return View2D_Utils.PolygonCenterOfMass(polygon, N);
+	}
+	
+	
+	
 	
 	
 	/**

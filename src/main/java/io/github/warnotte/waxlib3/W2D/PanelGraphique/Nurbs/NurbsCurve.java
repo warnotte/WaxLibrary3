@@ -15,6 +15,7 @@ import java.util.List;
 import javax.vecmath.Vector2d;
 
 import io.github.warnotte.waxlib3.W2D.PanelGraphique.PanelGraphiqueBase;
+import io.github.warnotte.waxlib3.W2D.PanelGraphique.View2D_Utils;
 
 /**
  * @author Warnotte Renaud
@@ -65,7 +66,7 @@ public class NurbsCurve
 		
 		pt1 = np1;
 		
-		line = PanelGraphiqueBase.createLineLength(line, dst/10.0f);
+		line = View2D_Utils.createLineLength(line, dst/10.0f);
 		
 		pt2 = vnc3(line.getP1());
 		pt3 = vnc3(line.getP2());
@@ -218,8 +219,8 @@ public class NurbsCurve
 	{
 		// On crée des rectangles pour la selectionnabilités.
 		double line_scale = thicknessDetection;
-		Line2D.Double lineSELECT1 = PanelGraphiqueBase.createLineParallel(double1, -line_scale);
-		Line2D.Double lineSELECT2 = PanelGraphiqueBase.createLineParallel(double1, line_scale);
+		Line2D.Double lineSELECT1 = View2D_Utils.createLineParallel(double1, -line_scale);
+		Line2D.Double lineSELECT2 = View2D_Utils.createLineParallel(double1, line_scale);
 		GeneralPath polyline = new GeneralPath(GeneralPath.WIND_EVEN_ODD, 4);
 		polyline.moveTo (lineSELECT1.getX1(), lineSELECT1.getY1());
 		polyline.lineTo (lineSELECT1.getX2(), lineSELECT1.getY2());
