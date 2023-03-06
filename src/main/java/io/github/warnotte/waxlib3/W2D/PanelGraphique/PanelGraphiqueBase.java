@@ -2327,7 +2327,8 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 		Vector2D	M			= A.add(B).scalarMultiply(0.5);
 		Vector2D	p			= A.subtract(B);
 		Vector2D	n			= new Vector2D(-p.getY(), p.getX());
-		int			norm_length	= (int) Math.sqrt((n.getX() * n.getX()) + (n.getY() * n.getY()));
+		// TODO : It was an int before ... but why ????
+		double			norm_length	=  Math.sqrt((n.getX() * n.getX()) + (n.getY() * n.getY()));
 		n = new Vector2D(n.getX() / norm_length, n.getY() / norm_length);
 		return (M.add(n.scalarMultiply(distance)));
 	}
