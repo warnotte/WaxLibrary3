@@ -1943,6 +1943,8 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 	 */
 	protected Shape drawArrowWithString(Graphics2D g, String string, float angleBeta, float X1, float Y1, float X2, float Y2, float offsetX, float offsetY, float offsetTexte, float arrowSize)
 	{
+		// TODO : There's obviously an error in offsetX and OffsetY if the arrow is not Horizontal or Vertical
+		
 		// TODO : I'm not sure offsetX and offsetY shouldn't be one and only one variable
 		// TODO : put that in graphicsbase
 		Vector2D v = getPerpendicularPoint(new Vector2D(X1, Y1), new Vector2D(X2, Y2), offsetTexte);
