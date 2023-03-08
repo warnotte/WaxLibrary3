@@ -1838,9 +1838,9 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 	 *            Offset of the text (0 means text is in the middle of the
 	 *            arrow)
 	 */
-	protected Shape drawArrowWithString(Graphics2D g, String string, float angleBeta, float X1, float Y1, float X2, float Y2, float offsetX, float offsetY, float offsetTexte)
+	protected Shape drawArrowWithStringOLD(Graphics2D g, String string, float angleBeta, float X1, float Y1, float X2, float Y2, float offsetX, float offsetY, float offsetTexte)
 	{
-		return drawArrowWithString(g, string, angleBeta, X1, Y1, X2, Y2, offsetX, offsetY, offsetTexte, 0.1f);
+		return drawArrowWithStringOLD(g, string, angleBeta, X1, Y1, X2, Y2, offsetX, offsetY, offsetTexte, 0.1f);
 	}
 
 	/**
@@ -1871,44 +1871,9 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 	 *            Offset of the text (0 means text is in the middle of the
 	 *            arrow)
 	 */
-	protected Shape drawArrowWithString(Graphics2D g, String string, double angleBeta, double X1, double Y1, double X2, double Y2, double offsetX, double offsetY, double offsetTexte)
+	protected Shape drawArrowWithStringOLD(Graphics2D g, String string, double angleBeta, double X1, double Y1, double X2, double Y2, double offsetX, double offsetY, double offsetTexte)
 	{
-		return drawArrowWithString(g, string, angleBeta, X1, Y1, X2, Y2, offsetX, offsetY, offsetTexte, 0.1f);
-	}
-
-	/**
-	 * Fast and easy way to draw an arrow with a text in his middle
-	 * 
-	 * @param g
-	 * @param string
-	 *            String to display in middle of the arrow
-	 * @param angleBeta
-	 *            Angle of the string to display
-	 * @param X1
-	 *            First point of arrow X position
-	 * @param Y1
-	 *            First point of arrow Y position
-	 * @param X2
-	 *            Second point of arrow X position
-	 * @param Y2
-	 *            Second point of arrow X position
-	 * @param offsetX
-	 *            Offset of the arrow on his X axis (default 0) - Permet de
-	 *            decaller la fleches pour montrer un objet reel en la décallant
-	 *            pour ne pas avoir une superposition
-	 * @param offsetY
-	 *            Offset of the arrow on his Y axis (default 0) - Permet de
-	 *            decaller la fleches pour montrer un objet reel en la décallant
-	 *            pour ne pas avoir une superposition
-	 * @param offsetTexte
-	 *            Offset of the text (0 means text is in the middle of the
-	 *            arrow)
-	 * @param arrowSize
-	 *            size of the arrow for the display (default 0.1)
-	 */
-	protected Shape drawArrowWithString(Graphics2D g, String string, double angleBeta, double X1, double Y1, double X2, double Y2, double offsetX, double offsetY, double offsetTexte, double arrowSize)
-	{
-		return drawArrowWithString(g, string, (float) angleBeta, (float) X1, (float) Y1, (float) X2, (float) Y2, (float) offsetX, (float) offsetY, (float) offsetTexte, (float) arrowSize);
+		return drawArrowWithStringOLD(g, string, angleBeta, X1, Y1, X2, Y2, offsetX, offsetY, offsetTexte, 0.1f);
 	}
 
 	/**
@@ -1941,9 +1906,45 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 	 * @param arrowSize
 	 *            size of the arrow for the display (default 0.1)
 	 */
-	protected Shape drawArrowWithString(Graphics2D g, String string, float angleBeta, float X1, float Y1, float X2, float Y2, float offsetX, float offsetY, float offsetTexte, float arrowSize)
+	protected Shape drawArrowWithStringOLD(Graphics2D g, String string, double angleBeta, double X1, double Y1, double X2, double Y2, double offsetX, double offsetY, double offsetTexte, double arrowSize)
+	{
+		return drawArrowWithStringOLD(g, string, (float) angleBeta, (float) X1, (float) Y1, (float) X2, (float) Y2, (float) offsetX, (float) offsetY, (float) offsetTexte, (float) arrowSize);
+	}
+
+	/**
+	 * Fast and easy way to draw an arrow with a text in his middle
+	 * 
+	 * @param g
+	 * @param string
+	 *            String to display in middle of the arrow
+	 * @param angleBeta
+	 *            Angle of the string to display
+	 * @param X1
+	 *            First point of arrow X position
+	 * @param Y1
+	 *            First point of arrow Y position
+	 * @param X2
+	 *            Second point of arrow X position
+	 * @param Y2
+	 *            Second point of arrow X position
+	 * @param offsetX
+	 *            Offset of the arrow on his X axis (default 0) - Permet de
+	 *            decaller la fleches pour montrer un objet reel en la décallant
+	 *            pour ne pas avoir une superposition
+	 * @param offsetY
+	 *            Offset of the arrow on his Y axis (default 0) - Permet de
+	 *            decaller la fleches pour montrer un objet reel en la décallant
+	 *            pour ne pas avoir une superposition
+	 * @param offsetTexte
+	 *            Offset of the text (0 means text is in the middle of the
+	 *            arrow)
+	 * @param arrowSize
+	 *            size of the arrow for the display (default 0.1)
+	 */
+	protected Shape drawArrowWithStringOLD(Graphics2D g, String string, float angleBeta, float X1, float Y1, float X2, float Y2, float offsetX, float offsetY, float offsetTexte, float arrowSize)
 	{
 		// TODO : There's obviously an error in offsetX and OffsetY if the arrow is not Horizontal or Vertical
+	
 		
 		// TODO : I'm not sure offsetX and offsetY shouldn't be one and only one variable
 		// TODO : put that in graphicsbase
@@ -1952,11 +1953,146 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 		// TODO : Bug avec windows si scale a 150%
 		//drawStringOLD(g, string, offsetX+ (float)v.getX(),offsetY+(float)v.getY(), angleBeta, AlignTexteX.CENTER, AlignTexteY.CENTER, false, 1.0f, false, Color.black);
 		//drawString44(g, string, offsetX+ (float)v.getX(),offsetY+(float)v.getY(), angleBeta, AlignTexteX.CENTER, AlignTexteY.CENTER, false, 1.0f, false, Color.black);
+		
+		
 		Shape	shp_str		= drawString(g, string, offsetX + (float) v.getX(), offsetY + (float) v.getY(), angleBeta, AlignTexteX.CENTER, AlignTexteY.CENTER, false, 1.0f, false, Color.black);
 		Shape	shp_arrow	= drawArrow2(g, new Point2D.Double(X1 + offsetX, Y1 + offsetY), new Point2D.Double(X2 + offsetX, Y2 + offsetY), true, true, false, 0.1f);
+	
+		
 		return shp_str;
 
 	}
+	
+	
+	
+	
+	/**
+	 * Fast and easy way to draw an arrow with a text in his middle
+	 * 
+	 * @param g
+	 * @param string
+	 *            String to display in middle of the arrow
+	 * @param angleBeta
+	 *            Angle of the string to display
+	 * @param X1
+	 *            First point of arrow X position
+	 * @param Y1
+	 *            First point of arrow Y position
+	 * @param X2
+	 *            Second point of arrow X position
+	 * @param Y2
+	 *            Second point of arrow X position
+	 * @param offset
+	 *            Offset of the arrow on his X axis (default 0) - Permet de
+	 *            decaller la fleches pour montrer un objet reel en la décallant
+	 *            pour ne pas avoir une superposition
+	 * @param offsetTexte
+	 *            Offset of the text (0 means text is in the middle of the
+	 *            arrow)
+	 */
+	protected Shape drawArrowWithString(Graphics2D g, String string, float angleBeta, float X1, float Y1, float X2, float Y2, float offset, float offsetTexte)
+	{
+		return drawArrowWithString(g, string, angleBeta, X1, Y1, X2, Y2, offset, offsetTexte, 0.1f);
+	}
+	
+	/**
+	 * Fast and easy way to draw an arrow with a text in his middle
+	 * 
+	 * @param g
+	 * @param string
+	 *            String to display in middle of the arrow
+	 * @param angleBeta
+	 *            Angle of the string to display
+	 * @param X1
+	 *            First point of arrow X position
+	 * @param Y1
+	 *            First point of arrow Y position
+	 * @param X2
+	 *            Second point of arrow X position
+	 * @param Y2
+	 *            Second point of arrow X position
+	 * @param offset
+	 *            Offset of the arrow on his X axis (default 0) - Permet de
+	 *            decaller la fleches pour montrer un objet reel en la décallant
+	 *            pour ne pas avoir une superposition
+	 * @param offsetTexte
+	 *            Offset of the text (0 means text is in the middle of the
+	 *            arrow)
+	 */
+	protected Shape drawArrowWithString(Graphics2D g, String string, double angleBeta, double X1, double Y1, double X2, double Y2, double offset, double offsetTexte)
+	{
+		return drawArrowWithString(g, string, angleBeta, X1, Y1, X2, Y2, offset, offsetTexte, 0.1f);
+	}
+	
+	
+	/**
+	 * Fast and easy way to draw an arrow with a text in his middle
+	 * 
+	 * @param g
+	 * @param string
+	 *            String to display in middle of the arrow
+	 * @param angleBeta
+	 *            Angle of the string to display
+	 * @param X1
+	 *            First point of arrow X position
+	 * @param Y1
+	 *            First point of arrow Y position
+	 * @param X2
+	 *            Second point of arrow X position
+	 * @param Y2
+	 *            Second point of arrow X position
+	 * @param offset
+	 *            Offset of the arrow on his X axis (default 0) - Permet de
+	 *            decaller la fleches pour montrer un objet reel en la décallant
+	 *            pour ne pas avoir une superposition
+	 * @param offsetTexte
+	 *            Offset of the text (0 means text is in the middle of the
+	 *            arrow)
+	 * @param arrowSize
+	 *            size of the arrow for the display (default 0.1)
+	 */
+	protected Shape drawArrowWithString(Graphics2D g, String string, float angleBeta, float X1, float Y1, float X2, float Y2, float offset, float offsetTexte, float arrowSize)
+	{
+		return drawArrowWithString(g, string, (double)angleBeta, (double)X1, (double)Y1, (double)X2, (double)Y2, (double)offset, (double)offsetTexte, (double)arrowSize);
+	}
+	
+	
+	
+	/**
+	 * Fast and easy way to draw an arrow with a text in his middle
+	 * 
+	 * @param g
+	 * @param string
+	 *            String to display in middle of the arrow
+	 * @param angleBeta
+	 *            Angle of the string to display
+	 * @param X1
+	 *            First point of arrow X position
+	 * @param Y1
+	 *            First point of arrow Y position
+	 * @param X2
+	 *            Second point of arrow X position
+	 * @param Y2
+	 *            Second point of arrow X position
+	 * @param offset
+	 *            Offset of the arrow on his X axis (default 0) - Permet de
+	 *            decaller la fleches pour montrer un objet reel en la décallant
+	 *            pour ne pas avoir une superposition
+	 * @param offsetTexte
+	 *            Offset of the text (0 means text is in the middle of the
+	 *            arrow)
+	 * @param arrowSize
+	 *            size of the arrow for the display (default 0.1)
+	 */
+	protected Shape drawArrowWithString(Graphics2D g, String string, double angleBeta, double X1, double Y1, double X2, double Y2, double offset, double offsetTexte, double arrowSize)
+	{
+		Line2D.Double paralelle = createLineParallel(new Line2D.Double(X1, Y1, X2, Y2), -offset);
+		Vector2D v = getPerpendicularPoint(new Vector2D(paralelle.x1, paralelle.y1), new Vector2D(paralelle.x2, paralelle.y2), (float) offsetTexte);
+		Shape	shp_str		= drawString(g, string, (float) v.getX(),  (float) v.getY(), (float)angleBeta, AlignTexteX.CENTER, AlignTexteY.CENTER, false, 1.0f, false, Color.black);
+		Shape	shp_arrow	= drawArrow2(g, new Point2D.Double(paralelle.x1, paralelle.y1), new Point2D.Double(paralelle.x2,  paralelle.y2), true, true, false, 0.1f);
+		return shp_str;
+	}
+	
 
 	/**
 	 * Permet de dessiner un axe X Y en bas a gauche de la fenetre
