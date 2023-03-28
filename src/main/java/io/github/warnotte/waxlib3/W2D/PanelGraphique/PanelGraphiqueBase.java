@@ -2021,7 +2021,7 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 	 */
 	protected Shape drawArrowWithString(Graphics2D g, String string, double angleBeta, double X1, double Y1, double X2, double Y2, double offset, double offsetTexte)
 	{
-		return drawArrowWithString(g, string, angleBeta, X1, Y1, X2, Y2, offset, offsetTexte, 0.1f);
+		return drawArrowWithString(g, string, angleBeta, X1, Y1, X2, Y2, offset, offsetTexte, 0.2f);
 	}
 	
 	
@@ -2049,7 +2049,7 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 	 *            Offset of the text (0 means text is in the middle of the
 	 *            arrow)
 	 * @param arrowSize
-	 *            size of the arrow for the display (default 0.1)
+	 *            size of the arrow for the display (default 0.2)
 	 */
 	protected Shape drawArrowWithString(Graphics2D g, String string, float angleBeta, float X1, float Y1, float X2, float Y2, float offset, float offsetTexte, float arrowSize)
 	{
@@ -2082,14 +2082,14 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 	 *            Offset of the text (0 means text is in the middle of the
 	 *            arrow)
 	 * @param arrowSize
-	 *            size of the arrow for the display (default 0.1)
+	 *            size of the arrow for the display (default 0.2)
 	 */
 	protected Shape drawArrowWithString(Graphics2D g, String string, double angleBeta, double X1, double Y1, double X2, double Y2, double offset, double offsetTexte, double arrowSize)
 	{
 		Line2D.Double paralelle = createLineParallel(new Line2D.Double(X1, Y1, X2, Y2), -offset);
 		Vector2D v = getPerpendicularPoint(new Vector2D(paralelle.x1, paralelle.y1), new Vector2D(paralelle.x2, paralelle.y2), (float) offsetTexte);
 		Shape	shp_str		= drawString(g, string, (float) v.getX(),  (float) v.getY(), (float)angleBeta, AlignTexteX.CENTER, AlignTexteY.CENTER, false, 1.0f, false, Color.black);
-		Shape	shp_arrow	= drawArrow2(g, new Point2D.Double(paralelle.x1, paralelle.y1), new Point2D.Double(paralelle.x2,  paralelle.y2), true, true, false, 0.1f);
+		Shape	shp_arrow	= drawArrow2(g, new Point2D.Double(paralelle.x1, paralelle.y1), new Point2D.Double(paralelle.x2,  paralelle.y2), true, true, false, (float)arrowSize);
 		return shp_str;
 	}
 	
