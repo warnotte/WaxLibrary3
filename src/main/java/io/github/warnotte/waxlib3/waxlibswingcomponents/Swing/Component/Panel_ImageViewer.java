@@ -41,7 +41,7 @@ public class Panel_ImageViewer extends JPanel implements KeyListener, MouseListe
 		
 		Panel_ImageViewer panel = new Panel_ImageViewer();
 		
-		panel.setImage(new File("F:\\git\\COLLFOWT_FOWT\\CollFowt_FOWT\\results\\run_coll_2023-09-22_11-52-31\\run_coll_2023-09-22_11-52-31_Coll_scenario.png"));
+		//panel.setImage(new File("F:\\git\\COLLFOWT_FOWT\\CollFowt_FOWT\\results\\run_coll_2023-09-22_11-52-31\\run_coll_2023-09-22_11-52-31_Coll_scenario.png"));
 		
 		JFrame frame = new JFrame();
 		frame.setSize(800,600);
@@ -86,7 +86,7 @@ public class Panel_ImageViewer extends JPanel implements KeyListener, MouseListe
 		if (nosignal == null)
 			try
 			{
-				nosignal = ImageIO.read(getClass().getResource("/NoSignal.jpg"));
+				nosignal = ImageIO.read(getClass().getResource("/images/NoSignal.jpg"));
 			} catch (IOException e)
 			{
 				Logger.fatal(e, e);
