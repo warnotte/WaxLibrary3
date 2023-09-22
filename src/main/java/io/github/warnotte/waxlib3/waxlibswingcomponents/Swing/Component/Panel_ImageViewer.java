@@ -104,7 +104,7 @@ public class Panel_ImageViewer extends JPanel implements KeyListener, MouseListe
 	 * @param file
 	 * @throws IOException 
 	 */
-	void setImage(File file) 
+	public void setImage(File file) 
 	{
 		try
 		{
