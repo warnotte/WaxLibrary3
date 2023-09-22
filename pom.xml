@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>io.github.warnotte</groupId>
 	<artifactId>waxlib3</artifactId>
-	<version>0.0.1.7</version>
+	<version>0.0.1.8</version>
 	<name>Wab Library 3</name>
 	<description>This is my 16 years old own library for lot of purpose</description>
 	<url>https://github.com/warnotte/WaxLibrary3</url>
