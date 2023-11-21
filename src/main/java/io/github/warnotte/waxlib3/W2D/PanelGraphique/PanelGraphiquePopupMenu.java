@@ -1,13 +1,13 @@
 package io.github.warnotte.waxlib3.W2D.PanelGraphique;
 
 import java.io.File;
-import java.io.IOException;
 
+import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
 import io.github.warnotte.waxlib3.waxlibswingcomponents.Dialog.DialogDivers;
-
-import javax.swing.JMenuItem;
 
 public class PanelGraphiquePopupMenu extends JPopupMenu
 {
@@ -17,8 +17,10 @@ public class PanelGraphiquePopupMenu extends JPopupMenu
 	 */
 	private static final long	serialVersionUID	= 6373430517516331536L;
 	PanelGraphiqueBaseBase		panel;
+	private JMenu				jMenu_Export		= null;
 	private JMenuItem			jMenuItem_SaveBMP	= null;
-	//private JMenuItem			jMenuItem_SavePDF	= null;
+	private JMenuItem			jMenuItem_SavePDF	= null;
+	private JMenuItem			jMenuItem_SaveSVG	= null;
 
 	PanelGraphiquePopupMenu(PanelGraphiqueBaseBase panel)
 	{
@@ -28,43 +30,46 @@ public class PanelGraphiquePopupMenu extends JPopupMenu
 
 	private void initialize()
 	{
-		this.add(getJMenuItem_SaveBMP());
-	
+		jMenuItem_SaveBMP = new JMenuItem();
+		jMenuItem_SaveBMP.setText("Save PNG");
+		jMenuItem_SaveBMP.addActionListener(a -> {
+			SavePNG();
+		});
+		jMenuItem_SavePDF = new JMenuItem();
+		jMenuItem_SavePDF.setText("Save PDF");
+		jMenuItem_SavePDF.addActionListener(a -> {
+			SavePDF();
+		});
+		jMenuItem_SaveSVG = new JMenuItem();
+		jMenuItem_SaveSVG.setText("Save SVG");
+		jMenuItem_SaveSVG.addActionListener(a -> {
+			SaveSVG();
+		});
+
+		jMenu_Export = new JMenu("Export view");
+		jMenu_Export.add(jMenuItem_SaveBMP);
+		jMenu_Export.add(jMenuItem_SavePDF);
+		jMenu_Export.add(jMenuItem_SaveSVG);
+
+		this.add(jMenu_Export);
+
 	}
 
-	
-	/**
-	 * This method initializes jMenuItem_SaveBMP
-	 * 
-	 * @return javax.swing.JMenuItem
-	 */
-	private JMenuItem getJMenuItem_SaveBMP()
+	protected void SavePNG()
 	{
-		if (jMenuItem_SaveBMP == null)
-		{
-			jMenuItem_SaveBMP = new JMenuItem();
-			jMenuItem_SaveBMP.setText("Save BMP");
-			jMenuItem_SaveBMP.addActionListener(new java.awt.event.ActionListener()
-			{
-				public void actionPerformed(java.awt.event.ActionEvent e)
-				{
-					try
-					{
-						SaveBMP();
-					} catch (IOException e1)
-					{
-						DialogDivers.Show_dialog(e1, "Error saving BMP");
-						e1.printStackTrace();
-					}
-				}
-			});
-		}
-		return jMenuItem_SaveBMP;
+		String filename = DialogDivers.SaveDialog(new JFrame(), "png");
+		panel.save(new File(filename));
 	}
 
-	protected void SaveBMP() throws IOException
+	protected void SavePDF()
 	{
-		panel.save(new File("screens.bmp"));
+		String filename = DialogDivers.SaveDialog(new JFrame(), "pdf");
+		panel.savePDF(new File(filename));
+	}
 
+	protected void SaveSVG()
+	{
+		String filename = DialogDivers.SaveDialog(new JFrame(), "svg");
+		panel.saveSVG(new File(filename));
 	}
 }

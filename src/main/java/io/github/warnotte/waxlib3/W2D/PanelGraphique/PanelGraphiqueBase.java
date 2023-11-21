@@ -4,6 +4,7 @@ import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Composite;
+import java.awt.Desktop;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -26,7 +27,6 @@ import java.awt.event.MouseMotionListener;
 import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphVector;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.NoninvertibleTransformException;
@@ -35,7 +35,12 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -48,11 +53,22 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
+import org.apache.batik.dom.GenericDOMImplementation;
+import org.apache.batik.svggen.SVGGraphics2D;
+import org.apache.batik.svggen.SVGGraphics2DIOException;
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
+import org.w3c.dom.DOMImplementation;
+
+import com.lowagie.text.Document;
+import com.lowagie.text.DocumentException;
+import com.lowagie.text.pdf.PdfContentByte;
+import com.lowagie.text.pdf.PdfTemplate;
+import com.lowagie.text.pdf.PdfWriter;
 
 import io.github.warnotte.waxlib3.W2D.PanelGraphique.Nurbs.NurbsCurve;
 import io.github.warnotte.waxlib3.W2D.PanelGraphique.Nurbs.NurbsPath;
 import io.github.warnotte.waxlib3.W2D.PanelGraphique.Nurbs.NurbsPoint;
+import io.github.warnotte.waxlib3.waxlibswingcomponents.Dialog.DialogDivers;
 
 public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentListener, KeyListener, MouseListener, MouseMotionListener
 {
@@ -530,34 +546,39 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 		Zoom = zoom;
 	}
 
-	public void save(File file) throws IOException
+	public void save(File file)
 	{
-		save(file, "BMP");
+		savePICTURE(file, "PNG");
 	}
 
-	public void save(File file, String EXTENSIONformat) throws IOException
+	public void savePICTURE(File file, String EXTENSIONformat)
 	{
 		BufferedImage	tamponSauvegarde	= new BufferedImage(this.getWidth(), this.getHeight(), BufferedImage.TYPE_3BYTE_BGR);
 		Graphics		g					= tamponSauvegarde.getGraphics();
 		g.setColor(Color.WHITE);
 		g.fillRect(0, 0, this.getWidth(), this.getHeight());
 		this.paint(g);
-		ImageIO.write(tamponSauvegarde, EXTENSIONformat, file);
+		try
+		{
+			ImageIO.write(tamponSauvegarde, EXTENSIONformat, file);
+		} catch (IOException e)
+		{
+			e.printStackTrace();
+			DialogDivers.Show_dialog(e, "Error exporting PNG file "+file.getName());
+		}
 	}
 	
 
-	public void savePDF(File file)/* throws IOException, DocumentException */
+	public void savePDF(File file)
 	{
-		/* That is with iText2 PDF
-		Document	document	= new Document(new Rectangle(0, 0, getWidth(), getHeight()));
+		Document	document	= new Document(new com.lowagie.text.Rectangle(0, 0, getWidth(), getHeight()));
 		PdfWriter	writer;
 		try
 		{
-			writer = PdfWriter.getInstance(document, new FileOutputStream("my_jtable_shapes.pdf"));
+			writer = PdfWriter.getInstance(document, new FileOutputStream(file));
 			document.open();
 			PdfContentByte	cb	= writer.getDirectContent();
 			PdfTemplate		tp	= cb.createTemplate(getWidth(), getHeight());
-			
 			Graphics2D		g2;
 			g2 = tp.createGraphics(getWidth(), getHeight());
 			//g2 = new PdfGraphics2D(tp, getWidth(), getHeight());
@@ -567,20 +588,44 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 			g2.dispose();
 			cb.addTemplate(tp, 0, 0);
 			document.close();
-			Desktop.getDesktop().open(new File("my_jtable_shapes.pdf"));
-		} catch (FileNotFoundException e1)
+			//Desktop.getDesktop().open(new File("exported.pdf"));
+		}
+		catch (DocumentException | IOException e1)
 		{
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
-		} catch (DocumentException e1)
+			DialogDivers.Show_dialog(e1, "Error exporting PDF file "+file.getName());
+		}
+	}
+	
+	
+	public void saveSVG(File file) 
+	{
+		// Get a DOMImplementation.
+		DOMImplementation domImpl = GenericDOMImplementation.getDOMImplementation();
+
+		// Create an instance of org.w3c.dom.Document.
+		String svgNS = "http://www.w3.org/2000/svg";
+
+		// Create an instance of the SVG Generator.
+		SVGGraphics2D svgGenerator = new SVGGraphics2D(domImpl.createDocument(svgNS, "svg", null));
+
+		// Ask the test to render into the SVG Graphics2D implementation.
+		this.paint(svgGenerator);
+
+		// Finally, stream out SVG to the standard output using
+		// UTF-8 encoding.
+		boolean	useCSS	= true;	// we want to use CSS style attributes
+		try
 		{
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (IOException e1)
+			Writer	out;
+			out = new OutputStreamWriter(new FileOutputStream(file), "UTF-8");
+			svgGenerator.stream(out, useCSS);
+		} catch (SVGGraphics2DIOException | UnsupportedEncodingException | FileNotFoundException e)
 		{
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}*/
+			e.printStackTrace();
+			DialogDivers.Show_dialog(e, "Error exporting SVG file "+file.getName());
+		}
+
 	}
 
 	/**
