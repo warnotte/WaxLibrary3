@@ -343,10 +343,13 @@ public class VUE2D_BezierNurbsPath extends PanelGraphiqueBaseBase
 	public void mouseDragged(java.awt.event.MouseEvent e) {
 		super.mouseDragged(e);
 
-		int modif = e.getModifiers();
+		//int modif = e.getModifiers();
 		// MBUTTON_SELECTION_MASK = -1;
 		// if (demoNurbsTest)
-		if (e.getButton()==MouseEvent.BUTTON3) {
+		
+		System.err.println(">> "+MBUTTON_POPUP_MASK_ENABLED);
+		if (MBUTTON_POPUP_MASK_ENABLED) {
+		//if (e.getButton()==MouseEvent.BUTTON3) {
 			List<NurbsPoint> sel = (List<NurbsPoint>) getContxt().getSelection(NurbsPoint.class);
 
 			List<NurbsCurve> listcurve = (List<NurbsCurve>) getContxt().getSelection(NurbsCurve.class);
