@@ -548,40 +548,39 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 
 	public void savePDF(File file)/* throws IOException, DocumentException */
 	{
-		/*
-		 * BufferedImage tamponSauvegarde = new BufferedImage( this.getWidth(),
-		 * this.getHeight(), BufferedImage.TYPE_3BYTE_BGR); Graphics g =
-		 * tamponSauvegarde.getGraphics(); g.setColor(Color.WHITE);
-		 * g.fillRect(0, 0, this.getWidth(), this.getHeight()); this.paint(g);
-		 */
-
-		/*
-		 * Document doc = new Document(PageSize.A0);
-		 * @SuppressWarnings("unused") PdfWriter out = null; out =
-		 * PdfWriter.getInstance(doc, new FileOutputStream(file)); doc.open();
-		 * // iText font != java.awt.Font ! FontFactory.registerDirectories();
-		 * // register all fonts in the usual doc.addTitle("EOL Report");
-		 * doc.addCreationDate(); doc.addCreator("Warnotte R.");
-		 * doc.addProducer(); Paragraph p = new Paragraph("EOL Report");
-		 * p.setAlignment(1); try { doc.add(p); } catch (DocumentException e1) {
-		 * // TODO Auto-generated catch block e1.printStackTrace(); }
-		 * BufferedImage img = new BufferedImage(this.getWidth(),
-		 * this.getHeight(), BufferedImage.TYPE_INT_ARGB); Graphics2D img2D =
-		 * img.createGraphics(); Dimension dim = this.getSize();
-		 * this.setSize(dim.width, dim.height); // this.print(img2D);
-		 * this.paint(img2D); this.setSize(dim.width, dim.height); // float
-		 * viewWidth = out.getPageSize().getWidth() - doc.leftMargin() -
-		 * doc.rightMargin(); p = new Paragraph(); com.itextpdf.text.Image
-		 * itextImg; try { itextImg = com.itextpdf.text.Image.getInstance(img,
-		 * Color.BLUE, false); p.add(itextImg); doc.add(p); } catch
-		 * (BadElementException e) { // TODO Auto-generated catch block
-		 * e.printStackTrace(); } catch (DocumentException e) { // TODO
-		 * Auto-generated catch block e.printStackTrace(); } // restore old LAF
-		 * //pnl.setUI(old); ///// trailing text try { doc.add(new
-		 * Paragraph("E O L Support structure")); } catch (DocumentException e)
-		 * { // TODO Auto-generated catch block e.printStackTrace(); }
-		 * doc.close();
-		 */
+		/* That is with iText2 PDF
+		Document	document	= new Document(new Rectangle(0, 0, getWidth(), getHeight()));
+		PdfWriter	writer;
+		try
+		{
+			writer = PdfWriter.getInstance(document, new FileOutputStream("my_jtable_shapes.pdf"));
+			document.open();
+			PdfContentByte	cb	= writer.getDirectContent();
+			PdfTemplate		tp	= cb.createTemplate(getWidth(), getHeight());
+			
+			Graphics2D		g2;
+			g2 = tp.createGraphics(getWidth(), getHeight());
+			//g2 = new PdfGraphics2D(tp, getWidth(), getHeight());
+			//g2 = new PdfGraphics2D(cb, getWidth(), getHeight(), null, false, false, 1.0f);
+			//PdfGraphics2D(PdfContentByte cb, float width, float height, FontMapper fontMapper, boolean onlyShapes, boolean convertImagesToJPEG, float quality) {
+			this.print(g2);
+			g2.dispose();
+			cb.addTemplate(tp, 0, 0);
+			document.close();
+			Desktop.getDesktop().open(new File("my_jtable_shapes.pdf"));
+		} catch (FileNotFoundException e1)
+		{
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (DocumentException e1)
+		{
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1)
+		{
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}*/
 	}
 
 	/**
