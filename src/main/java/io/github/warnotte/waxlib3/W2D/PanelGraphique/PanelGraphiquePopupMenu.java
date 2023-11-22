@@ -18,7 +18,7 @@ public class PanelGraphiquePopupMenu extends JPopupMenu
 	private static final long	serialVersionUID	= 6373430517516331536L;
 	PanelGraphiqueBaseBase		panel;
 	private JMenu				jMenu_Export		= null;
-	private JMenuItem			jMenuItem_SaveBMP	= null;
+	private JMenuItem			jMenuItem_SavePNG	= null;
 	private JMenuItem			jMenuItem_SavePDF	= null;
 	private JMenuItem			jMenuItem_SaveSVG	= null;
 
@@ -30,9 +30,9 @@ public class PanelGraphiquePopupMenu extends JPopupMenu
 
 	private void initialize()
 	{
-		jMenuItem_SaveBMP = new JMenuItem();
-		jMenuItem_SaveBMP.setText("Save PNG");
-		jMenuItem_SaveBMP.addActionListener(a -> {
+		jMenuItem_SavePNG = new JMenuItem();
+		jMenuItem_SavePNG.setText("Save PNG");
+		jMenuItem_SavePNG.addActionListener(a -> {
 			SavePNG();
 		});
 		jMenuItem_SavePDF = new JMenuItem();
@@ -47,9 +47,9 @@ public class PanelGraphiquePopupMenu extends JPopupMenu
 		});
 
 		jMenu_Export = new JMenu("Export view");
-		jMenu_Export.add(jMenuItem_SaveBMP);
-		jMenu_Export.add(jMenuItem_SavePDF);
-		jMenu_Export.add(jMenuItem_SaveSVG);
+		jMenu_Export.add(jMenuItem_SavePNG);
+		//jMenu_Export.add(jMenuItem_SavePDF);
+		//jMenu_Export.add(jMenuItem_SaveSVG);
 
 		this.add(jMenu_Export);
 
