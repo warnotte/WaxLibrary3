@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>io.github.warnotte</groupId>
 	<artifactId>waxlib3</artifactId>
-	<version>0.0.2.1</version>
+	<version>0.0.2.2</version>
 	<name>Wab Library 3</name>
 	<description>This is my 16 years old own library for lot of purpose</description>
 	<url>https://github.com/warnotte/WaxLibrary3</url>
@@ -143,21 +143,20 @@ add-opens java.desktop/java.awt.font=ALL-UNNAMED
 		</dependency>
 
 
-		<!-- https://mvnrepository.com/artifact/com.github.albfernandez/itext2 -->
+		<!-- Add this for PDF and SVG export -> Pose un probleme de signature avec Maven et prends beaucoup trop de place = DISABLED ! -->
+		<!--
 		<dependency>
 			<groupId>com.github.albfernandez</groupId>
 			<artifactId>itext2</artifactId>
 			<version>2.2.1</version>
 		</dependency>
 
-		<!--
-		https://mvnrepository.com/artifact/org.apache.xmlgraphics/batik-svggen -->
 		<dependency>
 			<groupId>org.apache.xmlgraphics</groupId>
 			<artifactId>batik-svggen</artifactId>
 			<version>1.17</version>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.apache.xmlgraphics/batik-dom -->
+
 		<dependency>
 			<groupId>org.apache.xmlgraphics</groupId>
 			<artifactId>batik-dom</artifactId>
@@ -173,7 +172,8 @@ add-opens java.desktop/java.awt.font=ALL-UNNAMED
 				</exclusion>
 			</exclusions>
 		</dependency>
-
+		-->
+		<!-- STOP - Add this for PDF and SVG export -->
 
 	</dependencies>
 

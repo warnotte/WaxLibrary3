@@ -4,7 +4,6 @@ import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Composite;
-import java.awt.Desktop;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -35,12 +34,7 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
-import java.io.Writer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -53,17 +47,7 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
-import org.apache.batik.dom.GenericDOMImplementation;
-import org.apache.batik.svggen.SVGGraphics2D;
-import org.apache.batik.svggen.SVGGraphics2DIOException;
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
-import org.w3c.dom.DOMImplementation;
-
-import com.lowagie.text.Document;
-import com.lowagie.text.DocumentException;
-import com.lowagie.text.pdf.PdfContentByte;
-import com.lowagie.text.pdf.PdfTemplate;
-import com.lowagie.text.pdf.PdfWriter;
 
 import io.github.warnotte.waxlib3.W2D.PanelGraphique.Nurbs.NurbsCurve;
 import io.github.warnotte.waxlib3.W2D.PanelGraphique.Nurbs.NurbsPath;
@@ -568,9 +552,10 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 		}
 	}
 	
-
+	
 	public void savePDF(File file)
 	{
+		/*
 		Document	document	= new Document(new com.lowagie.text.Rectangle(0, 0, getWidth(), getHeight()));
 		PdfWriter	writer;
 		try
@@ -595,11 +580,13 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 			e1.printStackTrace();
 			DialogDivers.Show_dialog(e1, "Error exporting PDF file "+file.getName());
 		}
+		*/
 	}
 	
 	
 	public void saveSVG(File file) 
 	{
+		/*
 		// Get a DOMImplementation.
 		DOMImplementation domImpl = GenericDOMImplementation.getDOMImplementation();
 
@@ -625,6 +612,7 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 			e.printStackTrace();
 			DialogDivers.Show_dialog(e, "Error exporting SVG file "+file.getName());
 		}
+		*/
 
 	}
 
