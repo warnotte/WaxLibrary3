@@ -82,7 +82,7 @@ add-opens java.desktop/java.awt.font=ALL-UNNAMED
 		<dependency>
 			<groupId>com.miglayout</groupId>
 			<artifactId>miglayout-swing</artifactId>
-			<version>11.0</version>
+			<version>11.3</version>
 		</dependency>
 
 
@@ -110,7 +110,7 @@ add-opens java.desktop/java.awt.font=ALL-UNNAMED
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
 			<artifactId>log4j-api</artifactId>
-			<version>2.19.0</version>
+			<version>2.22.1</version>
 
 		</dependency>
 
@@ -118,7 +118,7 @@ add-opens java.desktop/java.awt.font=ALL-UNNAMED
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
 			<artifactId>log4j-core</artifactId>
-			<version>2.19.0</version>
+			<version>2.22.1</version>
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/org.jdom/jdom -->
@@ -129,7 +129,7 @@ add-opens java.desktop/java.awt.font=ALL-UNNAMED
 		</dependency>
 
 		<!-- test TODO : Check if it's used or not -->
-		<dependency>
+	<!--	<dependency>
 			<groupId>jakarta.xml.bind</groupId>
 			<artifactId>jakarta.xml.bind-api</artifactId>
 			<version>2.3.3</version>
@@ -141,7 +141,7 @@ add-opens java.desktop/java.awt.font=ALL-UNNAMED
 			<version>2.3.3</version>
 			<scope>runtime</scope>
 		</dependency>
-
+-->
 
 		<!-- Add this for PDF and SVG export -> Pose un probleme de signature avec Maven et prends beaucoup trop de place = DISABLED ! -->
 		<!--
@@ -316,19 +316,7 @@ add-opens java.desktop/java.awt.font=ALL-UNNAMED
 					</execution>
 				</executions>
 			</plugin>
-			<!-- <plugin> <groupId>org.codehaus.mojo</groupId>
-			<artifactId>flatten-maven-plugin</artifactId> 
-				<version>1.1.0</version> <configuration> <updatePomFile>true</updatePomFile> 
-				<flattenMode>oss</flattenMode> <pomElements>
-			<distributionManagement>remove</distributionManagement> 
-				<repositories>remove</repositories> </pomElements> </configuration>
-			<executions> 
-				<execution> <id>flatten</id> <phase>process-resources</phase> <goals>
-			<goal>flatten</goal> 
-				</goals> </execution> <execution> <id>flatten.clean</id> <phase>clean</phase> 
-				<goals> <goal>clean</goal> </goals> </execution> </executions> </plugin> -->
-
-
+			
 			<plugin>
 				<groupId>org.sonatype.plugins</groupId>
 				<artifactId>nexus-staging-maven-plugin</artifactId>
