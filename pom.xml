@@ -320,7 +320,7 @@ add-opens java.desktop/java.awt.font=ALL-UNNAMED
 			<plugin>
 				<groupId>org.sonatype.plugins</groupId>
 				<artifactId>nexus-staging-maven-plugin</artifactId>
-				<version>1.6.8</version> <!-- Des bug avec les version suivante
+				<version>1.6.13</version> <!-- Des bug avec les version suivante
 				semblent exister -->
 				<extensions>true</extensions>
 				<configuration>
