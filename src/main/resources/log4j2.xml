@@ -6,10 +6,10 @@
         <Property name="basePath">logs</Property>
         <Property name="filePattern">${date:yyyy-MMdd@hh-mm-ss}</Property>
     </Properties>
- 
+ <!-- 
  	<Plugins>
         <Plugin name="MapAppender" type="io.github.warnotte.waxlib3.core.Logs.JTextAreaAppender"/>
-    </Plugins>
+    </Plugins> -->
  
      <Appenders>
      
