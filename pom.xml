@@ -1,10 +1,10 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="https://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="https://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>io.github.warnotte</groupId>
 	<artifactId>waxlib3</artifactId>
-	<version>0.0.2.5</version>
+	<version>0.0.2.6</version>
 	<name>Wab Library 3</name>
 	<description>This is my 16 years old own library for lot of purpose</description>
 	<url>https://github.com/warnotte/WaxLibrary3</url>
@@ -110,7 +110,7 @@ add-opens java.desktop/java.awt.font=ALL-UNNAMED
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
 			<artifactId>log4j-api</artifactId>
-			<version>2.23.1</version>
+			<version>2.24.0</version>
 
 		</dependency>
 
@@ -118,7 +118,7 @@ add-opens java.desktop/java.awt.font=ALL-UNNAMED
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
 			<artifactId>log4j-core</artifactId>
-			<version>2.23.1</version>
+			<version>2.24.0</version>
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/org.jdom/jdom -->
@@ -129,7 +129,7 @@ add-opens java.desktop/java.awt.font=ALL-UNNAMED
 		</dependency>
 
 		<!-- test TODO : Check if it's used or not -->
-	<!--	<dependency>
+		<!--	<dependency>
 			<groupId>jakarta.xml.bind</groupId>
 			<artifactId>jakarta.xml.bind-api</artifactId>
 			<version>2.3.3</version>
@@ -143,7 +143,8 @@ add-opens java.desktop/java.awt.font=ALL-UNNAMED
 		</dependency>
 -->
 
-		<!-- Add this for PDF and SVG export -> Pose un probleme de signature avec Maven et prends beaucoup trop de place = DISABLED ! -->
+		<!-- Add this for PDF and SVG export -> Pose un probleme de signature
+		avec Maven et prends beaucoup trop de place = DISABLED ! -->
 		<!--
 		<dependency>
 			<groupId>com.github.albfernandez</groupId>
@@ -193,7 +194,7 @@ add-opens java.desktop/java.awt.font=ALL-UNNAMED
 		<plugins>
 
 			<!-- Without that, Log4j2 has problem -->
-			<plugin>
+			<!--<plugin>
 				<artifactId>maven-shade-plugin</artifactId>
 				<version>3.2.0 </version>
 				<executions>
@@ -203,14 +204,14 @@ add-opens java.desktop/java.awt.font=ALL-UNNAMED
 							<goal>shade</goal>
 						</goals>
 						<configuration>
-							<!-- Not adding this filter will result in no log
-							output when passing java -cp xxx.jar -->
+							
+							
+							
 							<filters>
 								<filter>
 									<artifact>*:*</artifact>
 									<excludes>
 										<exclude>**/Log4j2Plugins.dat</exclude>
-
 									</excludes>
 								</filter>
 							</filters>
@@ -222,7 +223,7 @@ add-opens java.desktop/java.awt.font=ALL-UNNAMED
 									<exclude>jmock:*</exclude>
 									<exclude>*:xml-apis</exclude>
 									<exclude>org.apache.maven:lib:tests</exclude>
-									<!-- <exclude>log4j:log4j:jar:</exclude> -->
+									
 									<exclude>META-INF /*.SF</exclude>
 									<exclude>META-INF/*.DSA</exclude>
 									<exclude>META-INF/*.RSA</exclude>
@@ -231,7 +232,46 @@ add-opens java.desktop/java.awt.font=ALL-UNNAMED
 						</configuration>
 					</execution>
 				</executions>
+			</plugin>-->
+
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>3.4.1</version>
+				<dependencies>
+					<dependency>
+						<groupId>org.apache.logging.log4j</groupId>
+						<artifactId>
+							log4j-transform-maven-shade-plugin-extensions</artifactId>
+						<version>0.1.0</version>
+					</dependency>
+				</dependencies>
+				<executions>
+					<execution>
+						<id>shade-jar-with-dependencies</id>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+						<configuration>
+							<transformers>
+								<transformer
+									implementation="org.apache.logging.log4j.maven.plugins.shade.transformer.Log4j2PluginCacheFileTransformer" />
+								<transformer
+									implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
+								<transformer
+									implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+									<manifestEntries>
+										<Multi-Release>true</Multi-Release>
+									</manifestEntries>
+								</transformer>
+							</transformers>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
+
 
 			<!-- Ne semble pas marcher -->
 			<plugin>
@@ -316,7 +356,7 @@ add-opens java.desktop/java.awt.font=ALL-UNNAMED
 					</execution>
 				</executions>
 			</plugin>
-			
+
 			<plugin>
 				<groupId>org.sonatype.plugins</groupId>
 				<artifactId>nexus-staging-maven-plugin</artifactId>
