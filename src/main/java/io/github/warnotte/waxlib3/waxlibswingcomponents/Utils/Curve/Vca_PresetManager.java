@@ -5,10 +5,15 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.Vector;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
+import com.thoughtworks.xstream.security.ArrayTypePermission;
+import com.thoughtworks.xstream.security.NoTypePermission;
+import com.thoughtworks.xstream.security.NullPermission;
+import com.thoughtworks.xstream.security.PrimitiveTypePermission;
 
 /**
  * 
@@ -19,7 +24,8 @@ public class Vca_PresetManager {
 
  
 	
-    static String MatFile = "config"+File.separator+"Vca_FactoryPresets.xml";
+	static String MatFile = "config"+File.separator+"Vca_FactoryPresets.xml";
+	//static String MatFile = "C:\\Users\\warnotte\\git\\WaxLibrary3\\src\\main\\java\\io\\github\\warnotte\\waxlib3\\waxlibswingcomponents\\Utils\\Curve\\Vca_FactoryPresets.xml";
     static private Vector<Vca_Preset> vca_presets = new Vector<Vca_Preset>();
     
     public Vca_PresetManager() throws Exception
@@ -75,6 +81,18 @@ public class Vca_PresetManager {
     	// Charge
 		//Logs.getLogger().info("WeldProcessManager::Loading WeldProcess file "+MatFile);
 		XStream xstream = new XStream(new DomDriver());
+		
+		xstream.addPermission(NoTypePermission.NONE);
+		// allow some basics
+		xstream.addPermission(NullPermission.NULL);
+		xstream.addPermission(PrimitiveTypePermission.PRIMITIVES);
+		xstream.addPermission(ArrayTypePermission.ARRAYS);
+		xstream.allowTypeHierarchy(Collection.class);
+		// allow any type from the same package
+		xstream.allowTypesByWildcard(new String[] {
+		    "io.github.warnotte.**"
+		});
+		
 		File f = new File(MatFile);
 		FileInputStream fos = new FileInputStream(f);
 		xstream.alias("Curve.Vca_Preset", Vca_Preset.class);
