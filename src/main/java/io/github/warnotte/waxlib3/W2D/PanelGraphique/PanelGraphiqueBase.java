@@ -2024,7 +2024,7 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 	 */
 	protected Shape drawArrowWithString(Graphics2D g, String string, float angleBeta, float X1, float Y1, float X2, float Y2, float offset, float offsetTexte)
 	{
-		return drawArrowWithString(g, string, angleBeta, X1, Y1, X2, Y2, offset, offsetTexte, 0.1f);
+		return drawArrowWithString(g, string, angleBeta, X1, Y1, X2, Y2, offset, offsetTexte, 0.2f);
 	}
 	
 	/**
@@ -2806,5 +2806,126 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 
 		return new Color((int) (255 * red), (int) (255 * green), (int) (255 * blue));
 	}
+	
+	
+	
+	
+	
+	/***
+	 * EXPERIMENTAL STUFF
+	 */
 
+
+	
+	/***
+	 * EXPERIMENTAL CORNER TO PUT IN WAXLIB MAYBE ONEDAY
+	 * ESSAYER DE REGLER LE PROBLEME DANS WAXLIB une bonne fois un jour et virer ceci ...
+	 */
+	
+	
+	/**
+	 * DrawArrow3 se comporte comme DrawArrow2, cad qu'on place la fleche dans le monde et pas sur l'ecran
+	 * @param g
+	 * @param pt1
+	 * @param pt2
+	 * @param scaleArrow1
+	 * @param scaleArrow2
+	 * @param enableArrowPt1
+	 * @param enableArrowPt2
+	 * @param enableMiddleArrow
+	 * @param scale
+	 * @return
+	 */
+	protected Shape drawArrow3(Graphics2D g, Point2D pt1, Point2D pt2, float scaleArrow1, float scaleArrow2, boolean enableArrowPt1, boolean enableArrowPt2, boolean enableMiddleArrow, float scale)
+	{
+		return drawArrow3(g, this.at, pt1, pt2, scaleArrow1, scaleArrow2, enableArrowPt1, enableArrowPt2, enableMiddleArrow, scale);
+	}
+	
+	/**
+	 * Comme drawArrow2, mais on peux lui passer une affinetransform différente de at (celle de super.at, donc celle du "monde")
+	 * @param g
+	 * @param at3
+	 * @param pt1
+	 * @param pt2
+	 * @param scaleArrow1
+	 * @param scaleArrow2
+	 * @param enableArrowPt1
+	 * @param enableArrowPt2
+	 * @param enableMiddleArrow
+	 * @param scale
+	 * @return
+	 */
+	protected Shape drawArrow3(Graphics2D g, AffineTransform at3, Point2D pt1, Point2D pt2, float scaleArrow1, float scaleArrow2, boolean enableArrowPt1, boolean enableArrowPt2, boolean enableMiddleArrow, float scale)
+	{
+		//g.setColor(Color.BLACK);
+		Line2D shape = new Line2D.Float(pt1, pt2);
+		float angle1 = (float) getAngle(pt1, pt2);
+
+		//scale * = 2;
+		Path2D tri = new Path2D.Float();
+		//	float scale = 1f;
+		tri.moveTo(scale * 0.0, scale * -1.0);
+		tri.lineTo(scale * -1.0, scale * 1.0);
+		tri.lineTo(scale * 0.0, scale * 0.0f);
+		tri.lineTo(scale * 1.0, scale * 1.0);
+		tri.lineTo(scale * 0.0, scale * -1.0);
+
+		Shape	trshape	= at3.createTransformedShape(shape);
+		Shape	retour	= shape;
+		g.draw(trshape);
+
+		AffineTransform at2;
+
+		Color old = g.getColor();
+
+		if (enableArrowPt1 == true)
+		{
+			at2 = new AffineTransform(at3);
+			at2.translate(pt1.getX(), pt1.getY());
+			at2.scale(scaleArrow1, scaleArrow1);
+			at2.rotate(Math.toRadians(-angle1 - 90));
+			at2.translate(0, scale);
+
+			trshape = at2.createTransformedShape(tri);
+			g.fill(trshape);
+			g.setColor(g.getColor().darker());
+			g.draw(trshape);
+			g.setColor(old);
+		}
+
+		if (enableArrowPt2 == true)
+		{
+			at2 = new AffineTransform(at3);
+			at2.translate(pt2.getX(), pt2.getY());
+			at2.scale(scaleArrow2, scaleArrow2);
+			at2.rotate(Math.toRadians(-angle1 + 90));
+			at2.translate(0, scale);
+			trshape = at2.createTransformedShape(tri);
+
+			g.fill(trshape);
+			g.setColor(g.getColor().darker());
+			g.draw(trshape);
+			g.setColor(old);
+		}
+
+		if (enableMiddleArrow == true)
+		{
+			at2 = new AffineTransform(at3);
+			at2.translate((pt2.getX() + pt1.getX()) / 2, (pt2.getY() + pt1.getY()) / 2);
+			at2.scale(scaleArrow2, scaleArrow2);
+			at2.rotate(Math.toRadians(-angle1 + 90));
+			//	at2.translate(0, scale);
+			trshape = at2.createTransformedShape(tri);
+
+			g.fill(trshape);
+			g.setColor(g.getColor().darker());
+			g.draw(trshape);
+			g.setColor(old);
+		}
+
+		g.setColor(old);
+
+		return retour;
+	}
+	
 }
