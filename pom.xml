@@ -110,7 +110,7 @@ add-opens java.desktop/java.awt.font=ALL-UNNAMED
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
 			<artifactId>log4j-api</artifactId>
-			<version>2.24.0</version>
+			<version>2.24.3</version>
 
 		</dependency>
 
