@@ -85,6 +85,10 @@ public abstract class PanelGraphiqueBaseBase extends PanelGraphiqueBase<Object> 
 
 	private boolean enableSelectionDrawDebug = false;
 	
+	// Permet de faire un zoom la ou le pointeur de la souris se trouver si variable = false sinon centre au millieu de l'"ecran".
+    private boolean zoomOnCenterOrMousePointer = false;
+    
+	
 	public PanelGraphiqueBaseBase(CurrentSelectionContext contxt)
 	{
 		this(contxt, null, null);
@@ -502,7 +506,7 @@ public abstract class PanelGraphiqueBaseBase extends PanelGraphiqueBase<Object> 
 	protected void cancel_current_action()
 	{
 	}
-
+/*
 	public void mouseWheelMoved(MouseWheelEvent e)
 	{
 		int dir = e.getWheelRotation();
@@ -532,6 +536,64 @@ public abstract class PanelGraphiqueBaseBase extends PanelGraphiqueBase<Object> 
 			Zoom = ZoomMax;
 		repaint();
 	}
+	
+	*/
+	
+	public void mouseWheelMoved(MouseWheelEvent e) {
+		System.err.println("Neo");
+	    int dir = e.getWheelRotation();
+	    
+	    // Facteur de zoom dynamique pour éviter un zoom trop rapide à faible niveau
+	    float factor = 1;
+	    if (Zoom < 3) factor = 2f;
+	    if (Zoom < 2.5) factor = 3f;
+	    if (Zoom < 2) factor = 5f;
+	    if (Zoom < 1.5) factor = 7f;
+	    if (Zoom < 1) factor = 10f;
+	    if (Zoom < 0.5) factor = 50f;
+
+	    Point2D beforeZoom = null;
+	    Point2D afterZoom = null;
+	    
+	    /**
+	     * Pour le centrage on peut desactiver
+	     */
+	    if (zoomOnCenterOrMousePointer==false)
+	    	// Position actuelle de la souris en coordonnées réelles AVANT le zoom
+	    	beforeZoom = convertViewXYtoRealXY(e.getX(), e.getY());
+
+	    // Appliquer le zoom
+	    double oldZoom = Zoom;
+	    Zoom -= (double) dir / (double) factor;
+
+	    // Arrondi vers 1 si proche
+	    if (Math.abs(1 - Zoom) <= 0.1) Zoom = 1;
+	    
+	    // Limites
+	    if (Zoom < ZoomMin) Zoom = ZoomMin;
+	    if (Zoom > ZoomMax) Zoom = ZoomMax;
+
+	    /**
+	     * Pour le centrage on peut desactiver
+	     */
+	    if (zoomOnCenterOrMousePointer==false)
+	    	// Position réelle après le zoom
+	    	afterZoom = convertViewXYtoRealXY(e.getX(), e.getY());
+
+	    /**
+	     * Pour le centrage on peut desactiver
+	     */
+	    if (zoomOnCenterOrMousePointer==false)
+	    {
+		    // Ajuster ScrollX et ScrollY pour compenser le déplacement dû au zoom
+	    	// Si Invert Axis sont tout les 2 a false
+		    ScrollX += (beforeZoom.getX() - afterZoom.getX()) * ((invertXAxis==false)?-1:1);
+		    ScrollY += (beforeZoom.getY() - afterZoom.getY()) * ((invertYAxis==false)?-1:1);
+	    }
+
+	    repaint();
+	}
+
 
 	public synchronized CurrentSelectionContext getContxt()
 	{
@@ -1148,5 +1210,13 @@ public abstract class PanelGraphiqueBaseBase extends PanelGraphiqueBase<Object> 
 		this.enableSelectionDrawDebug = enableSelectionDrawDebug;
 	
 	}
+	public boolean isZoomOnCenterOrMousePointer() {
+		return zoomOnCenterOrMousePointer;
+	}
+	public void setZoomOnCenterOrMousePointer(boolean zoomOnCenterOrMousePointer) {
+		zoomOnCenterOrMousePointer = zoomOnCenterOrMousePointer;
+	}
+	
+	
 
 }
