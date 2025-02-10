@@ -325,9 +325,15 @@ public abstract class PanelGraphiqueBaseBase extends PanelGraphiqueBase<Object> 
 		MouseX = pt2.getX();
 		MouseY = pt2.getY();
 		
-		
+		repaint();
 
 	}
+	
+	public void mouseClicked(MouseEvent e) {
+
+		
+	}
+
 
 	public void keyReleased(java.awt.event.KeyEvent e)
 	{
@@ -425,7 +431,12 @@ public abstract class PanelGraphiqueBaseBase extends PanelGraphiqueBase<Object> 
 		}
 		repaint();
 	}
-
+	
+	public void keyTyped(java.awt.event.KeyEvent e)
+	{
+		
+	}
+	
 	double	tmp_scrollX		= 0;
 	double	tmp_scrollY		= 0;
 	double	final_scrollX	= 0;
