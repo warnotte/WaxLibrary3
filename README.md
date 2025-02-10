@@ -13,6 +13,6 @@ Maven artifact can be found on maven repository or here
 <dependency>
     <groupId>io.github.warnotte</groupId>
     <artifactId>waxlib3</artifactId>
-    <version>0.0.2.6</version>
+    <version>0.0.2.9</version>
 </dependency>
 ```
