@@ -551,7 +551,7 @@ public abstract class PanelGraphiqueBaseBase extends PanelGraphiqueBase<Object> 
 	*/
 	
 	public void mouseWheelMoved(MouseWheelEvent e) {
-		System.err.println("Neo");
+		//System.err.println("Neo");
 	    int dir = e.getWheelRotation();
 	    
 	    // Facteur de zoom dynamique pour éviter un zoom trop rapide à faible niveau
