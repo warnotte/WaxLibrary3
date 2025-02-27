@@ -1225,7 +1225,7 @@ public abstract class PanelGraphiqueBaseBase extends PanelGraphiqueBase<Object> 
 		return zoomOnCenterOrMousePointer;
 	}
 	public void setZoomOnCenterOrMousePointer(boolean zoomOnCenterOrMousePointer) {
-		zoomOnCenterOrMousePointer = zoomOnCenterOrMousePointer;
+		this.zoomOnCenterOrMousePointer = zoomOnCenterOrMousePointer;
 	}
 	
 	
