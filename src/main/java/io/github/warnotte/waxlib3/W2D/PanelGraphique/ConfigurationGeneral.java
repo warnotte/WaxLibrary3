@@ -32,6 +32,11 @@ public class ConfigurationGeneral
 														// plus ou moins pres
 														// des elements);
 	
+	// Draw the grid with spacing changing according to Zoom factor
+	@GUI_FIELD_TYPE(type = GUI_FIELD_TYPE.Type.CHECKBOX)
+	protected boolean 	DynamicGridSize 	= false;
+	
+	
 	public JFrame createFrame(MyEventListener list)
 	{
 		JFrame frame;
@@ -97,6 +102,14 @@ public class ConfigurationGeneral
 	public static synchronized void setMouseDetectionArea(double mouseDetectionArea)
 	{
 		MouseDetectionArea = mouseDetectionArea;
+	}
+
+	public boolean isDynamicGridSize() {
+		return DynamicGridSize;
+	}
+
+	public void setDynamicGridSize(boolean dynamicGridSize) {
+		DynamicGridSize = dynamicGridSize;
 	}
 
 

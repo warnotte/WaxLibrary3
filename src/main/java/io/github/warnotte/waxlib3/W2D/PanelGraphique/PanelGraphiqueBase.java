@@ -242,24 +242,29 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 		int	h	= getHeight();
 
 		double	space	= config.getGRID_SIZE() * Zoom;
+		if (config.isDynamicGridSize()==true)
+		{
+			space	= config.getGRID_SIZE() * Zoom/ 10;
+			if (Zoom < 50.0) 
+				space	= config.getGRID_SIZE() * Zoom * 1;
+			if (Zoom < 5.0) 
+				space	= config.getGRID_SIZE() * Zoom * 10;
+			if (Zoom < 0.5) 
+				space	= config.getGRID_SIZE() * Zoom * 100;
+			if (Zoom < 0.05) 
+				space	= config.getGRID_SIZE() * Zoom * 1000;
+		}
+		
 		double	ox		= ((ScrollX * Zoom) % (space));
 		double	oy		= ((ScrollY * Zoom) % (space));
 
-		//	if (LockScrollX==1)
-		//		ox=0;
-
 		g.translate(ox, oy);
-
 		g.translate(w / 2, h / 2);
 
 		g.setColor(getColorConfig().getCOLOR_GRILLE_1().getColor());
 		for (double x = 0; x < w / 2 + space; x += space)
 		{
-			/*
-			 * Line2D.Double line1 = new Line2D.Double(x, -(h / 2.0 + space), x,
-			 * (h / 2.0 + space)); Line2D.Double line2 = new
-			 * Line2D.Double(-x,-(h / 2.0 + space), -x, (h / 2 + space));
-			 */ g.drawLine((int) x, (int) -(h / 2 + space), (int) x, (int) (h / 2 + space));
+			g.drawLine((int) x, (int) -(h / 2 + space), (int) x, (int) (h / 2 + space));
 			g.drawLine((int) -x, (int) -(h / 2 + space), (int) -x, (int) (h / 2 + space));
 		}
 		for (double y = 0; y < h / 2 + space; y += space)
@@ -269,7 +274,6 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 		}
 
 		g.translate(-ox, -oy);
-
 		g.translate(-w / 2, -h / 2);
 
 		if (DrawCentralAxis == true)
