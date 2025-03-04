@@ -11,7 +11,7 @@ import io.github.warnotte.waxlib3.core.TemplatePropertyMerger.property_mode;
 
 
 /**
- * Utilis�e pour Merger des propriet�es.
+ * Utilisée pour Merger des proprietés.
  * @author Warnotte Renaud.
  *
  */
@@ -22,7 +22,7 @@ public @interface PROPERTY_interface {
 	
 	public enum gui_type {DEFAULTBYRETURNTYPE, FLATSLIDER, SLIDER, TEXTFIELD, DECIMALFORMATTEDTEXTFIELD, MASKFORMATTEDTEXTFIELD, REGEXPFORMATTEDFIELD, TEXTPANE, TEXTAREA, COMBO}
 	
-	// L'operation utilis�e en cas de multiple selection.	
+	// L'operation utilisée en cas de multiple selection.	
 	property_mode Operation() default property_mode.PROPERTY_MERGEABLE;
 	
 	gui_type gui_type() default gui_type.DEFAULTBYRETURNTYPE;
@@ -39,7 +39,7 @@ public @interface PROPERTY_interface {
 	boolean isDisplayLabel() default true;
 	
 	/**
-	 * Utilis� avec un type file pour specifier si on vx uniquement les repertoire.
+	 * Utilisé avec un type file pour specifier si on vx uniquement les repertoire.
 	 * @return
 	 */
 	boolean isDirectoryOnly() default false;

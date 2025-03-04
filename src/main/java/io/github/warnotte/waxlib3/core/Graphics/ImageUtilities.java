@@ -33,15 +33,11 @@ public class ImageUtilities
 {
 
 	/**
-	 * Permet de r�cup�rer une ImageIcon d'une taille bien pr�cise (avec un
-	 * SCALE_SMOOTH)
+	 * Permet de récupérer une ImageIcon d'une taille bien précise (avec un SCALE_SMOOTH)
 	 * 
-	 * @param Le
-	 *            nom du fichier image
-	 * @param Taille
-	 *            W de l'image
-	 * @param Taille
-	 *            H de l'image
+	 * @param Le nom du fichier image
+	 * @param Taille W de l'image
+	 * @param Taille H de l'image
 	 * @return
 	 */
 	public static ImageIcon getImageIconResized(String imageIcon, int sx, int sy)

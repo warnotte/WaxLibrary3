@@ -5,8 +5,8 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * Cette merveilleuse classe va permettre de faire rapidement une recherche parmis une collection pass�e
- * en paremetre et retourne une liste des elements qui matche le crit�re.
+ * Cette merveilleuse classe va permettre de faire rapidement une recherche parmis une collection passée
+ * en paremetre et retourne une liste des elements qui matche le critère.
  * @author Warnotte Renaud 2010
  * @param <T>
  */
@@ -14,10 +14,10 @@ public class WCollectionFilterBase<T>
 {
 
 	/**
-	 * Fonction de recherche +- evolu�e qui retourne une liste des eleements dont une variable dans la classe
+	 * Fonction de recherche +- evoluée qui retourne une liste des elements dont une variable dans la classe
 	 * s'apellant Field_name, a une valeur qui est egale a Object_to_match.
 	 * @param Field_name nom de la variable de la classe.
-	 * @param value_to_match La valeur du champs recherch�e.
+	 * @param value_to_match La valeur du champs recherchée.
 	 * @param EqualsOrDifferent == ou alors !=
 	 * @return ArrayList<T>
 	 * @throws Exception 

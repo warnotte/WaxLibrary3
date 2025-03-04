@@ -19,7 +19,7 @@ public class JTextAreaOutputStream extends OutputStream {
 
    /**
     * Method JTextAreaOutputStream.
-    * @param aTextArea le JTextArea qui recevra les caract�res.
+    * @param aTextArea le JTextArea qui recevra les caractères.
     */
    public JTextAreaOutputStream(JTextArea aTextArea) {
       m_textArea = aTextArea;

@@ -231,7 +231,7 @@ public class RunTimeExceptionDialog extends JFrame
 		{
 			jButton_QUIT = new JButton();
 			jButton_QUIT.setText("Quit");
-			jButton_QUIT.setToolTipText("Ceci quitte le programme de mani�re brusque");
+			jButton_QUIT.setToolTipText("Ceci quitte le programme de manière brusque");
 			jButton_QUIT.addActionListener(new java.awt.event.ActionListener()
 			{
 				public void actionPerformed(java.awt.event.ActionEvent e)

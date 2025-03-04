@@ -103,7 +103,7 @@ public class ParseurAnnotations {
 			frame.setVisible(true);
 			frame.setLayout(new BorderLayout());
 			
-			// Cr�e ces 3 panels sans ajouter la variable change listener qui pompe les ressources si 10000 de changements
+			// Crée ces 3 panels sans ajouter la variable change listener qui pompe les ressources si 10000 de changements
 			final JWPanel panel = (JWPanel) ParseurAnnotations.CreatePanelFromObject(Frametitle, object,false);
 
 			panel.addMyEventListener(eventListener);
@@ -176,7 +176,7 @@ public class ParseurAnnotations {
 		boolean TreePaneStyle = false; 
 		if (object_to_bind==null)
 			return new JWPanel();
-		// On r�cup�re la classe de l'objet :
+		// On récupère la classe de l'objet :
 		Class<?> classInstance = object_to_bind.getClass();
 		
 		
@@ -466,7 +466,7 @@ public class ParseurAnnotations {
 	}
 
 	/**
-	 * Cr�e un bouton pour les annotation CALLBACK afin d'appeler la methode demand�e dans la classe.
+	 * Crée un bouton pour les annotation CALLBACK afin d'appeler la methode demandée dans la classe.
 	 * @param anot Annotations
 	 * @param object_to_bind Objet a binder.
 	 * @param parent_panel Panel parent pour la messagerie.
@@ -485,9 +485,9 @@ public class ParseurAnnotations {
 		    public void actionPerformed(java.awt.event.ActionEvent e) {
 		    	try
 				{
-		    		// Appelle la methode qui est bind�e au bouton.
+		    		// Appelle la methode qui est bindée au bouton.
 		    		method_to_call.invoke(object_to_bind);
-					// Envoye un evenement au "client" afin qu'il sache qu'il s'est pass� un truc. (et que donc il doit probablement refresh).
+					// Envoye un evenement au "client" afin qu'il sache qu'il s'est passé un truc. (et que donc il doit probablement refresh).
 					parent_panel.fireMyEvent(new MyChangedEvent(this,null));
 				} 
 		    	catch (IllegalArgumentException e1)
@@ -588,7 +588,7 @@ public class ParseurAnnotations {
 		
 		JComponent component = null;
 		if (VERBOSE==true)
-		System.err.println("Veux cr�er un "+anot);
+		System.err.println("Veux créer un "+anot);
 		//return new JLabel(""+ObjectToMap);
 		// Recuperer la valeur de la variable en utilisant son GET
 		Object Value = lancerMethode(ObjectToMap ,null, method_get.getName());
@@ -998,9 +998,9 @@ public class ParseurAnnotations {
 	
 	/**
 	 * Cree un panel a partir d'un vecteur. Ce panel va comporter une Jlist des elements du vecteur ainsi que 
-	 * le panel properties associ�s a l'elment selectionn� dans la liste.
+	 * le panel properties associés a l'elment selectionné dans la liste.
 	 * @param vector Le vecteur d'elements
-	 * @param pane La ou on vx mettre le panel des propriet�es de l'element de la liste selectionn�
+	 * @param pane La ou on vx mettre le panel des proprietées de l'element de la liste selectionné
 	 * @return
 	 */
 	private static JComponent Cree_un_Panel_Liste(AbstractList<?> vector, final JPanel pane,JWPanel parent_panel, String named)

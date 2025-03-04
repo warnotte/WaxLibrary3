@@ -17,7 +17,7 @@ import io.github.warnotte.waxlib3.OBJ2GUI.ParseurAnnotations;
 public class SetModelListenerM extends BaseListener implements ListSelectionListener {
 
 	JList jtf = null; // La Liste
-	AbstractSet<?> elements = null; // Les elements	de la JListe --> Les Cl�es 
+	AbstractSet<?> elements = null; // Les elements	de la JListe --> Les Clées 
 	JPanel pane = null; // Le panel qui sera celui a mettre d'un element de la JList
 	
 	//public ListModelListenerM(JList jtf1, JPanel panel, AbstractList elements)
@@ -31,13 +31,13 @@ public class SetModelListenerM extends BaseListener implements ListSelectionList
 	
 	public void valueChanged(javax.swing.event.ListSelectionEvent e)
 	{
-		// Si le user selectionne un element de la JList alors on rafraichis le panel cible avec l'objet selectionn�e dans la liste en demandant au super generateur
-		// Recupere la cl�s selctionn�e
+		// Si le user selectionne un element de la JList alors on rafraichis le panel cible avec l'objet selectionnée dans la liste en demandant au super generateur
+		// Recupere la clés selctionnée
 		Object obj = jtf.getSelectedValue();
 		//int idx = jtf.getSelectedIndex();
 		try
 		{
-			// Recupere l'objet a partir de la AbstractMap (grace a la cl�)
+			// Recupere l'objet a partir de la AbstractMap (grace a la clé)
 			ParseurAnnotations.Refresh_PanelEditor_For_Object("",pane,obj,parent_panel, false);
 			sendRefresh(jtf);
 		} 

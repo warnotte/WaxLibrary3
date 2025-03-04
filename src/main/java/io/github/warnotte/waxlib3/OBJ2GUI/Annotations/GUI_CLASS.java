@@ -12,10 +12,10 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 public @interface GUI_CLASS {
 	
-	/** Enum�ration des diff�rents niveaux de criticit�s. 
+	/** Enumération des différents niveaux de criticités. 
 	 * BoxLayout : LINE, PAGE, X, Y
 	 * FlowLayout : LEFT TO RIGHT, RIGHT TO LEFT
-	 * GridLayout : Nombre de Colonne, et de rang�e ?!
+	 * GridLayout : Nombre de Colonne, et de rangée ?!
 	 * Absolute : Il faut une taille de panel je pense + la position de chaque field (si pas de position alors mettre en Y Layout style
 	 */
 	public static enum Type {BoxLayout, FlowLayout, GridLayout, Absolute, TabbedPane, TreePane/*, CardLayout*/};

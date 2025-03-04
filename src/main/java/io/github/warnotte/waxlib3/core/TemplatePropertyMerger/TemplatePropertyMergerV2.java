@@ -112,8 +112,8 @@ public class TemplatePropertyMergerV2
 	}
 
 	/**
-	 * Retrie la liste des methods en regardant si orderDisplay est pr�sent dans l'eventuelle annotations d'une m�thode
-	 * Permet d'avoir toujours la liste dans le m�me ordre (getMethods() ne fournissant aucune garantie quand a l'ordre de retour).
+	 * Retrie la liste des methods en regardant si orderDisplay est présent dans l'eventuelle annotations d'une méthode
+	 * Permet d'avoir toujours la liste dans le même ordre (getMethods() ne fournissant aucune garantie quand a l'ordre de retour).
 	 * @param dudus
 	 */
 	private static void RetrieEditableMethod(List<editablemethod> dudus)

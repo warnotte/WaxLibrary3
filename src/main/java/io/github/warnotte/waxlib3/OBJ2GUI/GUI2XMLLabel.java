@@ -46,8 +46,8 @@ import io.github.warnotte.waxlib3.waxlibswingcomponents.Swing.Component.WaxSlide
 import io.github.warnotte.waxlib3.waxlibswingcomponents.Swing.Component.WaxSlider.WRoundSlider;
 
 /**
- * Classe permettant de sauvegarder/charger un XML � partir ou vers un GUI genere par ParseurAnnotations
- * afin de customiser les labels ainsi que les tooltips gener� par le guiifieur et qui sont plutot codeur orient�
+ * Classe permettant de sauvegarder/charger un XML à partir ou vers un GUI genere par ParseurAnnotations
+ * afin de customiser les labels ainsi que les tooltips generé par le guiifieur et qui sont plutot codeur orienté
  * @author Warnotte Renaud Novembre 2007
  *
  */
@@ -73,7 +73,7 @@ public class GUI2XMLLabel {
 		frame.setVisible(true);
 		frame.setLayout(new BorderLayout());
 		
-		// Cr�e ces 3 panels sans ajouter la variable change listener qui pompe les ressources si 10000 de changements
+		// Crée ces 3 panels sans ajouter la variable change listener qui pompe les ressources si 10000 de changements
 		final JWPanel panel = (JWPanel) ParseurAnnotations.CreatePanelFromObject("Main configuration", objet,false);
 		
 		panel.addMyEventListener(new MyEventListener()

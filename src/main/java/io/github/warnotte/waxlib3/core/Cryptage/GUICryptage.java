@@ -204,23 +204,23 @@ public class GUICryptage extends JFrame {
     		try {
     		choisis_cle(null);
 		} catch (InvalidKeyException e1) {
-		    DialogDivers.Show_dialog(e1, "Erreur pdt le choix de la cl�", GUICryptage.this);
+		    DialogDivers.Show_dialog(e1, "Erreur pdt le choix de la clé", GUICryptage.this);
 		    e1.printStackTrace();
 		} catch (NoSuchAlgorithmException e1) {
-		    DialogDivers.Show_dialog(e1, "Erreur pdt le choix de la cl�", GUICryptage.this);
+		    DialogDivers.Show_dialog(e1, "Erreur pdt le choix de la clé", GUICryptage.this);
 		    e1.printStackTrace();
 		} catch (NoSuchPaddingException e1) {
-		    DialogDivers.Show_dialog(e1, "Erreur pdt le choix de la cl�", GUICryptage.this);
+		    DialogDivers.Show_dialog(e1, "Erreur pdt le choix de la clé", GUICryptage.this);
 		    e1.printStackTrace();
 		} catch (IOException e1) {
-		    DialogDivers.Show_dialog(e1, "Erreur pdt le choix de la cl�", GUICryptage.this);
+		    DialogDivers.Show_dialog(e1, "Erreur pdt le choix de la clé", GUICryptage.this);
 		    e1.printStackTrace();
 		} catch (ClassNotFoundException e1) {
-			DialogDivers.Show_dialog(e1, "Erreur pdt le choix de la cl�", GUICryptage.this);
+			DialogDivers.Show_dialog(e1, "Erreur pdt le choix de la clé", GUICryptage.this);
 		    e1.printStackTrace();
 		} catch (Exception e1)
 		{
-			DialogDivers.Show_dialog(e1, "Erreur pdt le choix de la cl�", GUICryptage.this);
+			DialogDivers.Show_dialog(e1, "Erreur pdt le choix de la clé", GUICryptage.this);
 			e1.printStackTrace();
 		}
     	    }
@@ -238,7 +238,7 @@ public class GUICryptage extends JFrame {
     private JButton getJButton_KEYGENERATIOn() {
         if (jButton_KEYGENERATIOn == null) {
     	jButton_KEYGENERATIOn = new JButton();
-    	jButton_KEYGENERATIOn.setText("Generation d'une cl�");
+    	jButton_KEYGENERATIOn.setText("Generation d'une clé");
     	jButton_KEYGENERATIOn.addActionListener(new java.awt.event.ActionListener() {
     	    public void actionPerformed(java.awt.event.ActionEvent e) {
     		generate_key();
@@ -356,7 +356,7 @@ public class GUICryptage extends JFrame {
     			try {
 			    load_file_to_edit();
 			} catch (Exception e1) {
-			    DialogDivers.Show_dialog(e1, "Erreur durant le chargement du fichier crypt�", GUICryptage.this);
+			    DialogDivers.Show_dialog(e1, "Erreur durant le chargement du fichier crypté", GUICryptage.this);
 			    e1.printStackTrace();
 			} 
     		    }
@@ -380,7 +380,7 @@ public class GUICryptage extends JFrame {
     			try {
 			    save_file_to_edit();
 			} catch (Exception e1) {
-			    DialogDivers.Show_dialog(e1, "Erreur durant le chargement du fichier crypt�", GUICryptage.this);
+			    DialogDivers.Show_dialog(e1, "Erreur durant le chargement du fichier crypté", GUICryptage.this);
 			    e1.printStackTrace();
 			} 
     		    }
@@ -402,7 +402,7 @@ public class GUICryptage extends JFrame {
 		AESEncrypter.writeNewKey(filename);
 		choisis_cle(filename);
 	    } catch (Exception e) {
-		DialogDivers.Show_dialog(e, "Erreur durant l'ecriture de la cl�", this);
+		DialogDivers.Show_dialog(e, "Erreur durant l'ecriture de la clé", this);
 	    }
 	}
 	else
@@ -444,7 +444,7 @@ public class GUICryptage extends JFrame {
 	    DialogDivers.Show_dialog(null, "Veuillez choisir un fichier qui existe pour crypter", this);
 	}
 	else
-	    DialogDivers.Show_dialog(null, "Veuillez choisir une cl� avant...", this);
+	    DialogDivers.Show_dialog(null, "Veuillez choisir une clé avant...", this);
     }
     
     private void decrypte_fichier() throws Exception {
@@ -462,7 +462,7 @@ public class GUICryptage extends JFrame {
 	    DialogDivers.Show_dialog(null, "Veuillez choisir un fichier qui existe pour crypter", this);
 	}
 	else
-	    DialogDivers.Show_dialog(null, "Veuillez choisir une cl� avant...", this);
+	    DialogDivers.Show_dialog(null, "Veuillez choisir une clé avant...", this);
 	
     }
 
@@ -483,7 +483,7 @@ public class GUICryptage extends JFrame {
 	    DialogDivers.Show_dialog(null, "Veuillez choisir un fichier qui existe pour crypter", this);
 	}
 	else
-	    DialogDivers.Show_dialog(null, "Veuillez choisir une cl� avant...", this);
+	    DialogDivers.Show_dialog(null, "Veuillez choisir une clé avant...", this);
 	
     }
     
@@ -503,7 +503,7 @@ public class GUICryptage extends JFrame {
 	    DialogDivers.Show_dialog(null, "Veuillez choisir un fichier qui existe pour crypter", this);
 	}
 	else
-	    DialogDivers.Show_dialog(null, "Veuillez choisir une cl� avant...", this);
+	    DialogDivers.Show_dialog(null, "Veuillez choisir une clé avant...", this);
 	
     }
     public static void main(String []args)

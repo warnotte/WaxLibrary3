@@ -122,7 +122,7 @@ public class WRoundSlider extends javax.swing.JPanel implements ComponentListene
 			{
 				IMG_Fond.flush();
 			}
-			IMG_Fond = null; // Prions pour qu'il desinitialise la m�moire ??!
+			IMG_Fond = null; // Prions pour qu'il desinitialise la mémoire ??!
 			
 			
 			IMG_Fond =new BufferedImage(w,h, BufferedImage.TYPE_INT_ARGB);
@@ -142,7 +142,7 @@ public class WRoundSlider extends javax.swing.JPanel implements ComponentListene
 		// GraphicsConfiguration gc = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration();
 		if (IMG_Viseur!=null)
 			IMG_Viseur.flush();
-		IMG_Viseur = null; // Prions pour qu'il desinitialise la m�moire ??!
+		IMG_Viseur = null; // Prions pour qu'il desinitialise la mémoire ??!
 		
 		IMG_Viseur =new BufferedImage(viseur_size, viseur_size, BufferedImage.TYPE_INT_ARGB);
 
@@ -321,7 +321,7 @@ public class WRoundSlider extends javax.swing.JPanel implements ComponentListene
     		
     	}
     	
-    	// Si la valeur a chang�e on redessine pas ...
+    	// Si la valeur a changée on redessine pas ...
     	// Ou qu'on est pas en autodrag
         if ((old_value!=value) || (isEnableAutoAdjustWhileDrag()==false))
         {
@@ -355,7 +355,7 @@ public class WRoundSlider extends javax.swing.JPanel implements ComponentListene
 
 	////// CALCULS ET AUTRES SINGERIES /////////////////////////////////////////////
     /**
-     * Recupere le cadran selectionn� du cercle (sachant que le millieu est en 0,0)
+     * Recupere le cadran selectionné du cercle (sachant que le millieu est en 0,0)
      * @param mx
      * @param my
      * @return 1 = BD; 2 = BG (bas gauche); 3 = HG; 4 = HD (haut droite)
@@ -370,7 +370,7 @@ public class WRoundSlider extends javax.swing.JPanel implements ComponentListene
 	}
 	/**
 	 * Map la valeur de l'angle avec l'etendue Min Max pour un cercle a l'angle_max.
-	 * @param angle Angle a mapp�
+	 * @param angle Angle a mapper
 	 * @param min Valeur min du map
 	 * @param max Valeur max du map
 	 * @param angle_max Angle maximum (generalement 360) du cercle.
@@ -431,7 +431,7 @@ public class WRoundSlider extends javax.swing.JPanel implements ComponentListene
 	         return angletmp;
 		}
     /**
-     * Recupere la position en X dans le cercle pour une amplitude donn�e
+     * Recupere la position en X dans le cercle pour une amplitude donnée
      * @param radangle l'angle en radien
      * @param distFromPeri la distance a partir du centre du cercle
      * @return
@@ -441,7 +441,7 @@ public class WRoundSlider extends javax.swing.JPanel implements ComponentListene
         return (int)((float)size/(float)2 + Math.cos(radangle)*(((float)size/(float)2)-distFromPeri));
     }
     /**
-     * Recupere la position en Y dans le cercle pour une amplitude donn�e
+     * Recupere la position en Y dans le cercle pour une amplitude donnée
      * @param radangle l'angle en radien
      * @param distFromPeri la distance a partir du centre du cercle
      * @return
@@ -525,7 +525,7 @@ public class WRoundSlider extends javax.swing.JPanel implements ComponentListene
     }
     
     /**
-     * Dessine une ligne a l'angle demand�.
+     * Dessine une ligne a l'angle demandé.
      * @param g
      * @param Angle
      */
@@ -639,7 +639,7 @@ public class WRoundSlider extends javax.swing.JPanel implements ComponentListene
         
         g.drawImage(IMG_Fond, 0,0, this);
         
-        // Calcule la position ou l'on doit afficher le viseur (son centre de gravit�)
+        // Calcule la position ou l'on doit afficher le viseur (son centre de gravité)
         int XX = size-getX(Math.toRadians(angle+AngleOffset), dist);
         int YY = size-getY(Math.toRadians(angle+AngleOffset), dist);
 
@@ -966,7 +966,7 @@ return;
 }
 
 //If you're here, the return value was null/empty.
-System.err.println("Valeur non rentr�e");
+System.err.println("Valeur non rentrée");
 		
 	}
 

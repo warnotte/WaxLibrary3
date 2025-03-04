@@ -337,7 +337,7 @@ public class DialogDivers
 	 */
 	public static void center(JFrame frame)
 	{
-		// Semble d�conner.
+		// Semble déconner.
 		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 		Point center = ge.getCenterPoint();
 		// Rectangle bounds = ge.getMaximumWindowBounds();

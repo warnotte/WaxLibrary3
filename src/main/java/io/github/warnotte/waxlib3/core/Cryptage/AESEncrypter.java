@@ -115,9 +115,9 @@ public class AESEncrypter
         err9     = "Erreur de génération de la clef de cryptage";
     }
 
-    /**M�thode de cryptage d'un string
-     * @param str Texte d�crypt�
-     * @return Texte crypt�
+    /**Méthode de cryptage d'un string
+     * @param str Texte décrypté
+     * @return Texte crypté
      * @throws BadPaddingException 
      * @throws IllegalBlockSizeException 
      * @throws UnsupportedEncodingException 
@@ -149,9 +149,9 @@ public class AESEncrypter
         }*/
     }
 
-    /** M�thode de d�cryptage d'un string
-     * @param str Texte crypt�
-     * @return Texte d�crypt�
+    /** Méthode de décryptage d'un string
+     * @param str Texte crypté
+     * @return Texte décrypté
      * @throws BadPaddingException 
      * @throws IllegalBlockSizeException 
      * @throws IOException 

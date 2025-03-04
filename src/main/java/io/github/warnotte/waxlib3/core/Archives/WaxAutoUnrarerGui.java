@@ -237,7 +237,7 @@ public class WaxAutoUnrarerGui extends JFrame {
 				Cleaner.clean(path);
 			
 			setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-			show_dialog(null,"Vous avez execut�s "+nbr_cmd+" commandes");
+			show_dialog(null,"Vous avez executés "+nbr_cmd+" commandes");
 		}
 		else
 		{
@@ -515,7 +515,7 @@ public class WaxAutoUnrarerGui extends JFrame {
 	}
 
 	protected void cancel() {
-		// TODO : Faut absolument verifier que le processus dos soit bien vir�s
+		// TODO : Faut absolument verifier que le processus dos soit bien virés
 		if (thread_decompression!=null)
 			if (thread_decompression.isAlive()==true)
 			{

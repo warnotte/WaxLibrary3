@@ -41,7 +41,7 @@ public class EssaiMain extends BaseEssai<Material>
 		
 System.err.println("*2********");
 		
-		// Rercher plus compliqu�e sur plusieur champs si on veux.
+		// Rercher plus compliquée sur plusieur champs si on veux.
 		BaseComparator<Material> compareur = new BaseComparator<>(){
 			@Override
 			public boolean isInCriterias(Object o)
@@ -63,7 +63,7 @@ System.err.println("*2********");
 		
 System.err.println("*3********");
 		
-		// Rercher plus compliqu�e sur plusieur champs si on veux.
+		// Rercher plus compliquée sur plusieur champs si on veux.
 		BaseComparator<Material> compareur2 = new BaseComparator<>(){
 			@Override
 			public boolean isInCriterias(Object o)

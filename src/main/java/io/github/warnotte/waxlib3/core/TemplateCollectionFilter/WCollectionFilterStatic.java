@@ -39,7 +39,7 @@ public class WCollectionFilterStatic {
 		}
 		catch (NoSuchFieldException e)
 		{
-			String rep = "NoSuchField : La variable ["+Field_name+"] n'existe probablement pas ou mal orthographi� :"+e;
+			String rep = "NoSuchField : La variable ["+Field_name+"] n'existe probablement pas ou mal orthographiée :"+e;
 			throw new Exception(rep);
 		}
 	}

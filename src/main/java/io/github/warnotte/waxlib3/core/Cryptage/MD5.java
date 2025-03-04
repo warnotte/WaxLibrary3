@@ -8,9 +8,9 @@ public class MD5
 {
 
 	/*
-	 * Encode la chaine pass� en param�tre avec l�algorithme MD5
-	 * @param key : la chaine � encoder
-	 * @return la valeur (string) hexad�cimale sur 32 bits
+	 * Encode la chaine passé en paramètre avec l'algorithme MD5
+	 * @param key : la chaine à encoder
+	 * @return la valeur (string) hexadécimale sur 32 bits
 	 */
 
 	public static String encode(String key)
@@ -21,7 +21,7 @@ public class MD5
 
 		try
 		{
-			// on r�cup�re un objet qui permettra de crypter la chaine
+			// on récupère un objet qui permettra de crypter la chaine
 			hash = MessageDigest.getInstance("MD5").digest(uniqueKey);
 		}
 		catch (NoSuchAlgorithmException e)
@@ -45,11 +45,11 @@ public class MD5
 		return hashString.toString();
 	}
 
-	// m�thode principale
+	// méthode principale
 
 	public static void main(String[] args)
 	{
-		System.out.println("La chaine : P@ssWord, crypt�e via MD5 donne : " + MD5.encode("P@ssWord"));
+		System.out.println("La chaine : P@ssWord, cryptée via MD5 donne : " + MD5.encode("P@ssWord"));
 	}
 
 }

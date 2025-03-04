@@ -8,7 +8,7 @@ public class Material
 	double YieldStress=355;
 	double PoissonCoefficient=0.3;
 	double SpecificWeight=7850; // kg/m3
-	String Label = "FerailleRouill�e"; // Oui Oui de le FERaille Jd ;D
+	String Label = "FerailleRouillée"; // Oui Oui de le FERaille Jd ;D
 	
 	
 	@Override

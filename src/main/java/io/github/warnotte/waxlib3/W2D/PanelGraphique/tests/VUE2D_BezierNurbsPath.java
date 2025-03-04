@@ -183,7 +183,7 @@ public class VUE2D_BezierNurbsPath extends PanelGraphiqueBaseBase
 			 * curves.get(i); drawNurbsCurve(g, curve1, true); }
 			 * 
 			 * g.setColor(new Color(0,0,255,16)); // Dessin un beateau qui se
-			 * prom�ne...
+			 * promène...
 			 * 
 			 * 
 			 * for (int i = -16; i < 16; i++) { Point2D.Double posBateau =

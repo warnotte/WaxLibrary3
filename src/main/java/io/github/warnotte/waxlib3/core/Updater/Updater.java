@@ -45,10 +45,10 @@ public class Updater
 		// Si la version est nulle
 		if (versions.size() == 0)
 		{
-			//JOptionPane.showMessageDialog(null, "Impossible de se connecter au service, v�rifiez votre " + "connection internet");
+			//JOptionPane.showMessageDialog(null, "Impossible de se connecter au service, vérifiez votre " + "connection internet");
 		} else
 		{
-			// Si la derni�re version n'est pas la m�me que l'actuelle
+			// Si la dernière version n'est pas la même que l'actuelle
 
 			String lastVersionOnServer = versions.get(versions.size() - 1);			
 			
@@ -62,8 +62,8 @@ public class Updater
 	}
 
 	/**
-	 * Cette m�thode permet de mettre � jour votre programme, elle va chercher
-	 * sur internet la derni�re version disponible et effectue la mise � jour
+	 * Cette méthode permet de mettre à jour votre programme, elle va chercher
+	 * sur internet la dernière version disponible et effectue la mise à jour
 	 * selon le consentement de l'utilisateur
 	 */
 	public boolean update(String xmlPath, String actualVersion)
@@ -73,10 +73,10 @@ public class Updater
 		// Si la version est nulle
 		if (versions.size() == 0)
 		{
-			JOptionPane.showMessageDialog(null, "Impossible de se connecter au service, v�rifiez votre " + "connection internet");
+			JOptionPane.showMessageDialog(null, "Impossible de se connecter au service, vérifiez votre " + "connection internet");
 		} else
 		{
-			// Si la derni�re version n'est pas la m�me que l'actuelle
+			// Si la dernière version n'est pas la même que l'actuelle
 
 			String lastVersionOnServer = versions.get(versions.size() - 1);
 			
@@ -93,7 +93,7 @@ public class Updater
 					return false;
 				}
 
-				// S'il veut la t�l�charger
+				// S'il veut la télécharger
 				if (versionChoisie != "")
 				{
 					Element racine = xmlDocument.getRootElement();
@@ -112,8 +112,7 @@ public class Updater
 
 						Element elementNom = version.getChild("nom");
 
-						// Si c'est la bonne version, on t�l�charge tous ses
-						// fichiers
+						// Si c'est la bonne version, on télécharge tous ses fichiers
 						if (elementNom.getText().equals(versionChoisie))
 						{
 							// Element elementFiles = version.getChild("files");
@@ -135,7 +134,7 @@ public class Updater
 							url = url.replace("\n", "");
 							url = url.replace("\r", "");
 							System.err.println("Download file from " + url);
-							// On t�l�charge le fichier
+							// On télécharge le fichier
 
 							try
 							{
@@ -156,13 +155,13 @@ public class Updater
 					{
 						// File lanceur = new File(lanceurPath);
 						// On lance le lanceur
-						JOptionPane.showMessageDialog(null, "La nouvelle version a �t� t�l�charg�e dans " + destination + " lancement de l'installation");
+						JOptionPane.showMessageDialog(null, "La nouvelle version a été téléchargée dans " + destination + " lancement de l'installation");
 						openURL(destination);
 						// On quitte le programme
 						System.exit(0);
 					} else if (method.contains("zip"))
 					{
-						JOptionPane.showMessageDialog(null, "La nouvelle version a �t� t�l�charg�e dans " + destination);
+						JOptionPane.showMessageDialog(null, "La nouvelle version a été téléchargée dans " + destination);
 						openURL(destination);
 						return true;
 					}
@@ -289,7 +288,7 @@ public class Updater
 	}
 
 	/**
-	 * Cette m�thode va chercher sur internet les versions disponibles pour
+	 * Cette méthode va chercher sur internet les versions disponibles pour
 	 * l'application
 	 * 
 	 * @return les versions disponibles
@@ -309,12 +308,12 @@ public class Updater
 			// On se connecte sur cette page
 			urlConnection.connect();
 
-			// On r�cup�re le fichier XML sous forme de flux
+			// On récupère le fichier XML sous forme de flux
 			InputStream stream = urlConnection.getInputStream();
 
 			SAXBuilder sxb = new SAXBuilder();
 
-			// On cr�e le document xml avec son flux
+			// On crée le document xml avec son flux
 			try
 			{
 				xmlDocument = sxb.build(stream);
@@ -326,7 +325,7 @@ public class Updater
 				e.printStackTrace();
 			}
 
-			// On r�cup�re la racine
+			// On récupère la racine
 			Element racine = xmlDocument.getRootElement();
 
 			// On liste toutes les versions
@@ -358,12 +357,10 @@ public class Updater
 	}
 
 	/**
-	 * Cette m�thode t�l�charge une fichier sur internet et le stocke en local
+	 * Cette méthode télécharge une fichier sur internet et le stocke en local
 	 * 
-	 * @param filePath
-	 *            , chemin du fichier � t�l�charger
-	 * @param destination
-	 *            , chemin du fichier en local
+	 * @param filePath chemin du fichier à télécharger
+	 * @param destination chemin du fichier en local
 	 * @throws Exception
 	 */
 	private void downloadFile(String filePath, String destination) throws Exception
@@ -378,15 +375,15 @@ public class Updater
 	
 			try
 			{
-				// On cr�e l'URL
+				// On crée l'URL
 				URL url = new URL(filePath);
 	
-				// On cr�e une connection vers cet URL
+				// On crée une connection vers cet URL
 				connection = url.openConnection();
 	
 				if (connection == null)
 					throw new Exception("Not a valid url " + filePath);
-				// On r�cup�re la taille du fichier
+				// On récupère la taille du fichier
 				int length = connection.getContentLength();
 	
 				// Si le fichier est inexistant, on lance une exception
@@ -395,12 +392,12 @@ public class Updater
 					throw new IOException("Fichier vide");
 				}
 	
-				// On r�cup�re le stream du fichier
+				// On récupère le stream du fichier
 				is = new BufferedInputStream(connection.getInputStream());
 	/*
 				if (is == null)
 					throw new Exception("Not a valid url " + filePath);
-				// On pr�pare le tableau de bits pour les donn�es du fichier
+				// On prépare le tableau de bits pour les données du fichier
 				*/
 				
 				File f = new File("downloads");
@@ -411,7 +408,7 @@ public class Updater
 				
 				
 				
-				// On cr�e un stream sortant vers la destination
+				// On crée un stream sortant vers la destination
 			//	destinationFile = ;
 				
 				destinationFile = new BufferedOutputStream(new FileOutputStream(destination));
@@ -420,13 +417,13 @@ public class Updater
 				
 				data = new byte[1]; // si ut mets pas un buffer de 1 ca foire il ecrit trop.
 	
-				// On d�clare les variables pour se retrouver dans la lecture du
+				// On déclare les variables pour se retrouver dans la lecture du
 				// fichier
 				int currentBit = 0;
 				int deplacement = 0;
 	
-				// Tant que l'on n'est pas � la fin du fichier, on r�cup�re des
-				// donn�es
+				// Tant que l'on n'est pas à la fin du fichier, on récupère des
+				// données
 				int transfertrate = 0;  
 				
 				dpf.setProgress(0, deplacement, length,transfertrate, 9999999);
@@ -437,7 +434,7 @@ public class Updater
 					currentBit = is.read(data, 0, data.length);
 					if (currentBit == -1)
 						break;
-					// On �crit les donn�es du fichier dans ce stream
+					// On écrit les données du fichier dans ce stream
 					destinationFile.write(data);
 					
 					deplacement += currentBit;
@@ -463,10 +460,10 @@ public class Updater
 				}
 				dpf.setProgress((100), deplacement, length, 0,0);
 	
-				// Si on est pas arriv� � la fin du fichier, on lance une exception
+				// Si on est pas arrivé à la fin du fichier, on lance une exception
 				if (deplacement != length)
 				{
-					throw new IOException("Le fichier n'a pas �t� lu en entier (seulement " + deplacement + " sur " + length + ")");
+					throw new IOException("Le fichier n'a pas été lu en entier (seulement " + deplacement + " sur " + length + ")");
 				}
 	
 	
@@ -486,7 +483,7 @@ public class Updater
 			} 
 			catch (MalformedURLException e)
 			{
-				System.err.println("Probl�me avec l'URL : " + filePath);
+				System.err.println("Problème avec l'URL : " + filePath);
 			}
 			catch (IndexOutOfBoundsException e)
 			{

@@ -170,7 +170,7 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 	{
 		this.addComponentListener(this);
 
-		// Je me demande pourquoi j'ai foutu ces 3 merdeuse ligne, car apr�s le programme
+		// Je me demande pourquoi j'ai foutu ces 3 merdeuse ligne, car après le programme
 		// n'accepte plus les tabulations. 
 		//	KeyboardFocusManager kfm = KeyboardFocusManager.getCurrentKeyboardFocusManager();
 		//	kfm.setDefaultFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, Collections.EMPTY_SET);
@@ -689,7 +689,7 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 		double	x	= X;
 		double	y	= Y;
 
-		// Facteur pour mettre le dessin centr� 
+		// Facteur pour mettre le dessin centré
 		x += this.ScrollX;
 		y += this.ScrollY;
 
@@ -2431,8 +2431,8 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 	}
 	
 	/**
-	 * Verifie que 2 Segments intersectionnent � l'interieur (cad pas au extremit� des segments);
-	 * Il faut qu'ils se touchent vraiment, pas qu'ils soient juste coll� l'un � l'autre.
+	 * Verifie que 2 Segments intersectionnent à l'interieur (cad pas au extremité des segments);
+	 * Il faut qu'ils se touchent vraiment, pas qu'ils soient juste collé l'un à l'autre.
 	 *  
 	 * @param line1
 	 * @param line2
@@ -2716,7 +2716,7 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 	}
 
 	/**
-	 * TODO : C'est bien joli mais pas faciement customisable cot� client de la
+	 * TODO : C'est bien joli mais pas facilement customisable coté client de la
 	 * lib... Dessine un nurbsPath complet (affichage et gestion de la selection
 	 * comprise).
 	 * 

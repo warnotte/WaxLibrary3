@@ -71,7 +71,7 @@ public class Identifiable implements Cloneable, Serializable
       		// méthode super.clone()
       		o = (Identifiable) super.clone();
     	} catch(CloneNotSupportedException cnse) {
-      		// Ne devrait jamais arriver car nous impl�mentons 
+      		// Ne devrait jamais arriver car nous implémentons 
       		// l'interface Cloneable
       		cnse.printStackTrace(System.err);
 	    }

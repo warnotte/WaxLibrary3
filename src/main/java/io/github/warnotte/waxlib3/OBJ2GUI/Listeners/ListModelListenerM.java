@@ -30,7 +30,7 @@ public class ListModelListenerM extends BaseListener implements ListSelectionLis
 	
 	public void valueChanged(javax.swing.event.ListSelectionEvent e)
 	{
-		// Si le user selectionne un element de la JList alors on rafraichis le panel cible avec l'objet selectionn�e dans la liste en demandant au super generateur
+		// Si le user selectionne un element de la JList alors on rafraichis le panel cible avec l'objet selectionnée dans la liste en demandant au super generateur
 		// TODO:#65789354
 		Object obj = jtf.getSelectedValue();
 		try

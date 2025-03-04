@@ -126,7 +126,7 @@ public class JWColor implements Cloneable {
 			
 		} catch (CloneNotSupportedException cnse)
 		{
-			// Ne devrait jamais arriver car nous impl�mentons
+			// Ne devrait jamais arriver car nous implémentons
 			// l'interface Cloneable
 		//Logs.getLogger().fatal(cnse);
 			cnse.printStackTrace(System.err);

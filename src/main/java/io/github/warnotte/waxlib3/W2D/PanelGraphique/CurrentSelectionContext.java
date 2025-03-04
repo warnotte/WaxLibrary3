@@ -37,7 +37,7 @@ public abstract class CurrentSelectionContext
 	}
 	
 	/**
-	 * Retourne tout les type de classes qui sont selectionn�s
+	 * Retourne tout les type de classes qui sont selectionnés
 	 * @return
 	 */
 	public synchronized List<Class<?>> getSelectionClass()

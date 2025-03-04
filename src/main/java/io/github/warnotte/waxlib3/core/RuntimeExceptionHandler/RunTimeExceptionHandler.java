@@ -11,7 +11,7 @@ import org.apache.logging.log4j.Logger;
 
 /**
  * Permet de catcher les ExceptionRuntime et de les envoyer a log4J en Fatal
- * ainsi qu'affichre une petite fen�tre pour terminer le programme.
+ * ainsi qu'affichre une petite fenêtre pour terminer le programme.
  * 
  * @author Warnotte Renaud.
  */

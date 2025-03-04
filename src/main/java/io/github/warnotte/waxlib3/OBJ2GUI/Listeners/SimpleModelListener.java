@@ -294,7 +294,7 @@ public class SimpleModelListener extends BaseListener implements ActionListener,
 				value[0] = cm;//new JWColor(cm.getRed(),cm.getGreen(),cm.getBlue(),cm.getAlpha());
 			} 
 		} catch (java.lang.NumberFormatException NE) {
-			System.err.println("Ne me donne pas de truc toxique � manger, j'annule et j'undo ;)");
+			System.err.println("Ne me donne pas de truc toxique à manger, j'annule et j'undo ;)");
 			try {
 				
 				o = get.invoke(obj1);

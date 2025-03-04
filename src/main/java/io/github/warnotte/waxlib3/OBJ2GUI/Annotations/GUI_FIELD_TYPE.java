@@ -13,7 +13,7 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 public @interface GUI_FIELD_TYPE {
 	
-	/** Enum�ration des diff�rents niveaux de criticit�s. */
+	/** Enumération des différents niveaux de criticités. */
 	public static enum Type { UNKNOWN, CHECKBOX, TEXTFIELD, SLIDER, COMBO, LIST, CALENDAR, COLOR, LISTLIKE, SETLIKE, MAPLIKE, ARRAYLIKE, PANELISABLE, FONT, VECTOR3D, METHOD_CALL, VECTOR4D, PROPERTIES, JPANEL };
 	public static enum Type_SLIDER { NORMAL, FLAT, ROTATIVE };
 	
@@ -36,7 +36,7 @@ public @interface GUI_FIELD_TYPE {
 
 
 /**
-Pour l'analyseur de compatibilit�
+Pour l'analyseur de compatibilité
 
 boolean  	   :X: CHECKBOX, COMBO (2elements), LIST, ...
 int, float,... :X: TEXTFIELD, SLIDER,...

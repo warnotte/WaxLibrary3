@@ -74,7 +74,7 @@ public class Roulette extends Thread
 			}
 			
 			position = desiredValue;
-			System.err.println("Compteur bien position�");
+			System.err.println("Compteur bien positioné");
 		}
 	}
 	

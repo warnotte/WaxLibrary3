@@ -170,7 +170,7 @@ public abstract class PanelGraphiqueBaseBase extends PanelGraphiqueBase<Object> 
 	
 	public void mouseEntered(MouseEvent e)
 	{
-		//requestFocus(true); // Comment� sinon les fenetres ouvertes disparaissent quand on revient dans ce panel
+		//requestFocus(true); // Commenté sinon les fenetres ouvertes disparaissent quand on revient dans ce panel
 		MOUSEINSIDE = true;
 		changeMouseCursor();
 	}
@@ -180,7 +180,7 @@ public abstract class PanelGraphiqueBaseBase extends PanelGraphiqueBase<Object> 
 	{
 		MOUSEINSIDE = false;
 		setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-		//requestFocus(false); // Comment� sinon les fenetres ouvertes disparaissent quand on revient dans ce panel
+		//requestFocus(false); // Commenté sinon les fenetres ouvertes disparaissent quand on revient dans ce panel
 	}
 
 	public void mousePressed(java.awt.event.MouseEvent e)
@@ -620,7 +620,7 @@ public abstract class PanelGraphiqueBaseBase extends PanelGraphiqueBase<Object> 
 	public void paint(Graphics g2)
 	{
 		super.paint(g2);
-		// Supprime la liste des shape/objets dessin�s pour le systeme de selection automatique.
+		// Supprime la liste des shape/objets dessinés pour le systeme de selection automatique.
 		selectableObject.clear();
 		map_selectableShapeObject.clear();
 		map_selectableObjectShape.clear();
@@ -1124,7 +1124,7 @@ public abstract class PanelGraphiqueBaseBase extends PanelGraphiqueBase<Object> 
 	}
 	
 	/**
-	 * Affiche les zone selectionnables tel quels (en orange ou magenta si selectionn�).
+	 * Affiche les zone selectionnables tel quels (en orange ou magenta si selectionné).
 	 * @param g
 	 */
 	public void drawSelectionnableObjetDebug(Graphics2D g)

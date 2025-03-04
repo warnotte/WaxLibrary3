@@ -43,7 +43,7 @@ public class mainTest_BtCall {
 			{
 				
 			
-			// Cr�e ces 3 panels sans ajouter la variable change listener qui pompe les ressources si 10000 de changements
+			// Crée ces 3 panels sans ajouter la variable change listener qui pompe les ressources si 10000 de changements
 				panel = (JWPanel) ParseurAnnotations.CreatePanelFromObject("Main configuration", objet,false);
 
 				 panel.addMyEventListener(new MyEventListener()

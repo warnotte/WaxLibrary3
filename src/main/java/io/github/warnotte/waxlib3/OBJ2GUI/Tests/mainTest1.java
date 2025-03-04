@@ -34,7 +34,7 @@ public class mainTest1 {
 			frame.setVisible(true);
 			frame.setLayout(new BorderLayout());
 			
-			// Cr�e ces 3 panels sans ajouter la variable change listener qui pompe les ressources si 10000 de changements
+			// Crée ces 3 panels sans ajouter la variable change listener qui pompe les ressources si 10000 de changements
 //			final JWPanel panel = (JWPanel) ParseurAnnotations.CreatePanelFromObject("Main configuration", objet,false);
 			final JWPanel panel = (JWPanel) ParseurAnnotations.CreatePanelFromObject("Main configuration", objet);
 

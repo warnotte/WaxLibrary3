@@ -21,7 +21,7 @@ public class View2D_Utils
 	 * Arrondir un chiffre et le gridiffy
 	 * @param in le chiffre
 	 * @param gridsize la taille de la grille
-	 * @param bypass renvoye simplement le chiffre entr� si mis a vrai.
+	 * @param bypass renvoye simplement le chiffre entré si mis a vrai.
 	 * @return
 	 */
 	public static double Griddify(double in, double gridsize, boolean bypass)
@@ -145,8 +145,8 @@ public class View2D_Utils
 		// Calcul le scale
 		double scale = 1.0 / (L / (L - delta * 2));
 		//2) Translation du millieu du segment vers 0, 0 (on garde la position qlq part ou l'offset de deplacement)
-		//3) Multiplication des coordon�es par le facteur d'�chelle.
-		//4) Translation du millieu du segment vers la position de d�part du millieu de segment.
+		//3) Multiplication des coordonées par le facteur d'échelle.
+		//4) Translation du millieu du segment vers la position de départ du millieu de segment.
 		x1=(x1-ix1)*scale+ix1;
 		x2=(x2-ix1)*scale+ix1;
 		y1=(y1-iy1)*scale+iy1;
@@ -201,8 +201,8 @@ public class View2D_Utils
 		double scale1 = 1.0 / (L / (L - delta1 * 2));
 		double scale2 = 1.0 / (L / (L - delta2 * 2));
 		//2) Translation du millieu du segment vers 0, 0 (on garde la position qlq part ou l'offset de deplacement)
-		//3) Multiplication des coordon�es par le facteur d'�chelle.
-		//4) Translation du millieu du segment vers la position de d�part du millieu de segment.
+		//3) Multiplication des coordonées par le facteur d'échelle.
+		//4) Translation du millieu du segment vers la position de départ du millieu de segment.
 		x1=(x1-ix1)*scale1+ix1;
 		x2=(x2-ix1)*scale2+ix1;
 		y1=(y1-iy1)*scale1+iy1;
@@ -422,8 +422,8 @@ public class View2D_Utils
 	}
 	
 	/**
-	 * Verifie que 2 Segments intersectionnent � l'interieur (cad pas au extremit� des segments);
-	 * Il faut qu'ils se touchent vraiment, pas qu'ils soient juste coll� l'un � l'autre.
+	 * Verifie que 2 Segments intersectionnent à l'interieur (cad pas au extremité des segments);
+	 * Il faut qu'ils se touchent vraiment, pas qu'ils soient juste collé l'un à l'autre.
 	 *  
 	 * @param line1
 	 * @param line2

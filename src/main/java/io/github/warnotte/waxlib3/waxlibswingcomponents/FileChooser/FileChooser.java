@@ -75,7 +75,7 @@ public class FileChooser extends JPanel
 		if (Locale.getDefault().getLanguage().toLowerCase().equals("fr"))
 		{
 			LABEL_BUTTON_OPEN 		= "Ouvrir";
-			LABEL_NOFILE_SELECTED 	= "Pas de fichier selectionn� - Cliquer glisser un fichier ou utiliser " + LABEL_BUTTON_OPEN;
+			LABEL_NOFILE_SELECTED 	= "Pas de fichier selectionné - Cliquer glisser un fichier ou utiliser " + LABEL_BUTTON_OPEN;
 			LABEL_IACCEPTFILEONLY 	= "Je n'accepte que les fichiers";
 			IACCEPTDIRECTORYONLY 	= "Je n'accepte que les répertoires";
 			LABEL_NO_FILE_SELECTED 	= "Pas de fichier selectionné";

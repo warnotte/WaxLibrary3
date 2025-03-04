@@ -234,11 +234,11 @@ public class ConfigurationColor {
   	  File f = new File(XMLSaveFile);//DialogDivers.LoadDialog("xml", MainFrame.this);
   	  
           // Redirection du fichier c:/temp/article.xml vers un flux
-          // d'entr�e fichier
+          // d'entrée fichier
           FileInputStream fis = new FileInputStream(f);
           
           try {
-              // D�s�rialisation du fichier c:/temp/article.xml vers un nouvel
+              // Désérialisation du fichier c:/temp/article.xml vers un nouvel
               // objet article
               ConfigurationColor c = (ConfigurationColor) xstream.fromXML(fis);
 
@@ -300,7 +300,7 @@ public class ConfigurationColor {
 	frame.setPreferredSize(new Dimension(480,350));
 	frame.setVisible(true);
 	frame.setLayout(new BorderLayout());
-	// Cr�e ces 3 panels sans ajouter la variable change listener qui pompe les ressources si 10000 de changements
+	// Crée ces 3 panels sans ajouter la variable change listener qui pompe les ressources si 10000 de changements
 	final ConfigurationColor cc = this;
 	final JWPanel panel = (JWPanel) ParseurAnnotations.CreatePanelFromObject("Configuration des couleurs", cc,false);
 	frame.add(new JScrollPane(panel),BorderLayout.CENTER);

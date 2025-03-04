@@ -23,10 +23,10 @@ import io.github.warnotte.waxlib3.core.TemplateCollectionFilter.BaseComparator;
 import io.github.warnotte.waxlib3.core.TemplateCollectionFilter.WCollectionFilter;
 
 /**
- * Cette petite classe permet de stocker des object selon un identifiant unique dans une DB "virtuelle" en m�moire.
+ * Cette petite classe permet de stocker des object selon un identifiant unique dans une DB "virtuelle" en mémoire.
  * Il y'a des fonctions de recherche assez souples pour permettre tout sorte de recherches.
  * @author Warnotte Renaud
- * @param <T> L'objet template (le type en qlq sorte) � utiliser pour cette BD.
+ * @param <T> L'objet template (le type en qlq sorte) à utiliser pour cette BD.
  */
 public class DB_Table<T extends Identifiable> extends WCollectionFilter<T>
 {
@@ -63,7 +63,7 @@ public class DB_Table<T extends Identifiable> extends WCollectionFilter<T>
 	 *********************************************************************/
 	
 	/**
-	 * Recupere l'element a l'id donn�.
+	 * Recupere l'element a l'id donné.
 	 * @param idMaterial l'identifiant du truc.
 	 * @return
 	 */
@@ -84,7 +84,7 @@ public class DB_Table<T extends Identifiable> extends WCollectionFilter<T>
 		return toList().get(index);
 	}
 	/**
-	 * Recupere le dernier ID utilis� (le plus grand afin de faire +1 pour avoir un new ID);
+	 * Recupere le dernier ID utilisé (le plus grand afin de faire +1 pour avoir un new ID);
 	 * @return
 	 */
 	public int getLastId()
