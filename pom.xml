@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>io.github.warnotte</groupId>
 	<artifactId>waxlib3</artifactId>
-	<version>0.0.3.0</version>
+	<version>0.1.0</version>
 	<name>Wab Library 3</name>
 	<description>This is my 16 years old own library for lot of purpose</description>
 	<url>https://github.com/warnotte/WaxLibrary3</url>
@@ -239,13 +239,12 @@ add-opens java.desktop/java.awt.font=ALL-UNNAMED
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-shade-plugin</artifactId>
-				<version>3.4.1</version>
+				<version>3.6.0</version>
 				<dependencies>
 					<dependency>
 						<groupId>org.apache.logging.log4j</groupId>
-						<artifactId>
-							log4j-transform-maven-shade-plugin-extensions</artifactId>
-						<version>0.1.0</version>
+						<artifactId>log4j-transform-maven-shade-plugin-extensions</artifactId>
+						<version>0.2.0</version>
 					</dependency>
 				</dependencies>
 				<executions>
