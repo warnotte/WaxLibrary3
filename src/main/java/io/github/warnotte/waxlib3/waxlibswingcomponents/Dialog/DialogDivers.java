@@ -24,6 +24,10 @@ public class DialogDivers
 	public static void main(String args[]) throws Exception
 	{
 		DialogDivers.LoadDialog(null, new String[]{"xml", "mpp", "id3"}, "F:\\projets\\Datas\\Models");
+		DialogDivers.SaveDialog(null, "*.xml");
+		DialogDivers.Show_OkDialog("Salut", "Titre");
+		
+		
 
 	}
 	
@@ -390,7 +394,7 @@ public class DialogDivers
 			public void run()
 			{*/
 		Object[] options = { "OK" };
-		JOptionPane.showOptionDialog(null, message, title, JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
+		JOptionPane.showOptionDialog(null, message, title, JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
 		/*	}
 		});*/
 	}

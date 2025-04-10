@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>io.github.warnotte</groupId>
 	<artifactId>waxlib3</artifactId>
-	<version>0.3.2</version>
+	<version>0.3.3</version>
 	<name>Wab Library 3</name>
 	<description>This is my 16 years old own library for lot of purpose</description>
 	<url>https://github.com/warnotte/WaxLibrary3</url>
@@ -113,7 +113,6 @@ add-opens java.desktop/java.awt.font=ALL-UNNAMED
 			<artifactId>log4j-api</artifactId>
 			<version>${log4j.version}</version>
 		</dependency>
-
 
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
