@@ -52,8 +52,8 @@ public class GrfxPanel extends JPanel
 		jLabel = new JLabel();
 		jLabel.setText("");
 		//jLabel_Image.setText("");
-		ic = new ImageIcon(getClass().getResource("/org/warnotte/waxlib2/RuntimeExceptionHandler/RunTimeExceptionDialogImage.jpg"));
-		ic2 = new ImageIcon(getClass().getResource("/org/warnotte/waxlib2/RuntimeExceptionHandler/RunTimeExceptionDialogImage2.jpg"));
+		ic = new ImageIcon(getClass().getResource("RunTimeExceptionDialogImage.jpg"));
+		ic2 = new ImageIcon(getClass().getResource("RunTimeExceptionDialogImage2.jpg"));
 		jLabel.setIcon(ic);
 		curr=ic;
 	//	this.setSize(200, 300);

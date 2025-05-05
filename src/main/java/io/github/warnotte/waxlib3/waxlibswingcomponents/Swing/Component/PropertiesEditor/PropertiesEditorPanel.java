@@ -119,7 +119,7 @@ public class PropertiesEditorPanel extends JPanel
 		{
 			jButton_ADD_NEW_PROPERTIES = new JButton();
 			jButton_ADD_NEW_PROPERTIES.setToolTipText("Add a new row");
-			jButton_ADD_NEW_PROPERTIES.setIcon(new ImageIcon(getClass().getResource("/org/warnotte/Swing/Component/PropertiesEditor/icons/icon_plus.gif")));
+			jButton_ADD_NEW_PROPERTIES.setIcon(new ImageIcon(getClass().getResource("icons/icon_plus.gif")));
 			jButton_ADD_NEW_PROPERTIES.setMnemonic(KeyEvent.VK_UNDEFINED);
 			jButton_ADD_NEW_PROPERTIES.addActionListener(new java.awt.event.ActionListener()
 			{
@@ -152,7 +152,7 @@ public class PropertiesEditorPanel extends JPanel
 		{
 			jButton_DELETE_PROPERTIES = new JButton();
 			jButton_DELETE_PROPERTIES.setToolTipText("Delete the selected row");
-			jButton_DELETE_PROPERTIES.setIcon(new ImageIcon(getClass().getResource("/org/warnotte/Swing/Component/PropertiesEditor/icons/icon_minus.gif")));
+			jButton_DELETE_PROPERTIES.setIcon(new ImageIcon(getClass().getResource("icons/icon_minus.gif")));
 			jButton_DELETE_PROPERTIES.addActionListener(new java.awt.event.ActionListener()
 			{
 				public void actionPerformed(java.awt.event.ActionEvent e)
@@ -216,7 +216,7 @@ public class PropertiesEditorPanel extends JPanel
 		{
 			jButton_DBG = new JButton();
 			jButton_DBG.setToolTipText("Debug values in console ...");
-			jButton_DBG.setIcon(new ImageIcon(getClass().getResource("/org/warnotte/Swing/Component/PropertiesEditor/icons/icon_debug.png")));
+			jButton_DBG.setIcon(new ImageIcon(getClass().getResource("icons/icon_debug.png")));
 			jButton_DBG.addActionListener(new java.awt.event.ActionListener()
 			{
 				public void actionPerformed(java.awt.event.ActionEvent e)
@@ -251,7 +251,7 @@ public class PropertiesEditorPanel extends JPanel
 		{
 			jButton_LOAD = new JButton();
 			jButton_LOAD.setToolTipText("Load a props.xml file");
-			jButton_LOAD.setIcon(new ImageIcon(getClass().getResource("/org/warnotte/Swing/Component/PropertiesEditor/icons/icon_load.png")));
+			jButton_LOAD.setIcon(new ImageIcon(getClass().getResource("icons/icon_load.png")));
 			jButton_LOAD.addActionListener(new java.awt.event.ActionListener()
 			{
 				public void actionPerformed(java.awt.event.ActionEvent e)
@@ -294,7 +294,7 @@ public class PropertiesEditorPanel extends JPanel
 		{
 			jButton_SAVE = new JButton();
 			jButton_SAVE.setToolTipText("Save a props.xml file");
-			jButton_SAVE.setIcon(new ImageIcon(getClass().getResource("/org/warnotte/Swing/Component/PropertiesEditor/icons/icon_save.png")));
+			jButton_SAVE.setIcon(new ImageIcon(getClass().getResource("icons/icon_save.png")));
 			jButton_SAVE.addActionListener(new java.awt.event.ActionListener()
 			{
 				public void actionPerformed(java.awt.event.ActionEvent e)
