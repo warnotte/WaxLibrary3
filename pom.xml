@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>io.github.warnotte</groupId>
 	<artifactId>waxlib3</artifactId>
-	<version>0.3.4</version>
+	<version>0.3.5</version>
 	<name>Wab Library 3</name>
 	<description>This is my 16 years old own library for lot of purpose</description>
 	<url>https://github.com/warnotte/WaxLibrary3</url>
@@ -233,6 +233,38 @@ add-opens java.desktop/java.awt.font=ALL-UNNAMED
 					</execution>
 				</executions>
 			</plugin>-->
+
+
+			<!-- J'ai rajouté ça le 21/05/2025 car j'avais tout le temps des problème et en rajoutant ça et en reinstallant le JAR dans .m2 le probleme resolué -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.13.0</version>
+				<!--
+				<configuration>
+					<failOnError>false</failOnError>
+				</configuration>
+				-->
+				<executions>
+					<execution>
+						<id>log4j-plugin-processor</id>
+						<goals>
+							<goal>compile</goal>
+						</goals>
+						<phase>process-classes</phase>
+						<configuration>
+							<proc>full</proc>
+							<annotationProcessors>
+								<annotationProcessor>
+									org.apache.logging.log4j.core.config.plugins.processor.PluginProcessor</annotationProcessor>
+							</annotationProcessors>
+							<debug>true</debug>
+							<debuglevel>lines,vars,source</debuglevel>
+						</configuration>
+					</execution>
+				</executions>
+
+			</plugin>
 
 
 			<plugin>
