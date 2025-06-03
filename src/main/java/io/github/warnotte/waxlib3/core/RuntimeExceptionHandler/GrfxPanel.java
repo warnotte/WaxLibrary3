@@ -36,7 +36,7 @@ public class GrfxPanel extends JPanel {
 		jLabel = new JLabel();
 		jLabel.setText("");
 		// jLabel_Image.setText("");
-		ic = new ImageIcon(getClass().getResource("RunTimeExceptionDialogImage.jpg"));
+		ic = new ImageIcon(getClass().getResource("/images/RuntimeExceptionHandler/RunTimeExceptionDialogImage.jpg"));
 		jLabel.setIcon(ic);
 		// this.setSize(200, 300);
 		this.setLayout(new GridBagLayout());
