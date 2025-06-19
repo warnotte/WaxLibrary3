@@ -170,13 +170,14 @@ public class VUE2D_TESTNEWDRAWARROWANDSTRING extends PanelGraphiqueBaseBase impl
 		
 		drawRoseDesVents(g, 33f);
 		
+		drawRoseDesVents(g, new AffineTransform(),10, 33);
 		
 		Point2D pt1 = new Point2D.Float(100, 0);
 		Point2D pt2 = new Point2D.Float(150, 25);
 		
 		// TODO : Dessiner la flêche...
 		drawArrow3(g, pt1, pt2, 1.0f, 1.0f, true, true, false, 1.0f);
-		drawArrow3(g, new AffineTransform(), pt1, pt2, 1.0f, 1.0f, true, true, false, 1.0f);
+		drawArrow3(g, at, pt1, pt2, 1.0f, 1.0f, true, true, false, 1.0f);
 		
 		drawString3(g, "Guten TAG", 30, 30, 0, AlignTexteX.CENTER, AlignTexteY.CENTER,
 				true, 1.0f, false, Color.white, true);
@@ -247,6 +248,70 @@ public class VUE2D_TESTNEWDRAWARROWANDSTRING extends PanelGraphiqueBaseBase impl
 		
 	}
 
+	
+	protected void drawRoseDesVents(Graphics2D g, AffineTransform atParent, double angle, float size) {
+		angle -= 90;
+		AffineTransform atLocal = new AffineTransform();
+
+		float offsetfromborder = 30;
+
+		atLocal.preConcatenate(atParent);
+
+		Area rose = new Area();
+
+		Shape ellipse = new Ellipse2D.Float(-size / 2, -size / 2, size, size);
+		Shape line1 = new Line2D.Double(-size / 2 - 4, 0, size / 2 + 4, 0);
+		Shape line2 = new Line2D.Double(0, -size / 2 - 4, 0, size / 2 + 4);
+		rose.add(new Area(ellipse));
+
+		g.setColor(Color.black);
+		g.draw(atLocal.createTransformedShape(rose));
+
+		Stroke dashed = new BasicStroke(1, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 0, new float[] { 3, 0, 1 },
+				0);
+		g.setStroke(dashed);
+		g.draw(atLocal.createTransformedShape(line1));
+		g.draw(atLocal.createTransformedShape(line2));
+		g.setStroke(new BasicStroke(1));
+		/*
+		 * Point2D.Float pt; pt = new Point2D.Float(0, 0);
+		 * 
+		 * atParent.transform(pt, pt);
+		 * 
+		 * //g.drawString("0°", (float)pt.getX(), (float)pt.getY());
+		 * drawCenteredString(g, "N 0°", (int)pt.getX(), (int)((pt.getY()-
+		 * size/2)-offsetfromborder/2)); drawCenteredString(g, "90°", (int)((pt.getX()+
+		 * size/2)+offsetfromborder/2), (int)pt.getY()); drawCenteredString(g, "180°",
+		 * (int)pt.getX(), (int)((pt.getY()+ size/2)+offsetfromborder/2));
+		 * drawCenteredString(g, "270°", (int)((pt.getX()- size/2)-offsetfromborder/2),
+		 * (int)pt.getY());
+		 */
+
+		Point2D.Float pt1, pt2, pt3, pt4;
+		pt1 = new Point2D.Float(0, (0 - size / 2) - offsetfromborder / 2);
+		pt2 = new Point2D.Float((0 + size / 2) + offsetfromborder / 2, 0);
+		pt3 = new Point2D.Float(0, (0 + size / 2) + offsetfromborder / 2);
+		pt4 = new Point2D.Float(((0 - size / 2) - offsetfromborder / 2), 0);
+
+		atParent.transform(pt1, pt1);
+		atParent.transform(pt2, pt2);
+		atParent.transform(pt3, pt3);
+		atParent.transform(pt4, pt4);
+
+		// g.drawString("0°", (float)pt.getX(), (float)pt.getY());
+		drawCenteredString(g, "N 0°", (int) pt1.getX(), (int) pt1.getY());
+		drawCenteredString(g, "90°", (int) pt2.getX(), (int) pt2.getY());
+		drawCenteredString(g, "180°", (int) pt3.getX(), (int) pt3.getY());
+		drawCenteredString(g, "270°", (int) pt4.getX(), (int) pt4.getY());
+
+		pt1 = new Point2D.Float(0, 0);
+		pt2 = new Point2D.Float((float) (Math.cos(Math.toRadians(angle)) * size / 2),
+				(float) (Math.sin(Math.toRadians(angle)) * size / 2));
+
+		// TODO : Dessiner la flêche...
+		drawArrow3(g, atLocal, pt1, pt2, 4.0f, 1.0f, true, false, false, 1.0f);
+
+	}
 	
 	/***
 	 * EXPERIMENTAL CORNER TO PUT IN WAXLIB MAYBE ONEDAY
