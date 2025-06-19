@@ -11,9 +11,9 @@
 - Advanced property change management (undo/redo functionality).
 - Dynamic property merging using annotations (`TemplatePropertyMerger`).
 - Automatic application updating mechanism (`Updater`).
-- Graphic exception handling (`RuntimeExceptionHandler`).
+- Runtime exception handling (`RuntimeExceptionHandler`).
 - Advanced collection filtering and sorting utilities (`TemplateCollectionFilter`, `TemplateGroupAndSorter`).
-- PDF text extraction utilities, NTP client functionalities, XPath navigation utilities, and runtime profiling.
+- PDF text extraction utilities, NTP client functionalities, XPath navigation utilities, and runtime profiling with 'TikTak'.
 - Additional core utilities supporting robust Java application development.
 
 ### 🖥 WaxLibSwingComponents
@@ -33,7 +33,6 @@ W2D is a sophisticated 2D graphics engine built upon Java Swing, enabling rapid 
 - Comprehensive affine transformation support (translate, zoom, rotate).
 - Interactive selection and context management (`CurrentSelectionContext`).
 - Advanced curve systems, including Bézier, NURBS, and spirograph curves, enabling smooth and complex graphical renderings.
-- High-precision graphical utilities (`View2D_Utils`) for optimal text rendering, shape drawing, and precise positioning.
 - Rich demonstration examples showcasing engine capabilities (`VUE2D_TestBed`, `VUE2D_Spiro`).
 - Modular and extendable architecture designed for high flexibility and customization.
 - Specific utilities for precise graphical alignments, selection highlights, and real-time rendering optimizations.
