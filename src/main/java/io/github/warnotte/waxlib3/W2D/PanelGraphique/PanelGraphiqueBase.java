@@ -101,7 +101,7 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 
 	Stroke						drawingStroke_Helplines	= new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 50, new float[] { 5 }, 0);
 	protected AffineTransform	at						= null;
-	protected Rectangle			Vision;
+	protected Rectangle2D			Vision;
 
 	protected ArrayList<SelectionTuple<Shape, ?>> selectableObject = new ArrayList<SelectionTuple<Shape, ?>>();
 
@@ -766,7 +766,7 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 
 	protected void calcule_Rectangle_Vue()
 	{
-
+/*
 		int MarginToView = 0;
 		// Recupere la view actuelle du buffer (x,y,w,h)
 		int	X	= (int) ScrollX;
@@ -799,11 +799,43 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 			YY = 0;
 
 		Vision = new Rectangle(X - 1, Y - 1, (int) p.getX() - XX - MarginToView, (int) p.getY() - YY - MarginToView);
+*/
+		// Recupere la view actuelle du buffer (x,y,w,h)
+		double	X	= ScrollX;
+		double	Y	= ScrollY;
+	
+		if (invertYAxis == true)
+			Y = Y * -1;
+		if (invertXAxis == true)
+			X = X * -1;
 
+		int		ww	= this.getWidth();
+		int		hh	= this.getHeight();
+		Point2D	p	= this.convertViewXYtoRealXY(ww, hh);
+		//Point2D	p2	= this.convertViewXYtoRealXY(X, Y);
+
+		//if (LockScrollX == true)
+		//	p2.setLocation(0, p2.getY());
+		//if (LockScrollY == true)
+		//	p2.setLocation(p2.getX(), 0);
+
+		//X = (int) p2.getX();
+		//Y = (int) p2.getY();
+		
+		X = ( - getWidth() / 2) / Zoom - ScrollX;
+		Y = ( - getHeight() / 2) / Zoom - ScrollY;
+		
+		if (invertYAxis == true)
+			Y = Y * -1;
+		if (invertXAxis == true)
+			X = X * -1;
+
+		
+		Vision = new Rectangle2D.Double(X, Y, p.getX(), p.getY());
 		//	System.err.println("Vision = "+Vision);
 	}
 
-	public Rectangle Recupere_Rectangle_Vue()
+	public Rectangle2D getViewRectangleWorldCoordinate()
 	{
 		return Vision;
 	}

@@ -274,6 +274,7 @@ public class VUE2D_TestBed extends PanelGraphiqueBaseBase implements KeyListener
 		
 		g.drawString(String.format("XY : %d,  %d",  (int)MouseX, (int)MouseY), 10,10);
 		g.drawString(String.format("Selected : %d", contxt.getSelection().size()), 10,20);
+		g.drawString(String.format("RectangleView : %s", getViewRectangleWorldCoordinate()), 10,30);
 		
 		
 	}
