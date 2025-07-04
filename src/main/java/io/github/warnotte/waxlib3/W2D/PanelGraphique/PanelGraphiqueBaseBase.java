@@ -9,6 +9,7 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.Shape;
+import java.awt.Stroke;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -19,6 +20,7 @@ import java.awt.event.MouseWheelListener;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Arc2D;
 import java.awt.geom.Area;
+import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
@@ -87,8 +89,11 @@ public abstract class PanelGraphiqueBaseBase extends PanelGraphiqueBase<Object> 
 	
 	// Permet de faire un zoom la ou le pointeur de la souris se trouver si variable = false sinon centre au millieu de l'"ecran".
     private boolean zoomOnCenterOrMousePointer = false;
+    Point2D.Double measurePt = new Point2D.Double();
+    boolean measureMode = false;
+
+    float measureArrowSize = 0.1f;
     
-	
 	public PanelGraphiqueBaseBase(CurrentSelectionContext contxt)
 	{
 		this(contxt, null, null);
@@ -355,6 +360,10 @@ public abstract class PanelGraphiqueBaseBase extends PanelGraphiqueBase<Object> 
 				Zoom = View2D_Utils.constrains(Zoom, ZoomMin, ZoomMax);
 			}
 
+			if (e.getKeyCode() == KeyEvent.VK_M) {
+				measureMode = false;
+
+			}
 		}
 		repaint();
 	}
@@ -420,7 +429,11 @@ public abstract class PanelGraphiqueBaseBase extends PanelGraphiqueBase<Object> 
 
 					break;
 				case KeyEvent.VK_M:
-
+					if (measureMode == false)
+					{
+						measureMode = true;
+						measurePt.setLocation(MouseX, MouseY);
+					}
 					break;
 
 				case KeyEvent.VK_L:
@@ -429,6 +442,11 @@ public abstract class PanelGraphiqueBaseBase extends PanelGraphiqueBase<Object> 
 					break;
 			}
 		}
+		
+		
+			
+
+		
 		repaint();
 	}
 	
@@ -671,6 +689,11 @@ public abstract class PanelGraphiqueBaseBase extends PanelGraphiqueBase<Object> 
 		
 		if (isDrawFPSInfos())
 			draw_fps_infos(g);
+		
+
+		if (measureMode == true) {
+			drawMeasureSys(g);
+		}
 		
 		/*
 		// Dessine les selections faites par la user.
@@ -1147,6 +1170,22 @@ public abstract class PanelGraphiqueBaseBase extends PanelGraphiqueBase<Object> 
 		g.setStroke(new BasicStroke(1.0f));
 	}
 	
+	private void drawMeasureSys(Graphics2D g) {
+		double distance = measurePt.distance(MouseX, MouseY);
+		drawArrowWithString(g, "" + View2D_Utils.arrondir(distance, 2) + "m", 0, measurePt.x, measurePt.y, MouseX, MouseY, 0, -5/Zoom, measureArrowSize);
+		
+		// Crée aussi un cercle avec des pointilées pour montrer le rayon de la mesure.
+		Ellipse2D circle = new Ellipse2D.Double(measurePt.x - distance, measurePt.y - distance, distance * 2,distance * 2);
+		Stroke oldStroke = g.getStroke();
+		g.setStroke(new BasicStroke(1.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0.0f,
+				new float[] { 5.0f, 5.0f }, 0.0f));
+		g.setColor(Color.RED);
+		g.draw(at.createTransformedShape(circle));
+		g.setStroke(oldStroke);
+		g.setColor(Color.BLACK);
+	}
+
+	
 	
 	public synchronized boolean isDrawFPSInfos()
 	{
@@ -1226,6 +1265,12 @@ public abstract class PanelGraphiqueBaseBase extends PanelGraphiqueBase<Object> 
 	}
 	public void setZoomOnCenterOrMousePointer(boolean zoomOnCenterOrMousePointer) {
 		this.zoomOnCenterOrMousePointer = zoomOnCenterOrMousePointer;
+	}
+	public float getMeasureArrowSize() {
+		return measureArrowSize;
+	}
+	public void setMeasureArrowSize(float measureArrowSize) {
+		this.measureArrowSize = measureArrowSize;
 	}
 	
 	
