@@ -92,7 +92,7 @@ public abstract class PanelGraphiqueBaseBase extends PanelGraphiqueBase<Object> 
     Point2D.Double measurePt = new Point2D.Double();
     boolean measureMode = false;
 
-    float measureArrowSize = 0.1f;
+    float measureArrowSize = 5.0f;
     
 	public PanelGraphiqueBaseBase(CurrentSelectionContext contxt)
 	{
@@ -685,15 +685,17 @@ public abstract class PanelGraphiqueBaseBase extends PanelGraphiqueBase<Object> 
 		// TODO CECI DOIT BOUGER ....
 		dessineSelectionArea(g);
 
+		if (measureMode == true) {
+			drawMeasureSys(g);
+		}
+		
 		at.translate(-10, 0);
 		
 		if (isDrawFPSInfos())
 			draw_fps_infos(g);
 		
 
-		if (measureMode == true) {
-			drawMeasureSys(g);
-		}
+		
 		
 		/*
 		// Dessine les selections faites par la user.
@@ -1172,7 +1174,8 @@ public abstract class PanelGraphiqueBaseBase extends PanelGraphiqueBase<Object> 
 	
 	private void drawMeasureSys(Graphics2D g) {
 		double distance = measurePt.distance(MouseX, MouseY);
-		drawArrowWithString(g, "" + View2D_Utils.arrondir(distance, 2) + "m", 0, measurePt.x, measurePt.y, MouseX, MouseY, 0, -5/Zoom, measureArrowSize);
+		//drawArrowWithString(g, "" + View2D_Utils.arrondir(distance, 2) + "m", 0, measurePt.x, measurePt.y, MouseX, MouseY, 0, -5/Zoom, measureArrowSize);
+		drawArrowWithString(g, "" + View2D_Utils.arrondir(distance, 2) + "m", 0, measurePt.x, measurePt.y, MouseX, MouseY, 0, -5/Zoom, measureArrowSize/Zoom);
 		
 		// Crée aussi un cercle avec des pointilées pour montrer le rayon de la mesure.
 		Ellipse2D circle = new Ellipse2D.Double(measurePt.x - distance, measurePt.y - distance, distance * 2,distance * 2);
