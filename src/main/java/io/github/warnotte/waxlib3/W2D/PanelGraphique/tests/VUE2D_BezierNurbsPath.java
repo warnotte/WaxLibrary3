@@ -347,8 +347,8 @@ public class VUE2D_BezierNurbsPath extends PanelGraphiqueBaseBase
 		// MBUTTON_SELECTION_MASK = -1;
 		// if (demoNurbsTest)
 		
-		System.err.println(">> "+MBUTTON_POPUP_MASK_ENABLED);
-		if (MBUTTON_POPUP_MASK_ENABLED) {
+		System.err.println(">> "+ BUTTON_POPUP_MASK_ENABLED);
+		if (BUTTON_POPUP_MASK_ENABLED) {
 		//if (e.getButton()==MouseEvent.BUTTON3) {
 			List<NurbsPoint> sel = (List<NurbsPoint>) getContxt().getSelection(NurbsPoint.class);
 

@@ -6,7 +6,6 @@ import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.Stroke;
@@ -27,7 +26,6 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
-import javax.swing.ImageIcon;
 import javax.swing.JPopupMenu;
 
 import io.github.warnotte.waxlib3.W2D.PanelGraphique.MarsCurve.ArcCurveMarsLike;
@@ -39,94 +37,62 @@ public abstract class PanelGraphiqueBaseBase extends PanelGraphiqueBase<Object> 
      */
 	private static final long	serialVersionUID		= -8780048115222887324L;
 
-//	MainFrame					parent					= null;
+	protected boolean MouseClicked = false;
 
-	Image						cursorImage				= null;
-	Image						cursorAddSegment		= null;
-	Image						cursorAddSquaredRegion	= null;
-	Image						cursorAddRegion			= null;
-	Image						cursorAutoSelect		= null;
-	Image						cursorBlockAuto			= null;
-/*
-	int MBUTTON_SELECTION_MASK = InputEvent.BUTTON1_MASK;
-	int MBUTTON_SCROLL_MASK = InputEvent.BUTTON2_MASK;
-	int MBUTTON_POPUP_MASK = InputEvent.BUTTON3_MASK;
-	*/
-	
-	protected boolean MouseClicked=false;
-	
 	// NOTE WAX : Juin 2019 - Si on passe a BUTTON3_DOWN_MASK y'a un bug de selection (voire avec le testBed avec les 4 fenetres)
-	protected int MBUTTON_SELECTION_MASK = MouseEvent.BUTTON1;//InputEvent.BUTTON3_MASK;
-	protected int MBUTTON_SCROLL_MASK = MouseEvent.BUTTON2;//InputEvent.BUTTON2_MASK;
-	protected int MBUTTON_POPUP_MASK = MouseEvent.BUTTON3;//444;//InputEvent.BUTTON4_MASK;
-	
-	protected boolean MBUTTON_SELECTION_MASK_ENABLED=false;
-	protected boolean MBUTTON_SCROLL_MASK_ENABLED=false;
-	protected boolean MBUTTON_POPUP_MASK_ENABLED=false;
-	
+	protected int BUTTON_SELECTION_MASK = MouseEvent.BUTTON1;//InputEvent.BUTTON3_MASK;
+	protected int BUTTON_SCROLL_MASK    = MouseEvent.BUTTON2;//InputEvent.BUTTON2_MASK;
+	protected int BUTTON_POPUP_MASK      = MouseEvent.BUTTON3;//444;//InputEvent.BUTTON4_MASK;
 
-	protected BufferedImage				AxisPicture				= null;
+	protected boolean BUTTON_SELECTION_MASK_ENABLED = false;
+	protected boolean BUTTON_SCROLL_MASK_ENABLED = false;
+	protected boolean BUTTON_POPUP_MASK_ENABLED  = false;
 
-	protected double			rMouseX;
-	protected double			rMouseY;
+	protected BufferedImage AxisPicture = null;
+
+	protected double rMouseX;
+	protected double rMouseY;
 
 	//  ContxtPopupMenu popupMenu = null;
-	protected JPopupMenu					popupMenu				= null;
+	protected JPopupMenu popupMenu = null;
 
 	// Sert pour compter le temps et les FPS...
-	protected long				fps_counter_start_render;
-	protected long				fps_counter_stop_render;
-	private long				fps_counter_sum_render_time;
-	private int					fps_counter_cpt_render_time;
+	protected long fps_counter_start_render;
+	protected long fps_counter_stop_render;
+	private   long fps_counter_sum_render_time;
+	private   int  fps_counter_cpt_render_time;
 
-	protected Rectangle2D		selectionArea;
+	protected Rectangle2D selectionArea;
 
 	boolean DrawFPSInfos = true;
-	private final double				scrollFactorX			= 5.0;
-	private final double				scrollFactorY			= -5.0;
+	private final double scrollFactorX = 5.0;
+	private final double scrollFactorY = -5.0;
 
 	private boolean enableSelectionDrawDebug = false;
-	
-	// Permet de faire un zoom la ou le pointeur de la souris se trouver si variable = false sinon centre au millieu de l'"ecran".
-    private boolean zoomOnCenterOrMousePointer = false;
-    Point2D.Double measurePt = new Point2D.Double();
-    boolean measureMode = false;
 
-    float measureArrowSize = 5.0f;
+	// Permet de faire un zoom la ou le pointeur de la souris se trouver si variable = false sinon centre au millieu de l'"ecran".
+	private boolean zoomOnCenterOrMousePointer = false;
+	Point2D.Double measurePt   = new Point2D.Double();
+	boolean        measureMode = false;
+
+	float measureArrowSize = 5.0f;
     
 	public PanelGraphiqueBaseBase(CurrentSelectionContext contxt)
 	{
 		this(contxt, null, null);
 	}
-	public PanelGraphiqueBaseBase(CurrentSelectionContext contxt, ConfigurationGeneral generalConfig, ConfigurationColor colorConfig)
+	public PanelGraphiqueBaseBase(CurrentSelectionContext context, ConfigurationGeneral generalConfig, ConfigurationColor colorConfig)
 	{
-		super(contxt, generalConfig, colorConfig);
-
-		//this.parent = parent2;
-	//	this.manager = contxt.getManager();
+		super(context, generalConfig, colorConfig);
 		addMouseMotionListener(this);
 		addMouseListener(this);
 		setBackground(this.getColorConfig().getCOLOR_FOND_GRILLE().getColor());
 		setFocusable(true);
-		//  requestFocus(true);
 		addKeyListener(this);
 		setFocusable(true);
 		addMouseWheelListener(this);
 		requestFocus(true);
-
-		cursorAutoSelect = new ImageIcon("data/images/Cursor/MyCursor_AutoSelect.png").getImage();
-		cursorBlockAuto = new ImageIcon("data/images/Cursor/MyCursor_BlockAuto.png").getImage();
-		cursorAddSegment = new ImageIcon("data/images/Cursor/MyCursor_AddSegment.png").getImage();
-		cursorAddSquaredRegion = new ImageIcon("data/images/Cursor/MyCursor_AddRegionSquare.png").getImage();
-		cursorAddRegion = new ImageIcon("data/images/Cursor/MyCursor_AddRegion.png").getImage();
-		//     requestFocus(true);
-
-		//  popupMenu = new ContxtPopupMenu(this, contxt);
 		popupMenu = new PanelGraphiquePopupMenu(this);
-
-		// Image image = new ImageIcon("data/images/textures/ConstraintViolation.png").getImage();
-		// fBugImage = ImageUtilities.ImagetoBufferedImage(image);
-
 	}
 	
 	public void reinit_fps_counter()
@@ -162,20 +128,15 @@ public abstract class PanelGraphiqueBaseBase extends PanelGraphiqueBase<Object> 
 	{
 		rMouseX = e.getX();
 		rMouseY = e.getY();
-
 		Point2D pt = convertViewXYtoRealXY(e.getX(), e.getY());
-
 		MouseDX = MouseX - pt.getX();
 		MouseDY = MouseY - pt.getY();
-
 		MouseX = pt.getX();
 		MouseY = pt.getY();
-
 	}
 	
 	public void mouseEntered(MouseEvent e)
 	{
-		//requestFocus(true); // Commenté sinon les fenetres ouvertes disparaissent quand on revient dans ce panel
 		MOUSEINSIDE = true;
 		changeMouseCursor();
 	}
@@ -185,7 +146,6 @@ public abstract class PanelGraphiqueBaseBase extends PanelGraphiqueBase<Object> 
 	{
 		MOUSEINSIDE = false;
 		setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-		//requestFocus(false); // Commenté sinon les fenetres ouvertes disparaissent quand on revient dans ce panel
 	}
 
 	public void mousePressed(java.awt.event.MouseEvent e)
@@ -195,30 +155,22 @@ public abstract class PanelGraphiqueBaseBase extends PanelGraphiqueBase<Object> 
 		CTRL = e.isControlDown();
 		MouseClicked=true;
 		// NOTE WAX : Juin 2019 - Si on passe a BUTTON3_DOWN_MASK y'a un bug de selection (voire avec le testBed avec les 4 fenetres)
-		//int modif = e.getModifiersEx();
-		//if ((modif & MBUTTON_SELECTION_MASK) == MBUTTON_SELECTION_MASK)
-		if (e.getButton() == MBUTTON_SELECTION_MASK)
+		if (e.getButton() == BUTTON_SELECTION_MASK)
 		{
 			// Si ni shift ni ctrl n'est mis, alors on vide la selection courante.
-			if ((SHIFT == false) && (CTRL == false))
-				if (contxt!=null)
-				contxt.clear_selection(this);
+			if ((!SHIFT) && (!CTRL))
+				if (context !=null)
+					context.clear_selection(this);
 			selectionArea = new Rectangle2D.Double(MouseX, MouseY, 0, 0);
-			
-			MBUTTON_SELECTION_MASK_ENABLED=true;
-			
+			BUTTON_SELECTION_MASK_ENABLED =true;
 		}
 		
-		if (e.getButton() == MBUTTON_SCROLL_MASK)
-			MBUTTON_SCROLL_MASK_ENABLED=true;
-		if (e.getButton() == MBUTTON_POPUP_MASK)
-			MBUTTON_POPUP_MASK_ENABLED=true;
-		
-
+		if (e.getButton() == BUTTON_SCROLL_MASK)
+			BUTTON_SCROLL_MASK_ENABLED =true;
+		if (e.getButton() == BUTTON_POPUP_MASK)
+			BUTTON_POPUP_MASK_ENABLED =true;
 	}
 
-	
-	
 	public void mouseReleased(java.awt.event.MouseEvent e)
 	{
 		MouseClicked=false;
@@ -227,63 +179,50 @@ public abstract class PanelGraphiqueBaseBase extends PanelGraphiqueBase<Object> 
 		// NOTE WAX : Juin 2019 - Si on passe a BUTTON3_DOWN_MASK y'a un bug de selection (voire avec le testBed avec les 4 fenetres)
 		int modif = e.getModifiersEx();
 
-		/*int mod = e.getModifiersEx();
-		if ((mod & MouseEvent.BUTTON1_DOWN_MASK) == MouseEvent.BUTTON1_DOWN_MASK)
-		{
-			System.err.println("Popup");
-		}*/
-
 		// TODO : Leger Hack.
 		//if ((modif & MBUTTON_POPUP_MASK) == MBUTTON_POPUP_MASK)
-		if (e.getButton() == MBUTTON_POPUP_MASK)
+		if (e.getButton() == BUTTON_POPUP_MASK)
 		{
 			popupMenu.show(e.getComponent(), e.getX(), e.getY());
 		}
-
 		displacement = null;
-		
 		
 		if (selectionArea!=null)
 		{
 			ArrayList<Object> list_selection = RecupereElementsSousSelectionRectangle(CorrigeSelection(selectionArea));
 			
-			if (contxt!=null)
-			contxt.addObjectsToSelection(list_selection, SHIFT, CTRL, this);
+			if (context !=null)
+				context.addObjectsToSelection(list_selection, SHIFT, CTRL, this);
 			selectionArea=null;
 		}
 		
-		if (e.getButton() == MBUTTON_SELECTION_MASK)		
-			MBUTTON_SELECTION_MASK_ENABLED=false;
-		if (e.getButton() == MBUTTON_SCROLL_MASK)
-			MBUTTON_SCROLL_MASK_ENABLED=false;
-		if (e.getButton() == MBUTTON_POPUP_MASK)
-			MBUTTON_POPUP_MASK_ENABLED=false;
-		
-
+		if (e.getButton() == BUTTON_SELECTION_MASK)
+			BUTTON_SELECTION_MASK_ENABLED =false;
+		if (e.getButton() == BUTTON_SCROLL_MASK)
+			BUTTON_SCROLL_MASK_ENABLED =false;
+		if (e.getButton() == BUTTON_POPUP_MASK)
+			BUTTON_POPUP_MASK_ENABLED =false;
 	}
-	
+
 	protected ArrayList<Object> RecupereElementsSousSelectionRectangle(Rectangle2D selectionArea) {
 		ArrayList<Object> list_selection = new ArrayList<Object>();
 		// TODO : Checker tout les truc qui sont dans le rectangle de selection.
-		if (selectionArea!=null)
-		{
+		if (selectionArea != null) {
 			int mode = 0;
 			// Corrige un peu la selection area.
-			if ((selectionArea.getWidth()==0) &&  (selectionArea.getHeight()==0))
-				mode=1;
-	
-		for (int i = 0; i < getSelectableObject().size(); i++)
-		{
-			SelectionTuple<Shape, ?> SelectionTuple = getSelectableObject().get(i);
-			Class<?> objClass = SelectionTuple.getUserObject().getClass();
-			Shape shape = SelectionTuple.shape;
-			if (contxt.isFiltred(objClass)==false)
-			if ((mode==0) && (shape.intersects(selectionArea)) ||
-			((mode==1) && (shape.contains(new Point2D.Double(selectionArea.getX(), selectionArea.getY())))))
-			{
-				list_selection.add(SelectionTuple.getUserObject());
+			if ((selectionArea.getWidth() == 0) && (selectionArea.getHeight() == 0))
+				mode = 1;
+
+			for (int i = 0; i < getSelectableObject().size(); i++) {
+				SelectionTuple<Shape, ?> SelectionTuple = getSelectableObject().get(i);
+				Class<?>                 objClass       = SelectionTuple.getUserObject().getClass();
+				Shape                    shape          = SelectionTuple.shape;
+				if (!context.isFiltred(objClass))
+					if ((mode == 0) && (shape.intersects(selectionArea)) ||
+							((mode == 1) && (shape.contains(new Point2D.Double(selectionArea.getX(), selectionArea.getY()))))) {
+						list_selection.add(SelectionTuple.getUserObject());
+					}
 			}
-		}
 		}
 		return list_selection;
 	}
@@ -291,52 +230,37 @@ public abstract class PanelGraphiqueBaseBase extends PanelGraphiqueBase<Object> 
 	
 	public void mouseDragged(java.awt.event.MouseEvent e)
 	{
-
 		SHIFT = e.isShiftDown();
 		CTRL = e.isControlDown();
-
 		rMouseX = e.getX();
 		rMouseY = e.getY();
-
-		
 		Point2D pt = convertViewXYtoRealXY(e.getX(), e.getY());
-		
-		
 		MouseDX = (MouseX - pt.getX());
 		MouseDY = (MouseY - pt.getY());
-		
-		
 		// NOTE WAX : Juin 2019 - Si on passe a BUTTON3_DOWN_MASK y'a un bug de selection (voire avec le testBed avec les 4 fenetres) -> le selectionArea n'était pas corrigé au release (corrigeselectionarea)
 		int modif = e.getModifiersEx();
 
-		if (MBUTTON_SCROLL_MASK_ENABLED)
+		if (BUTTON_SCROLL_MASK_ENABLED)
 		//if ((modif & MBUTTON_SCROLL_MASK) == MBUTTON_SCROLL_MASK)
 		{
-			if (LockScrollX == false)
-				ScrollX -= MouseDX*((invertXAxis==true)?-1:1);
-			if (LockScrollY == false)
-				ScrollY -= MouseDY*((invertYAxis==true)?-1:1);
-
+			if (!LockScrollX)
+				ScrollX -= MouseDX*((invertXAxis)?-1:1);
+			if (!LockScrollY)
+				ScrollY -= MouseDY*((invertYAxis)?-1:1);
 		}
 		
-		if (MBUTTON_SELECTION_MASK_ENABLED)
+		if (BUTTON_SELECTION_MASK_ENABLED)
 		//if ((modif & MBUTTON_SELECTION_MASK) == MBUTTON_SELECTION_MASK)
 			if (selectionArea != null)
 				selectionArea.setRect(selectionArea.getX(), selectionArea.getY(), MouseX - selectionArea.getX(), MouseY - selectionArea.getY());
 			
 		Point2D pt2 = convertViewXYtoRealXY(e.getX(), e.getY());
-		
-		
 		MouseX = pt2.getX();
 		MouseY = pt2.getY();
-		
 		repaint();
-
 	}
 	
 	public void mouseClicked(MouseEvent e) {
-
-		
 	}
 
 
@@ -345,24 +269,19 @@ public abstract class PanelGraphiqueBaseBase extends PanelGraphiqueBase<Object> 
 		CTRL = e.isControlDown();
 		SHIFT = e.isShiftDown();
 
-		if (CTRL == true)
-		{
-	
-		} else
-		{
+		if (!CTRL) {
 			if ((e.getKeyChar() == '+') || (e.getKeyChar() == '-'))
 			{
 				int dir = -1;
 				if (e.getKeyChar() == '+')
 					dir = 1;
-				
+
 				Zoom += dir;
 				Zoom = View2D_Utils.constrains(Zoom, ZoomMin, ZoomMax);
 			}
 
 			if (e.getKeyCode() == KeyEvent.VK_M) {
 				measureMode = false;
-
 			}
 		}
 		repaint();
@@ -372,87 +291,36 @@ public abstract class PanelGraphiqueBaseBase extends PanelGraphiqueBase<Object> 
 	{
 		CTRL = e.isControlDown();
 		SHIFT = e.isShiftDown();
-
-		if (CTRL == true)
+		switch (e.getKeyCode())
 		{
-			switch (e.getKeyCode())
-			{
-			/*
-			 * case KeyEvent.VK_Z:parent.undo();break; case
-			 * KeyEvent.VK_Y:parent.redo();break; case
-			 * KeyEvent.VK_C:contxt.Copy();break;
-			 */
-			}
-		} else if (SHIFT == true)
-		{
-			switch (e.getKeyCode())
-			{
-				case KeyEvent.VK_INSERT:
-
-					break;
-				case KeyEvent.VK_DELETE:
-					//contxt.Cut();
-					break;
-			}
-		} else
-		{
-			switch (e.getKeyCode())
-			{
-				case KeyEvent.VK_UP:
+			case KeyEvent.VK_UP:
+				scroll(0.0, -5);
+				break;
+			case KeyEvent.VK_DOWN:
+				scroll(0.0, 5);
+				break;
+			case KeyEvent.VK_LEFT:
+				scroll(-5, 0.0);
+				break;
+			case KeyEvent.VK_RIGHT:
+				scroll(5, 0.0);
+				break;
+			case KeyEvent.VK_ESCAPE:
+				cancel_current_action();
+				break;
+			case KeyEvent.VK_M:
+				if (!measureMode)
 				{
-					scroll(0.0, -5);
+					measureMode = true;
+					measurePt.setLocation(MouseX, MouseY);
 				}
-					break;
-				case KeyEvent.VK_DOWN:
-				{
-					scroll(0.0, 5);
-				}
-					break;
-				case KeyEvent.VK_LEFT:
-				{
-					scroll(-5, 0.0);
-				}
-					break;
-				case KeyEvent.VK_RIGHT:
-				{
-					scroll(5, 0.0);
-				}
-					break;
-				case KeyEvent.VK_ESCAPE:
-				{
-					cancel_current_action();
-				}
-					break;
-				//case KeyEvent.VK_K:contxt.fill();break;
-				//case KeyEvent.VK_R:contxt.setCurrentSubMode(SubMode.ROTATE);break;
-				case KeyEvent.VK_Z:
-
-					break;
-				case KeyEvent.VK_M:
-					if (measureMode == false)
-					{
-						measureMode = true;
-						measurePt.setLocation(MouseX, MouseY);
-					}
-					break;
-
-				case KeyEvent.VK_L:
-
-					repaint();
-					break;
-			}
+				break;
 		}
-		
-		
-			
-
-		
 		repaint();
 	}
 	
 	public void keyTyped(java.awt.event.KeyEvent e)
 	{
-		
 	}
 	
 	double	tmp_scrollX		= 0;
@@ -462,31 +330,22 @@ public abstract class PanelGraphiqueBaseBase extends PanelGraphiqueBase<Object> 
 
 	Thread	t				= null;
 
-	// 
 	private void scroll(final double oX, final double oY)
 	{
-		/*
-		 * SwingUtilities.invokeLater(new Runnable() { public void run() {
-		 */
-
-		if ((t == null) || (t != null) && (t.isAlive() == false))
+		if (t == null || !t.isAlive())
 		{
 			final_scrollX = ScrollX - oX;
 			final_scrollY = ScrollY - oY;
-
 			t = new Thread()
 			{
-				
 				@Override
 				public void run()
 				{
 					while (!(Math.abs(final_scrollX - ScrollX) <= 1) || !(Math.abs(final_scrollY - ScrollY) <= 1))
 					{
-
 						ScrollX -= (ScrollX - final_scrollX) / 10.0;
 						ScrollY -= (ScrollY - final_scrollY) / 10.0;
 						repaint();
-
 						try
 						{
 							Thread.sleep(10);
@@ -508,7 +367,6 @@ public abstract class PanelGraphiqueBaseBase extends PanelGraphiqueBase<Object> 
 			final_scrollY = final_scrollY - oY;
 
 		}
-
 	}
 
 	@SuppressWarnings("unused")
@@ -535,39 +393,7 @@ public abstract class PanelGraphiqueBaseBase extends PanelGraphiqueBase<Object> 
 	protected void cancel_current_action()
 	{
 	}
-/*
-	public void mouseWheelMoved(MouseWheelEvent e)
-	{
-		int dir = e.getWheelRotation();
-		
-		float factor = 1;
-		if (Zoom<3)
-			factor=2f;
-		if (Zoom<2.5)
-			factor=3f;
-		if (Zoom<2)
-			factor=5f;
-		if (Zoom<1.5)
-			factor=7f;
-		if (Zoom<1)
-			factor=10f;
-		if (Zoom<0.5)
-			factor=50f;
-		
-		Zoom -= (double) dir / (double) factor;
 
-		// Arrondis vers le 1 pour avoir 1 (1 pixel = 1 pixel et pas un truc foireux).
-		if (Math.abs(1-Zoom) <=0.1) Zoom=1;
-		
-		if (Zoom < ZoomMin)
-			Zoom = ZoomMin;
-		if (Zoom > ZoomMax)
-			Zoom = ZoomMax;
-		repaint();
-	}
-	
-	*/
-	
 	public void mouseWheelMoved(MouseWheelEvent e) {
 		//System.err.println("Neo");
 	    int dir = e.getWheelRotation();
@@ -584,10 +410,10 @@ public abstract class PanelGraphiqueBaseBase extends PanelGraphiqueBase<Object> 
 	    Point2D beforeZoom = null;
 	    Point2D afterZoom = null;
 	    
-	    /**
-	     * Pour le centrage on peut desactiver
+	    /*
+	     * Pour le centrage on peut désactiver
 	     */
-	    if (zoomOnCenterOrMousePointer==false)
+	    if (!zoomOnCenterOrMousePointer)
 	    	// Position actuelle de la souris en coordonnées réelles AVANT le zoom
 	    	beforeZoom = convertViewXYtoRealXY(e.getX(), e.getY());
 
@@ -602,22 +428,22 @@ public abstract class PanelGraphiqueBaseBase extends PanelGraphiqueBase<Object> 
 	    if (Zoom < ZoomMin) Zoom = ZoomMin;
 	    if (Zoom > ZoomMax) Zoom = ZoomMax;
 
-	    /**
-	     * Pour le centrage on peut desactiver
+	    /*
+	     * Pour le centrage on peut désactiver
 	     */
-	    if (zoomOnCenterOrMousePointer==false)
+	    if (!zoomOnCenterOrMousePointer)
 	    	// Position réelle après le zoom
 	    	afterZoom = convertViewXYtoRealXY(e.getX(), e.getY());
 
-	    /**
-	     * Pour le centrage on peut desactiver
+	    /*
+	     * Pour le centrage on peut désactiver
 	     */
-	    if (zoomOnCenterOrMousePointer==false)
+	    if (!zoomOnCenterOrMousePointer)
 	    {
 		    // Ajuster ScrollX et ScrollY pour compenser le déplacement dû au zoom
 	    	// Si Invert Axis sont tout les 2 a false
-		    ScrollX += (beforeZoom.getX() - afterZoom.getX()) * ((invertXAxis==false)?-1:1);
-		    ScrollY += (beforeZoom.getY() - afterZoom.getY()) * ((invertYAxis==false)?-1:1);
+		    ScrollX += (beforeZoom.getX() - afterZoom.getX()) * ((!invertXAxis)?-1:1);
+		    ScrollY += (beforeZoom.getY() - afterZoom.getY()) * ((!invertYAxis)?-1:1);
 	    }
 
 	    repaint();
@@ -626,12 +452,12 @@ public abstract class PanelGraphiqueBaseBase extends PanelGraphiqueBase<Object> 
 
 	public synchronized CurrentSelectionContext getContxt()
 	{
-		return contxt;
+		return context;
 	}
 
-	public synchronized void setContxt(CurrentSelectionContext contxt)
+	public synchronized void setContxt(CurrentSelectionContext context)
 	{
-		this.contxt = contxt;
+		this.context = context;
 	}
 
 	@Override
@@ -666,8 +492,7 @@ public abstract class PanelGraphiqueBaseBase extends PanelGraphiqueBase<Object> 
 			at.rotate(Math.toRadians(Angle));
 		}
 
-
-		if (config.isDrawGrid() == true)
+		if (config.isDrawGrid())
 			dessineGrille(g, true);
 		
 		setBackground(this.getColorConfig().getCOLOR_FOND_GRILLE().getColor());
@@ -678,14 +503,12 @@ public abstract class PanelGraphiqueBaseBase extends PanelGraphiqueBase<Object> 
 			if (System.currentTimeMillis()%2000<=1000)
 				drawSelectionnableObjetDebug(g);
 		}
-		
-		//	at.rotate(Math.toRadians(-45));
 
 		
 		// TODO CECI DOIT BOUGER ....
 		dessineSelectionArea(g);
 
-		if (measureMode == true) {
+		if (measureMode) {
 			drawMeasureSys(g);
 		}
 		
@@ -693,10 +516,7 @@ public abstract class PanelGraphiqueBaseBase extends PanelGraphiqueBase<Object> 
 		
 		if (isDrawFPSInfos())
 			draw_fps_infos(g);
-		
 
-		
-		
 		/*
 		// Dessine les selections faites par la user.
 		int nbr = contxt.getSelection().size();
@@ -715,7 +535,6 @@ public abstract class PanelGraphiqueBaseBase extends PanelGraphiqueBase<Object> 
 		}
 		*/
 		g.setColor(Color.BLACK);
-		
 		g.dispose();
 	}
 	
@@ -731,8 +550,7 @@ public abstract class PanelGraphiqueBaseBase extends PanelGraphiqueBase<Object> 
 			g.draw(rect);
 		}
 	}
-    
-	
+
 	public abstract void doPaint(Graphics2D g);
 
 	/**
@@ -744,9 +562,7 @@ public abstract class PanelGraphiqueBaseBase extends PanelGraphiqueBase<Object> 
 		long elapsed = fps_counter_stop_render - fps_counter_start_render;
 		fps_counter_sum_render_time += elapsed;
 		fps_counter_cpt_render_time++;
-
 		long average_time = fps_counter_sum_render_time / fps_counter_cpt_render_time;
-
 		g.setColor(Color.BLACK);
 		g.setFont(new Font("Impact", 0, 16));
 		int FPS = (int) (1000f / average_time);
@@ -758,7 +574,7 @@ public abstract class PanelGraphiqueBaseBase extends PanelGraphiqueBase<Object> 
 	 * Transforme le rectangle (avec des width qui sont negatif, en width
 	 * positif et en reculant le x (meme chose pour y)
 	 * 
-	 * @param selectionArea
+	 * @param selectionArea zone de selection
 	 * @return
 	 */
 	protected Rectangle2D CorrigeSelection(Rectangle2D selectionArea)
@@ -767,7 +583,6 @@ public abstract class PanelGraphiqueBaseBase extends PanelGraphiqueBase<Object> 
 		double y = selectionArea.getY();
 		double w = selectionArea.getWidth();
 		double h = selectionArea.getHeight();
-
 		if (w < 0)
 		{
 			x += w;
@@ -778,7 +593,6 @@ public abstract class PanelGraphiqueBaseBase extends PanelGraphiqueBase<Object> 
 			y += h;
 			h = Math.abs(h);
 		}
-
 		return new Rectangle2D.Double(x, y, w, h);
 	}
 
@@ -788,7 +602,6 @@ public abstract class PanelGraphiqueBaseBase extends PanelGraphiqueBase<Object> 
 	 */
 	private void changeMouseCursor()
 	{
-
 		/*
 		 * contxt.getCurrentMode(); if (contxt.getCurrentMode()==Mode.SELECTION)
 		 * setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR)); Point
@@ -830,7 +643,6 @@ public abstract class PanelGraphiqueBaseBase extends PanelGraphiqueBase<Object> 
 
 	/**
 	 * @param g
-	 * @param p
 	 * @param Web_Height
 	 * @param Flange_Width
 	 * @param x
@@ -854,7 +666,6 @@ public abstract class PanelGraphiqueBaseBase extends PanelGraphiqueBase<Object> 
 			l = new Line2D.Double(0, 0, Flange_Width, 0);
 			t = at2.createTransformedShape(l);
 			g.draw(t);
-
 		}
 	}
 	
@@ -916,7 +727,6 @@ public abstract class PanelGraphiqueBaseBase extends PanelGraphiqueBase<Object> 
 	{
 		if (at != null) // faudra supprimer cette condition.
 		{
-			
 			if (side==1)
 				Web_Height=-Web_Height;
 			if (dir==0)
@@ -929,9 +739,7 @@ public abstract class PanelGraphiqueBaseBase extends PanelGraphiqueBase<Object> 
 			Line2D l = new Line2D.Double(0, 0, 0, (Web_Height));
 			Shape t = at2.createTransformedShape(l);
 			g.draw(t);
-			
 
-			
 			at2.translate(0, Web_Height);
 			at2.rotate(Math.toRadians(0));
 			l = new Line2D.Double(0, 0, Flange_Width, 0);
@@ -941,18 +749,13 @@ public abstract class PanelGraphiqueBaseBase extends PanelGraphiqueBase<Object> 
 			l = new Line2D.Double(Flange_Width, 0, 0, -Web_Height/4.0);
 			t = at2.createTransformedShape(l);
 			g.draw(t);
-			
-			
+
 			at2 = new AffineTransform();
 			at2.translate(x, y);
 			at2.rotate(Math.toRadians(-angle));
 			
 			Shape lll = at2.createTransformedShape(new Line2D.Double(0, 0, 0, (Web_Height)));
 			return lll;
-
-			
-			
-
 		}
 		return null;
 	}
@@ -1057,7 +860,6 @@ public abstract class PanelGraphiqueBaseBase extends PanelGraphiqueBase<Object> 
 
 
 		}
-		
 		return null;
 	}
 
@@ -1126,11 +928,12 @@ public abstract class PanelGraphiqueBaseBase extends PanelGraphiqueBase<Object> 
 		}
 
 	}
-	
-	
+
+
 	/**
-	 * // TODO : renommer ça
-	 * @param at
+	 * Dessine un arc de cercle dans le style MarsLike (avec 2 point et un radius)
+	 * @param g
+	 * @param curve
 	 */
 	public void drawArcCurveMarsLike(Graphics2D g, ArcCurveMarsLike curve)
 	{
@@ -1188,8 +991,6 @@ public abstract class PanelGraphiqueBaseBase extends PanelGraphiqueBase<Object> 
 		g.setColor(Color.BLACK);
 	}
 
-	
-	
 	public synchronized boolean isDrawFPSInfos()
 	{
 		return DrawFPSInfos;
@@ -1198,51 +999,50 @@ public abstract class PanelGraphiqueBaseBase extends PanelGraphiqueBase<Object> 
 	{
 		DrawFPSInfos = drawFPSInfos;
 	}
-	
 
 	/**
-	 * @return the mBUTTON_SELECTION_MASK
+	 * @return the BUTTON_SELECTION_MASK
 	 */
-	public synchronized int getMBUTTON_SELECTION_MASK()
+	public synchronized int getBUTTON_SELECTION_MASK()
 	{
-		return MBUTTON_SELECTION_MASK;
+		return BUTTON_SELECTION_MASK;
 	}
 	/**
-	 * @param mBUTTON_SELECTION_MASK the mBUTTON_SELECTION_MASK to set
+	 * @param BUTTON_SELECTION_MASK the BUTTON_SELECTION_MASK to set
 	 */
-	public synchronized void setMBUTTON_SELECTION_MASK(int mBUTTON_SELECTION_MASK)
+	public synchronized void setBUTTON_SELECTION_MASK(int BUTTON_SELECTION_MASK)
 	{
-		MBUTTON_SELECTION_MASK = mBUTTON_SELECTION_MASK;
+		this.BUTTON_SELECTION_MASK = BUTTON_SELECTION_MASK;
 	
 	}
 	/**
 	 * @return the mBUTTON_SCROLL_MASK
 	 */
-	public synchronized int getMBUTTON_SCROLL_MASK()
+	public synchronized int getBUTTON_SCROLL_MASK()
 	{
-		return MBUTTON_SCROLL_MASK;
+		return BUTTON_SCROLL_MASK;
 	}
 	/**
-	 * @param mBUTTON_SCROLL_MASK the mBUTTON_SCROLL_MASK to set
+	 * @param BUTTON_SCROLL_MASK the BUTTON_SCROLL_MASK to set
 	 */
-	public synchronized void setMBUTTON_SCROLL_MASK(int mBUTTON_SCROLL_MASK)
+	public synchronized void setBUTTON_SCROLL_MASK(int BUTTON_SCROLL_MASK)
 	{
-		MBUTTON_SCROLL_MASK = mBUTTON_SCROLL_MASK;
+		this.BUTTON_SCROLL_MASK = BUTTON_SCROLL_MASK;
 	
 	}
 	/**
 	 * @return the mBUTTON_POPUP_MASK
 	 */
-	public synchronized int getMBUTTON_POPUP_MASK()
+	public synchronized int getBUTTON_POPUP_MASK()
 	{
-		return MBUTTON_POPUP_MASK;
+		return BUTTON_POPUP_MASK;
 	}
 	/**
-	 * @param mBUTTON_POPUP_MASK the mBUTTON_POPUP_MASK to set
+	 * @param BUTTON_POPUP_MASK the BUTTON_POPUP_MASK to set
 	 */
-	public synchronized void setMBUTTON_POPUP_MASK(int mBUTTON_POPUP_MASK)
+	public synchronized void setBUTTON_POPUP_MASK(int BUTTON_POPUP_MASK)
 	{
-		MBUTTON_POPUP_MASK = mBUTTON_POPUP_MASK;
+		this.BUTTON_POPUP_MASK = BUTTON_POPUP_MASK;
 	
 	}
 	/**
@@ -1253,7 +1053,7 @@ public abstract class PanelGraphiqueBaseBase extends PanelGraphiqueBase<Object> 
 	{
 		return enableSelectionDrawDebug;
 	}
-	
+
 	/**
 	 * Affiche ou non le debug pour voire les shape selectionnables.
 	 * @param enableSelectionDrawDebug the enableSelectionDrawDebug to set
@@ -1261,7 +1061,6 @@ public abstract class PanelGraphiqueBaseBase extends PanelGraphiqueBase<Object> 
 	public synchronized void setEnableSelectionDrawDebug(boolean enableSelectionDrawDebug)
 	{
 		this.enableSelectionDrawDebug = enableSelectionDrawDebug;
-	
 	}
 	public boolean isZoomOnCenterOrMousePointer() {
 		return zoomOnCenterOrMousePointer;
@@ -1275,7 +1074,4 @@ public abstract class PanelGraphiqueBaseBase extends PanelGraphiqueBase<Object> 
 	public void setMeasureArrowSize(float measureArrowSize) {
 		this.measureArrowSize = measureArrowSize;
 	}
-	
-	
-
 }

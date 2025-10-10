@@ -19,12 +19,8 @@ import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
-import java.io.File;
-import java.util.Iterator;
-import java.util.List;
 
 import javax.swing.JFrame;
-import javax.swing.JMenuItem;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -33,7 +29,6 @@ import io.github.warnotte.waxlib3.W2D.PanelGraphique.CurrentSelectionContext;
 import io.github.warnotte.waxlib3.W2D.PanelGraphique.PanelGraphiqueBaseBase;
 import io.github.warnotte.waxlib3.W2D.PanelGraphique.SelectionChangeable;
 import io.github.warnotte.waxlib3.W2D.PanelGraphique.SelectionChangedEvent;
-import io.github.warnotte.waxlib3.W2D.PanelGraphique.SelectionChangedEvent.Refresh_MSG;
 import io.github.warnotte.waxlib3.W2D.PanelGraphique.tests.spirograph.Manager;
 
 public class VUE2D_TestRoseDesVents extends PanelGraphiqueBaseBase implements KeyListener, MouseListener, MouseMotionListener, SelectionChangeable, Cloneable,  ActionListener
@@ -183,7 +178,7 @@ public class VUE2D_TestRoseDesVents extends PanelGraphiqueBaseBase implements Ke
 	@Override
 	public void somethingNeedRefresh(SelectionChangedEvent e)
 	{
-		Manager manager = (Manager) contxt.getManager();
+		Manager manager = (Manager) context.getManager();
 		//logger.info("Something need refresh "+this);
 	}
 

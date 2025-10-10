@@ -14,7 +14,6 @@ import java.awt.HeadlessException;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.Polygon;
-import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.Stroke;
@@ -61,13 +60,11 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 	 */
 	private static final long serialVersionUID = -8780048115222887324L;
 
-	protected CurrentSelectionContext	contxt		= null;
-	protected ConfigurationGeneral		config		= new ConfigurationGeneral();
+	protected CurrentSelectionContext context = null;
+	protected ConfigurationGeneral    config  = new ConfigurationGeneral();
 	private ConfigurationColor			colorConfig	= new ConfigurationColor();
 
 	protected Random	rand	= new Random();	// @jve:decl-index=0:
-	protected double	accumx;
-	protected double	accumy;
 
 	protected boolean	LockScrollY	= false;
 	protected boolean	LockScrollX	= false;
@@ -175,7 +172,7 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 		//	KeyboardFocusManager kfm = KeyboardFocusManager.getCurrentKeyboardFocusManager();
 		//	kfm.setDefaultFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, Collections.EMPTY_SET);
 		//	kfm.setDefaultFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, Collections.EMPTY_SET);
-		this.contxt = contxt;
+		this.context = contxt;
 	}
 	
 
@@ -474,35 +471,6 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 		return z;
 
 	}
-
-	/*
-	 * protected Node CalculeDeplacementAvecGrille() { double dx = MouseDX;//=
-	 * (oldmousex - MouseX);//
-	 * /contxt.getConfig().getGRID_SIZE()*contxt.getConfig().getGRID_SIZE();
-	 * double dy = MouseDY;//= (oldmousey - MouseY);//
-	 * /contxt.getConfig().getGRID_SIZE()*contxt.getConfig().getGRID_SIZE();
-	 * accumx += dx; accumy += dy; if (lockY!=-1) accumy=0; if (lockX!=-1)
-	 * accumx=0; if (contxt.getConfig().isEnableGridding()==true) { double
-	 * deltax = Utils.Griddify(accumx, contxt.getConfig().getGRID_SIZE(),
-	 * false); double deltay = Utils.Griddify(accumy,
-	 * contxt.getConfig().getGRID_SIZE(), false); if ((Math.abs(deltax) >=
-	 * contxt.getConfig().getGRID_SIZE())) { accumx = accumx - deltax; } if
-	 * ((Math.abs(deltay) >= contxt.getConfig().getGRID_SIZE())) { accumy =
-	 * accumy - deltay; } //if ((Math.abs(accumx) >=
-	 * contxt.getConfig().getGRID_SIZE()) || (Math.abs(accumy) >=
-	 * contxt.getConfig().getGRID_SIZE())) { if ((Math.abs(deltax) >=
-	 * contxt.getConfig().getGRID_SIZE()) || (Math.abs(deltay) >=
-	 * contxt.getConfig().getGRID_SIZE())) { // double deltax =
-	 * Mmath.round(accumx / contxt.getConfig().getGRID_SIZE())*
-	 * contxt.getConfig().getGRID_SIZE(); // double deltay = Math.round(accumy /
-	 * contxt.getConfig().getGRID_SIZE())* contxt.getConfig().getGRID_SIZE();
-	 * System.err.println("* "+ deltax +","+deltay); // accumx = accumx -
-	 * deltax; // accumy = accumy - deltay; // accumx = 0; // accumy = 0; return
-	 * new Node(-deltax, -deltay); } } else {
-	 * //manager.displacePoints(contxt.getClickedNode(), -accumx, -accumy); Node
-	 * p = new Node(-accumx, -accumy); accumx=0; accumy=0; return p; } return
-	 * null; }
-	 */
 
 	public synchronized double getScrollX()
 	{
@@ -911,22 +879,14 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 	}
 
 	/**
-	 * Draw text using glyphvector
-	 * 
-	 * @param g
-	 *            Graphics2D
-	 * @param text
-	 *            the text itself
-	 * @param x
-	 *            x position of the text
-	 * @param y
-	 *            y position of the text
-	 * @param ang
-	 *            angle of the text
-	 * @param alignX
-	 *            Alignment X for the text
-	 * @param alignY
-	 *            Alignment Y for the text
+	 * Draw text using glyph vector
+	 *
+	 * @param g      Graphics2D
+	 * @param text   the text itself
+	 * @param x      x position of the text
+	 * @param y      y position of the text
+	 * @param alignX Alignment X for the text
+	 * @param alignY Alignment Y for the text
 	 * @return Shape of the text (a rectangle with rotation or not)
 	 */
 	protected Shape drawString(Graphics2D g, String text, float x, float y, AlignTexteX alignX, AlignTexteY alignY)
@@ -935,24 +895,15 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 	}
 
 	/**
-	 * Draw text using glyphvector
-	 * 
-	 * @param g
-	 *            Graphics2D
-	 * @param text
-	 *            the text itself
-	 * @param x
-	 *            x position of the text
-	 * @param y
-	 *            y position of the text
-	 * @param ang
-	 *            angle of the text
-	 * @param alignX
-	 *            Alignment X for the text
-	 * @param alignY
-	 *            Alignment Y for the text
-	 * @param txtCantChangeSize
-	 *            Text can have fixed size when zooming or not
+	 * Draw text using glyph vector
+	 *
+	 * @param g                 Graphics2D
+	 * @param text              the text itself
+	 * @param x                 x position of the text
+	 * @param y                 y position of the text
+	 * @param alignX            Alignment X for the text
+	 * @param alignY            Alignment Y for the text
+	 * @param txtCantChangeSize Text can have fixed size when zooming or not
 	 * @return Shape of the text (a rectangle with rotation or not)
 	 */
 	protected Shape drawString(Graphics2D g, String text, float x, float y, AlignTexteX alignX, AlignTexteY alignY, boolean txtCantChangeSize)
@@ -961,107 +912,70 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 	}
 
 	/**
-	 * Draw text using glyphvector
-	 * 
-	 * @param g
-	 *            Graphics2D
-	 * @param text
-	 *            the text itself
-	 * @param x
-	 *            x position of the text
-	 * @param y
-	 *            y position of the text
-	 * @param ang
-	 *            angle of the text
-	 * @param alignX
-	 *            Alignment X for the text
-	 * @param alignY
-	 *            Alignment Y for the text
-	 * @param txtCantChangeSize
-	 *            Text can have fixed size when zooming or not
+	 * Draw text using glyph vector
+	 *
+	 * @param g                 Graphics2D
+	 * @param text              the text itself
+	 * @param x                 x position of the text
+	 * @param y                 y position of the text
+	 * @param alignX            Alignment X for the text
+	 * @param alignY            Alignment Y for the text
+	 * @param txtCantChangeSize Text can have fixed size when zooming or not
 	 * @return Shape of the text (a rectangle with rotation or not)
 	 */
-
 	protected Shape drawString(Graphics2D g, String text, double x, double y, AlignTexteX alignX, AlignTexteY alignY, boolean txtCantChangeSize)
 	{
 		return drawString(g, text, (float) x, (float) y, 0, alignX, alignY, txtCantChangeSize);
 	}
 
 	/**
-	 * Draw text using glyphvector
-	 * 
-	 * @param g
-	 *            Graphics2D
-	 * @param text
-	 *            the text itself
-	 * @param x
-	 *            x position of the text
-	 * @param y
-	 *            y position of the text
-	 * @param ang
-	 *            angle of the text
-	 * @param alignX
-	 *            Alignment X for the text
-	 * @param alignY
-	 *            Alignment Y for the text
-	 * @param txtCantChangeSize
-	 *            Text can have fixed size when zooming or not
+	 * Draw text using glyph vector
+	 *
+	 * @param g                 Graphics2D
+	 * @param text              the text itself
+	 * @param x                 x position of the text
+	 * @param y                 y position of the text
+	 * @param ang               angle of the text
+	 * @param alignX            Alignment X for the text
+	 * @param alignY            Alignment Y for the text
+	 * @param txtCantChangeSize Text can have fixed size when zooming or not
 	 * @return Shape of the text (a rectangle with rotation or not)
 	 */
-
 	protected Shape drawString(Graphics2D g, String text, int x, int y, float ang, AlignTexteX alignX, AlignTexteY alignY, boolean txtCantChangeSize)
 	{
 		return drawString(g, text, (float) x, (float) y, ang, alignX, alignY, txtCantChangeSize);
 	}
 
 	/**
-	 * Draw text using glyphvector
-	 * 
-	 * @param g
-	 *            Graphics2D
-	 * @param text
-	 *            the text itself
-	 * @param x
-	 *            x position of the text
-	 * @param y
-	 *            y position of the text
-	 * @param ang
-	 *            angle of the text
-	 * @param alignX
-	 *            Alignment X for the text
-	 * @param alignY
-	 *            Alignment Y for the text
-	 * @param txtCantChangeSize
-	 *            Text can have fixed size when zooming or not
+	 * Draw text using glyph vector
+	 *
+	 * @param g                 Graphics2D
+	 * @param text              the text itself
+	 * @param x                 x position of the text
+	 * @param y                 y position of the text
+	 * @param ang               angle of the text
+	 * @param alignX            Alignment X for the text
+	 * @param alignY            Alignment Y for the text
+	 * @param txtCantChangeSize Text can have fixed size when zooming or not
 	 * @return Shape of the text (a rectangle with rotation or not)
 	 */
-
 	protected Shape drawString(Graphics2D g, String text, float x, float y, float ang, AlignTexteX alignX, AlignTexteY alignY, boolean txtCantChangeSize)
 	{
 		return drawString(g, text, x, y, ang, alignX, alignY, txtCantChangeSize, 1.0f);
 	}
 
 	/**
-	 * Draw text using glyphvector
-	 * 
-	 * @param g
-	 *            Graphics2D
-	 * @param text
-	 *            the text itself
-	 * @param x
-	 *            x position of the text
-	 * @param y
-	 *            y position of the text
-	 * @param ang
-	 *            angle of the text
-	 * @param alignX
-	 *            Alignment X for the text
-	 * @param alignY
-	 *            Alignment Y for the text
-	 * @param txtCantChangeSize
-	 *            Text can have fixed size when zooming or not
-	 * @param Size
-	 *            size of the text
+	 * Draw text using glyph vector
+	 *
+	 * @param g                 Graphics2D
+	 * @param text              the text itself
+	 * @param x                 x position of the text
+	 * @param y                 y position of the text
+	 * @param ang               angle of the text
+	 * @param alignX            Alignment X for the text
+	 * @param alignY            Alignment Y for the text
+	 * @param txtCantChangeSize Text can have fixed size when zooming or not
+	 * @param Size              size of the text
 	 * @return Shape of the text (a rectangle with rotation or not)
 	 */
 	protected Shape drawString(Graphics2D g, String text, float x, float y, float ang, AlignTexteX alignX, AlignTexteY alignY, boolean txtCantChangeSize, float Size)
@@ -1070,28 +984,18 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 	}
 
 	/**
-	 * Draw text using glyphvector
-	 * 
-	 * @param g
-	 *            Graphics2D
-	 * @param text
-	 *            the text itself
-	 * @param x
-	 *            x position of the text
-	 * @param y
-	 *            y position of the text
-	 * @param ang
-	 *            angle of the text
-	 * @param alignX
-	 *            Alignment X for the text
-	 * @param alignY
-	 *            Alignment Y for the text
-	 * @param txtCantChangeSize
-	 *            Text can have fixed size when zooming or not
-	 * @param Size
-	 *            size of the text
-	 * @param drawBackGround
-	 *            Draw a rectangle below text
+	 * Draw text using glyph vector
+	 *
+	 * @param g                 Graphics2D
+	 * @param text              the text itself
+	 * @param x                 x position of the text
+	 * @param y                 y position of the text
+	 * @param ang               angle of the text
+	 * @param alignX            Alignment X for the text
+	 * @param alignY            Alignment Y for the text
+	 * @param txtCantChangeSize Text can have fixed size when zooming or not
+	 * @param Size              size of the text
+	 * @param drawBackGround    Draw a rectangle below text
 	 * @return Shape of the text (a rectangle with rotation or not)
 	 */
 	protected Shape drawString(Graphics2D g, String text, float x, float y, float ang, AlignTexteX alignX, AlignTexteY alignY, boolean txtCantChangeSize, float Size, boolean drawBackGround)
@@ -1100,30 +1004,19 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 	}
 
 	/**
-	 * Draw text using glyphvector
-	 * 
-	 * @param g
-	 *            Graphics2D
-	 * @param text
-	 *            the text itself
-	 * @param x
-	 *            x position of the text
-	 * @param y
-	 *            y position of the text
-	 * @param ang
-	 *            angle of the text
-	 * @param alignX
-	 *            Alignment X for the text
-	 * @param alignY
-	 *            Alignment Y for the text
-	 * @param txtCantChangeSize
-	 *            Text can have fixed size when zooming or not
-	 * @param Size
-	 *            size of the text
-	 * @param drawBackGround
-	 *            Draw a rectangle below text
-	 * @param backGroundColor
-	 *            Color for the drawBackground
+	 * Draw text using glyph vector
+	 *
+	 * @param g                 Graphics2D
+	 * @param text              the text itself
+	 * @param x                 x position of the text
+	 * @param y                 y position of the text
+	 * @param ang               angle of the text
+	 * @param alignX            Alignment X for the text
+	 * @param alignY            Alignment Y for the text
+	 * @param txtCantChangeSize Text can have fixed size when zooming or not
+	 * @param Size              size of the text
+	 * @param drawBackGround    Draw a rectangle below text
+	 * @param backGroundColor   Color for the drawBackground
 	 * @return Shape of the text (a rectangle with rotation or not)
 	 */
 	protected Shape drawString(Graphics2D g, String text, float x, float y, float ang, AlignTexteX alignX, AlignTexteY alignY, boolean txtCantChangeSize, float Size, boolean drawBackGround, Color backGroundColor)
@@ -1133,31 +1026,19 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 
 	/**
 	 * Draw a text
-	 * 
-	 * @param g
-	 *            Graphics2D
-	 * @param text
-	 *            the text itself
-	 * @param x
-	 *            x position of the text
-	 * @param y
-	 *            y position of the text
-	 * @param ang
-	 *            angle of the text
-	 * @param alignX
-	 *            Alignment X for the text
-	 * @param alignY
-	 *            Alignment Y for the text
-	 * @param txtCantChangeSize
-	 *            Text can have fixed size when zooming or not
-	 * @param Size
-	 *            size of the text
-	 * @param drawBackGround
-	 *            Draw a rectangle below text
-	 * @param backGroundColor
-	 *            Color for the drawBackground
-	 * @param useGlyph
-	 *            Use Glyph method for better text with at and rotation
+	 *
+	 * @param g                 Graphics2D
+	 * @param text              the text itself
+	 * @param x                 x position of the text
+	 * @param y                 y position of the text
+	 * @param ang               angle of the text
+	 * @param alignX            Alignment X for the text
+	 * @param alignY            Alignment Y for the text
+	 * @param txtCantChangeSize Text can have fixed size when zooming or not
+	 * @param Size              size of the text
+	 * @param drawBackGround    Draw a rectangle below text
+	 * @param backGroundColor   Color for the drawBackground
+	 * @param useGlyph          Use Glyph method for better text with at and rotation
 	 * @return Shape of the text (a rectangle with rotation or not)
 	 */
 	protected Shape drawString(Graphics2D g, String text, float x, float y, float ang, AlignTexteX alignX, AlignTexteY alignY, boolean txtCantChangeSize, float Size, boolean drawBackGround, Color backGroundColor, boolean useGlyph)
@@ -1165,27 +1046,27 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 		float	sx	= (float) Zoom;
 		float	sy	= (float) Zoom;
 
-		if (txtCantChangeSize == true)
+		if (txtCantChangeSize)
 		{
 			sx = 1.0f / Size;
 			sy = 1.0f / Size;
 		}
 
-		if ((invertXAxis == false) && (invertYAxis == false))
+		if ((!invertXAxis) && (!invertYAxis))
 		{
 		}
 		;
-		if ((invertXAxis == false) && (invertYAxis == true))
+		if ((!invertXAxis) && (invertYAxis))
 		{
 			sy = -sy;
 		}
 		;
-		if ((invertXAxis == true) && (invertYAxis == false))
+		if ((invertXAxis) && (!invertYAxis))
 		{
 			sx = -sx;
 		}
 		;
-		if ((invertXAxis == true) && (invertYAxis == true))
+		if ((invertXAxis) && (invertYAxis))
 		{
 			sx = -sx;
 			sy = -sy;
@@ -1221,16 +1102,13 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 		Shape rect_texte = g.getFontMetrics().getStringBounds(text, g);
 		rect_texte = at3.createTransformedShape(rect_texte);//.getBounds2D();
 
-		if (drawBackGround == true)
+		if (drawBackGround)
 		{
 			Rectangle2D	rect_texteM	= g.getFontMetrics().getStringBounds(text, g);
 			Rectangle2D	rect_texte2	= (Rectangle2D) rect_texteM.clone();
 
 			float	elargX	= 4;
 			float	elargY	= 2;
-			/*
-			 * if (txtCantChangeSize == true) { elargX = 3; elargY = 1; }
-			 */
 
 			rect_texte2.setRect(rect_texte2.getX() - elargX / 2.0f, rect_texte2.getY() - elargY / 2.0f, rect_texte2.getWidth() + elargX, rect_texte2.getHeight() + elargY);
 			Shape shp_rect_texte2 = at2.createTransformedShape(rect_texte2);
@@ -1252,7 +1130,7 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 		int					length	= gv.getNumGlyphs();
 
 		// Methode rapide mais qui ne permet pas de faire certains truc que l'autre bazard du dessous fait.
-		if (useGlyph == false)
+		if (!useGlyph)
 		{
 			AffineTransform oldat = (AffineTransform) g.getTransform().clone();
 			g.setTransform(at2);
@@ -1287,11 +1165,8 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 	 * @param x
 	 * @param y
 	 * @param ang
-	 * @param centered
-	 *            centre le texte au millieu du texte (pour les rotation aussi).
-	 * @param txtCantChangeSize
-	 *            Le texte va-t-il avoir sa taille modifier par le facteur de
-	 *            zoom ?
+	 * @param txtCantChangeSize Le texte va-t-il avoir sa taille modifier par le facteur de
+	 *                          zoom ?
 	 * @return
 	 */
 	protected Shape drawString_AFTER_OLD(Graphics2D g, String text, float x, float y, float ang, AlignTexteX alignX, AlignTexteY alignY, boolean txtCantChangeSize, float Size, boolean drawBackGround, Color backGroundColor)
@@ -1366,7 +1241,7 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 
 		Color colorCurrent = g.getColor();
 
-		if (drawBackGround == true)
+		if (drawBackGround)
 		{
 			Rectangle2D	rect_texteM	= g.getFontMetrics().getStringBounds(text, g);
 			Rectangle2D	rect_texte2	= (Rectangle2D) rect_texteM.clone();
@@ -1374,7 +1249,7 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 			float	elargX	= 4;
 			float	elargY	= 2;
 
-			if (txtCantChangeSize == true)
+			if (txtCantChangeSize)
 			{
 				elargX = 3;
 				elargY = 1;
@@ -1636,6 +1511,7 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 	 * @param backGroundColor
 	 * @return
 	 */
+	@Deprecated
 	protected Shape drawStringOLD_BACKUP(Graphics2D g, String text, float x, float y, float ang, AlignTexteX alignX, AlignTexteY alignY, boolean txtCantChangeSize, float Size, boolean drawBackGround, Color backGroundColor)
 	{
 		// TODO : Gerer le SCALE
@@ -2640,7 +2516,7 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 		Stroke	oldStroke	= g.getStroke();
 		g.setStroke(stroke);
 
-		if (contxt.getSelection().contains(curve1))
+		if (context.getSelection().contains(curve1))
 			g.setColor(Color.magenta);
 		else
 			g.setColor(color);
@@ -2700,7 +2576,7 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 	{
 		double		scale	= 4.0;
 		Ellipse2D	rect	= new Ellipse2D.Double(np.getX() - 0.5 * scale, np.getY() - 0.5 * scale, 1.0 * scale, 1.0 * scale);
-		if (contxt.getSelection().contains(np))
+		if (context.getSelection().contains(np))
 			g.setColor(Color.MAGENTA);
 		else
 			g.setColor(colorIn);
@@ -2732,7 +2608,7 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 		Shape	shpControlPoint			= new Ellipse2D.Double(-0.5 * scaleshpControlPoint, -0.5 * scaleshpControlPoint, 1.0 * scaleshpControlPoint, +1.0 * scaleshpControlPoint);
 
 		Shape shpPoint_ = at1.createTransformedShape(shpControlPoint);
-		if (contxt.getSelection().contains(np))
+		if (context.getSelection().contains(np))
 			g.setColor(Color.magenta);
 		else
 			g.setColor(Color.white);
