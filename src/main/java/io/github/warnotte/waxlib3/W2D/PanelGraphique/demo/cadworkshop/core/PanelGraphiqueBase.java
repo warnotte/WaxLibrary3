@@ -1,4 +1,4 @@
-package io.github.warnotte.waxlib3.W2D.PanelGraphique;
+package io.github.warnotte.waxlib3.W2D.PanelGraphique.demo.cadworkshop.core;
 
 import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
@@ -48,6 +48,13 @@ import javax.swing.JPanel;
 
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
+import io.github.warnotte.waxlib3.W2D.PanelGraphique.AlignTexteX;
+import io.github.warnotte.waxlib3.W2D.PanelGraphique.AlignTexteY;
+import io.github.warnotte.waxlib3.W2D.PanelGraphique.ConfigurationColor;
+import io.github.warnotte.waxlib3.W2D.PanelGraphique.ConfigurationGeneral;
+import io.github.warnotte.waxlib3.W2D.PanelGraphique.CurrentSelectionContext;
+import io.github.warnotte.waxlib3.W2D.PanelGraphique.SelectionTuple;
+import io.github.warnotte.waxlib3.W2D.PanelGraphique.View2D_Utils;
 import io.github.warnotte.waxlib3.W2D.PanelGraphique.Nurbs.NurbsCurve;
 import io.github.warnotte.waxlib3.W2D.PanelGraphique.Nurbs.NurbsPath;
 import io.github.warnotte.waxlib3.W2D.PanelGraphique.Nurbs.NurbsPoint;

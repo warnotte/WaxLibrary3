@@ -1,0 +1,276 @@
+╔════════════════════════════════════════════════════════════════════════════╗
+║                                                                            ║
+║             FLOATING SOLAR PARK - OBJETS MÉTIER CONCRETS                   ║
+║                  Inspiré de FloatSolarWindFarm_2                           ║
+║                                                                            ║
+╚════════════════════════════════════════════════════════════════════════════╝
+
+🎯 RÉPONSE À VOTRE DEMANDE
+
+Vous avez dit :
+> "je ne vois toujours pas d'objet métier avec une taille ou autre sélectionnable"
+> "un parc solaire flottant comme dans FloatSolarWindFarm_2"
+
+J'ai créé des OBJETS MÉTIER CONCRETS avec dimensions réelles :
+
+
+═══════════════════════════════════════════════════════════════════════════════
+
+📦 FICHIERS CRÉÉS (3 nouveaux objets métier)
+
+1. ✨ FloatingPlatform.java
+   └─ Plateforme flottante avec :
+      • longueur (en m) : ex 20.0m
+      • largeur (en m) : ex 10.0m
+      • poids (en kg) : ex 5000 kg
+      • flotabilité (en kg) : ex 6000 kg
+      • tirant d'eau (en m) : ex 0.6m (60cm immergé)
+      • franc-bord (en m) : ex 0.4m (40cm émergé)
+      • Contient des SolarPanel (hiérarchie!)
+      • SÉLECTIONNABLE et MANIPULABLE
+
+2. ✨ SolarPanel.java
+   └─ Panneau solaire avec :
+      • Dimensions standard : 1.65m × 1.0m
+      • Puissance : 300 Wc (Watt-crête)
+      • Inclinaison : 15° (angle du panneau)
+      • Position LOCALE sur la plateforme
+      • Grille de cellules photovoltaïques (6×10 cellules)
+      • SÉLECTIONNABLE
+
+3. ✨ Mooring.java
+   └─ Point d'amarrage avec :
+      • Position de l'ancre au fond
+      • Point d'attache sur la plateforme
+      • Longueur de câble (en m) : ex 25m
+      • Profondeur d'ancrage (en m) : ex 15m
+      • Force max de tension (en kN) : ex 50 kN
+      • Visualisation du câble
+      • SÉLECTIONNABLE
+
+4. 🔧 CADWorkspace.java (modifié)
+   └─ Nouvelle méthode : createFloatingSolarPark()
+      • Crée 3 plateformes flottantes
+      • 26 panneaux solaires au total (7.8 kWc)
+      • 8 amarrages
+      • 2 cotations entre plateformes
+
+5. 🔧 CADWorkshopView.java (modifié)
+   └─ Nouveau mode : FLOATING_SOLAR_PARK
+      • Affiche le parc solaire complet
+      • Statistiques en temps réel
+      • Légende explicative
+
+
+═══════════════════════════════════════════════════════════════════════════════
+
+🏗️ STRUCTURE DU PARC SOLAIRE CRÉÉ
+
+Platform-A1 (20m × 10m, 5000kg)
+Position: (-30, 0)
+├─ 12 panneaux solaires (2 rangées de 6)
+│  └─ PV-A1-11, PV-A1-12, ..., PV-A1-26
+├─ 4 amarrages :
+│  ├─ Anchor-A1-NW (câble 25m, 15m profondeur, 50kN)
+│  ├─ Anchor-A1-NE
+│  ├─ Anchor-A1-SW
+│  └─ Anchor-A1-SE
+└─ Puissance totale : 3.6 kWc
+
+Platform-A2 (15m × 8m, 3500kg)
+Position: (30, 0)
+├─ 8 panneaux solaires (2 rangées de 4)
+│  └─ PV-A2-11, PV-A2-12, ..., PV-A2-24
+├─ 2 amarrages :
+│  ├─ Anchor-A2-W
+│  └─ Anchor-A2-E
+└─ Puissance totale : 2.4 kWc
+
+Platform-B1 (12m × 6m, 2500kg) ← ROTATÉE 30°!
+Position: (0, 35)
+Rotation: 30 degrés
+├─ 6 panneaux solaires (1 rangée de 6)
+│  └─ PV-B1-1, PV-B1-2, ..., PV-B1-6
+├─ 2 amarrages :
+│  ├─ Anchor-B1-N
+│  └─ Anchor-B1-S
+└─ Puissance totale : 1.8 kWc
+
+
+═══════════════════════════════════════════════════════════════════════════════
+
+✨ CARACTÉRISTIQUES DES OBJETS MÉTIER
+
+FloatingPlatform :
+  • Quadrillage tous les 2m pour visualiser les sections
+  • Affiche nom, dimensions, poids, flotabilité
+  • Affiche tirant d'eau (TE) et franc-bord (FB)
+  • Contient et rend ses panneaux solaires (hiérarchie!)
+  • Sélectionnable (devient MAGENTA)
+
+SolarPanel :
+  • Affiche puissance en Watt-crête (300Wc)
+  • Affiche inclinaison (15°)
+  • Grille de cellules photovoltaïques visible
+  • Couleur bleu foncé (cellules PV)
+  • Position et rotation LOCALES par rapport à la plateforme
+
+Mooring :
+  • Câble en pointillés entre ancre et plateforme
+  • Symbole d'ancre au fond (cercle gris foncé)
+  • Point d'attache jaune sur la plateforme
+  • Label avec longueur de câble et tension max
+  • Profondeur affichée à l'ancre
+
+
+═══════════════════════════════════════════════════════════════════════════════
+
+🚀 COMMENT TESTER
+
+1. Lancer depuis IntelliJ :
+   • Ouvrir CADWorkshopDemo.java
+   • Run As → Java Application
+
+2. Appuyer sur [T] plusieurs fois pour aller en mode :
+   "FLOATING_SOLAR_PARK - Objets métier RÉELS"
+
+3. Ce que vous verrez :
+   ┌────────────────────────────────────────────────────────────────────────┐
+   │                                                                        │
+   │  Platform-A1 ════════════╗          ╔════════════ Platform-A2         │
+   │  [20m × 10m]             ║          ║             [15m × 8m]          │
+   │  [12 panneaux PV]        ║   42m    ║             [8 panneaux PV]     │
+   │  5000kg / 6000kg flot    ║  ←──→    ║             3500kg / 4200kg     │
+   │  TE:0.6m | FB:0.4m       ║          ║                                 │
+   │                          ║          ║                                 │
+   │      🔴──────────────────╫──────────╫─────────────────🔴              │
+   │    Anchor               ║          ║                Anchor           │
+   │    25m, 50kN            ║          ║                20m, 40kN        │
+   │                         ║          ║                                 │
+   │                         ║          ║                                 │
+   │                     Platform-B1 (rotatée 30°)                        │
+   │                     [12m × 6m]                                        │
+   │                     [6 panneaux PV]                                   │
+   │                     2500kg / 3000kg                                   │
+   │                         ║                                             │
+   │                      🔴─╫─🔴                                          │
+   │                    Anchors                                            │
+   │                    18m, 35kN                                          │
+   └────────────────────────────────────────────────────────────────────────┘
+
+4. Interactions :
+   • CLIQUER sur une plateforme → Sélection (devient MAGENTA)
+   • CLIQUER sur un amarrage → Sélection
+   • MOLETTE → Zoom (le texte GARDE sa taille!)
+   • BOUTON MILIEU + DRAG → Déplacer la vue
+   • SHIFT + CLIC → Ajouter à la sélection
+   • CTRL + CLIC → Retirer de la sélection
+
+
+═══════════════════════════════════════════════════════════════════════════════
+
+📊 STATISTIQUES AFFICHÉES EN TEMPS RÉEL
+
+Le mode affiche :
+  • Nombre de plateformes : 3
+  • Nombre de panneaux : 26
+  • Puissance totale : 7.8 kWc
+  • Nombre d'amarrages : 8
+
+Légende des objets métier :
+  • FloatingPlatform : poids, flotabilité, tirant d'eau
+  • SolarPanel : 300Wc, 1.65m×1.0m, inclinaison 15°
+  • Mooring : câble 15-25m, profondeur 15m, tension 35-50kN
+  • CADDimension : mesures entre plateformes
+
+
+═══════════════════════════════════════════════════════════════════════════════
+
+✅ VALIDATION
+
+✓ Objets métier CONCRETS (pas des formes abstraites)
+✓ Dimensions RÉELLES en mètres et kilogrammes
+✓ Puissance en Watt-crête (Wc)
+✓ Profondeur en mètres, tension en kiloNewtons
+✓ TOUS les objets sont SÉLECTIONNABLES
+✓ Hiérarchie : Plateforme contient Panneaux
+✓ Transformations composées (plateforme rotatée → panneaux tournent avec)
+✓ Texte garde sa taille FIXE malgré zoom et rotations
+✓ AT caché derrière RenderContext
+
+
+═══════════════════════════════════════════════════════════════════════════════
+
+🔬 COMPARAISON AVEC FloatSolarWindFarm_2
+
+Votre projet FloatSolarWindFarm_2    →    CAD Workshop Demo
+─────────────────────────────────────────────────────────────────────────
+Flotteur (longueur, largeur, poids)  →  FloatingPlatform (même structure)
+Ilot (grille de flotteurs)            →  FloatingPlatform avec SolarPanels
+PanneauSolaire                        →  SolarPanel (300Wc, 1.65m×1.0m)
+VUE2D_Flotteurs                       →  Mode FLOATING_SOLAR_PARK
+DrawFlotteurTOP()                     →  FloatingPlatform.render()
+tirantEau, francBord                  →  Même propriétés!
+Objets sélectionnables                →  Tous sélectionnables via RenderContext
+
+
+═══════════════════════════════════════════════════════════════════════════════
+
+💡 POINTS CLÉS
+
+1. OBJETS MÉTIER vs FORMES ABSTRAITES
+   ❌ Avant : CADMachine, CADComponent (abstraits)
+   ✅ Maintenant : FloatingPlatform, SolarPanel, Mooring (concrets)
+
+2. DIMENSIONS RÉELLES
+   ❌ Avant : width=30, height=20 (unités abstraites)
+   ✅ Maintenant : longueur=20.0m, largeur=10.0m (mètres!)
+
+3. CARACTÉRISTIQUES TECHNIQUES
+   ❌ Avant : Pas de propriétés métier
+   ✅ Maintenant : poids, flotabilité, puissance, inclinaison, tension
+
+4. SÉLECTION
+   ❌ Avant : Pas très clair
+   ✅ Maintenant : TOUS les objets sélectionnables, highlight MAGENTA
+
+5. HIÉRARCHIE RÉALISTE
+   ❌ Avant : Machine → Composants abstraits
+   ✅ Maintenant : Plateforme → Panneaux solaires (métier!)
+
+
+═══════════════════════════════════════════════════════════════════════════════
+
+🎨 AMÉLIORATIONS POSSIBLES
+
+Si vous voulez aller plus loin :
+
+1. Ajouter Onduleur (Inverter) sur les plateformes
+2. Ajouter câbles électriques entre plateformes
+3. Ajouter calcul de production électrique en temps réel
+4. Ajouter simulation de vagues (animation des plateformes)
+5. Ajouter vent et orientation optimale des panneaux
+6. Import/Export de configurations de parc
+7. Calcul de stabilité et équilibre
+
+
+═══════════════════════════════════════════════════════════════════════════════
+
+📝 RÉSUMÉ
+
+✅ 3 nouveaux objets métier concrets créés
+✅ FloatingPlatform avec dimensions réelles (m, kg)
+✅ SolarPanel avec puissance (Wc) et inclinaison
+✅ Mooring avec profondeur (m) et tension (kN)
+✅ Scène complète : 3 plateformes, 26 panneaux, 8 amarrages
+✅ Mode FLOATING_SOLAR_PARK avec statistiques temps réel
+✅ TOUT est sélectionnable et manipulable
+✅ Inspiré de votre projet FloatSolarWindFarm_2
+✅ Texte à taille fixe, AT caché, hiérarchie métier
+
+
+═══════════════════════════════════════════════════════════════════════════════
+
+Date: 2025-10-11
+Package: io.github.warnotte.waxlib3.W2D.PanelGraphique.demo.cadworkshop
+Inspiré de: FloatSolarWindFarm_2

@@ -1,0 +1,210 @@
+╔════════════════════════════════════════════════════════════════════════════╗
+║                                                                            ║
+║                   CORRECTIONS ARCHITECTURE - RÉSUMÉ                        ║
+║                      CAD Workshop Demo - COMPLÉTÉ                          ║
+║                                                                            ║
+╚════════════════════════════════════════════════════════════════════════════╝
+
+VOS 3 PROBLÈMES → RÉSOLUS ✅
+
+┌────────────────────────────────────────────────────────────────────────────┐
+│ 1. ✅ TEXTE À TAILLE FIXE MALGRÉ LE ZOOM                                   │
+└────────────────────────────────────────────────────────────────────────────┘
+
+AVANT:  ❌ Le texte changeait de taille avec le zoom
+APRÈS:  ✅ Le texte garde EXACTEMENT la même taille à l'écran
+
+SOLUTION:
+  - Créé RenderContext.drawText() qui force txtCantChangeSize=true
+  - Tous les objets utilisent maintenant RenderContext au lieu de Graphics2D
+  - IMPOSSIBLE d'oublier txtCantChangeSize=true
+
+FICHIERS:
+  - view/RenderContext.java (nouveau)
+  - model/CADMachine.java (refactorisé)
+  - model/CADDimension.java (refactorisé)
+
+
+┌────────────────────────────────────────────────────────────────────────────┐
+│ 2. ✅ AFFINETRANSFORM COMPLÈTEMENT CACHÉ                                   │
+└────────────────────────────────────────────────────────────────────────────┘
+
+AVANT:  ❌ CADObject.render(Graphics2D g) exposait AffineTransform
+APRÈS:  ✅ CADObject.render(RenderContext ctx) cache complètement AT
+
+SOLUTION:
+  - Interface CADObject refactorisée : Graphics2D → RenderContext
+  - L'utilisateur final N'A JAMAIS accès à 'at'
+  - API simple : ctx.drawText(), ctx.drawArrow(), ctx.drawDimension()
+  - Transformations via ctx.withLocalTransform()
+
+FICHIERS:
+  - model/CADObject.java (interface refactorisée)
+  - view/RenderContext.java (encapsulation complète)
+
+
+┌────────────────────────────────────────────────────────────────────────────┐
+│ 3. ✅ HIÉRARCHIE D'OBJETS MÉTIER AVEC TRANSFORMATIONS COMPOSÉES            │
+└────────────────────────────────────────────────────────────────────────────┘
+
+AVANT:  ❌ Pas de test avec objets contenant d'autres objets
+APRÈS:  ✅ Machines contenant composants avec transformations locales
+
+SOLUTION:
+  - Créé CADComponent pour les composants (moteur, arbre, roulement, etc.)
+  - CADMachine.components: List<CADComponent>
+  - Chaque composant a position et rotation LOCALES
+  - Transformations composées : monde → machine → composant
+  - Le texte suit toutes les transformations mais garde sa taille fixe!
+
+STRUCTURE:
+  ┌─ Machine: Turbine (position: -50, 0, rotation: 0°)
+  │   ├─ Motor  (position locale: -10, 0, rotation: 0°)
+  │   ├─ Shaft  (position locale:  10, 0, rotation: 0°)
+  │   └─ Bearing (position locale: 15, 0, rotation: 0°)
+  │
+  ┌─ Machine: Pompe (position: 50, 0, rotation: 0°)
+  │   ├─ Motor (position locale: 0, 0, rotation: 0°)
+  │   ├─ Bearing B1 (position locale: 10, 0, rotation: 0°)
+  │   ├─ Bearing B2 (position locale: -10, 0, rotation: 0°)
+  │   ├─ Bearing B3 (position locale: 0, 10, rotation: 0°)
+  │   └─ Bearing B4 (position locale: 0, -10, rotation: 0°)
+  │
+  └─ Machine: Compresseur (position: 0, 60, rotation: 45°) ← ROTATÉ!
+      ├─ Gear   (position locale: 0, 0, rotation: 30°)    ← Rotation locale!
+      ├─ Motor  (position locale: -12, 0, rotation: 0°)
+      └─ Sensor (position locale: 0, -8, rotation: 90°)   ← Rotation locale!
+
+NOUVEAU MODE DE TEST:
+  - TestMode.REAL_CAD ajouté
+  - Démontre exactement ce que vous avez demandé
+  - Animation: le compresseur tourne, l'engrenage tourne 2x plus vite
+
+FICHIERS:
+  - model/CADComponent.java (nouveau)
+  - model/CADMachine.java (support hiérarchie)
+  - model/CADWorkspace.java (démo avec composants)
+  - view/CADWorkshopView.java (mode REAL_CAD)
+
+
+═══════════════════════════════════════════════════════════════════════════════
+
+FICHIERS CRÉÉS/MODIFIÉS
+
+NOUVEAUX FICHIERS:
+  ✨ src/main/java/.../view/RenderContext.java
+  ✨ src/main/java/.../model/CADComponent.java
+  ✨ CORRECTIONS-ARCHITECTURE.md (doc complète)
+  ✨ CORRECTIONS-RESUME.txt (ce fichier)
+
+FICHIERS MODIFIÉS:
+  🔧 src/main/java/.../model/CADObject.java
+  🔧 src/main/java/.../model/CADMachine.java
+  🔧 src/main/java/.../model/CADDimension.java
+  🔧 src/main/java/.../model/CADWorkspace.java
+  🔧 src/main/java/.../view/CADWorkshopView.java
+
+FICHIERS INCHANGÉS (fonctionnent tels quels):
+  ✓ CADWorkshopDemo.java
+  ✓ view/DebugPanel.java
+  ✓ README.md, QUICKSTART.md, ARCHITECTURE.md
+
+
+═══════════════════════════════════════════════════════════════════════════════
+
+COMMENT TESTER
+
+Option 1: Depuis votre IDE (RECOMMANDÉ)
+  1. Ouvrir IntelliJ IDEA
+  2. Aller à: CADWorkshopDemo.java
+  3. Run As → Java Application
+  4. Appuyer sur [T] plusieurs fois pour aller en mode "REAL_CAD"
+  5. Appuyer sur [A] pour activer l'animation
+  6. Zoomer/dézoomer avec la molette
+  7. Observer que le texte garde sa taille FIXE
+
+Option 2: Script Windows
+  Double-clic sur: run-cadworkshop-demo.bat
+
+CE QUE VOUS VERREZ:
+  • 3 machines colorées (Turbine, Pompe, Compresseur)
+  • Chaque machine affiche son nom et ses infos
+  • Chaque machine contient des composants visibles
+  • Les composants ont des formes différentes (rectangles, cercles, hexagones, triangles)
+  • Chaque composant a son label
+  • Le Compresseur est rotaté à 45°
+  • Avec animation [A]: le compresseur tourne, l'engrenage intérieur tourne 2x plus vite
+  • 3 cotations avec flèches entre les machines
+  • LE TEXTE GARDE TOUJOURS LA MÊME TAILLE malgré zoom et rotations!
+
+
+═══════════════════════════════════════════════════════════════════════════════
+
+VALIDATION
+
+✅ Texte à taille fixe        → VALIDÉ (txtCantChangeSize=true forcé)
+✅ AT caché                   → VALIDÉ (RenderContext encapsule tout)
+✅ Hiérarchie métier          → VALIDÉ (Machine → Composants)
+✅ Transformations composées  → VALIDÉ (monde → machine → composant)
+✅ Texte suit transformations → VALIDÉ (withLocalTransform)
+
+
+═══════════════════════════════════════════════════════════════════════════════
+
+RACCOURCIS CLAVIER
+
+[T]     - Changer mode de test (aller en REAL_CAD)
+[A]     - Activer/désactiver animation
+[M]     - Mode mesure
+Molette - Zoom in/out
+Milieu  - Déplacer la vue
+
+
+═══════════════════════════════════════════════════════════════════════════════
+
+ARCHITECTURE FINALE
+
+┌─────────────────────────────────────────────────────────────────────────┐
+│ CADWorkshopView (hérite PanelGraphiqueBaseBase)                         │
+│   ↓ crée                                                                 │
+│ RenderContext ← CACHE AffineTransform!                                  │
+│   ↓ passe à                                                              │
+│ CADObject.render(RenderContext ctx)  ← Interface refactorisée           │
+│   ↓ implémenté par                                                       │
+│ CADMachine                           ← Contient List<CADComponent>      │
+│   ├─ render(ctx) utilise ctx.drawText() avec txtCantChangeSize=true    │
+│   └─ render(ctx) utilise ctx.withLocalTransform()                       │
+│                                                                          │
+│ CADComponent                         ← Position et rotation LOCALES     │
+│   ├─ render(ctx) utilise ctx.drawText() avec txtCantChangeSize=true    │
+│   └─ render(ctx) utilise ctx.withLocalTransform()                       │
+│                                                                          │
+│ CADDimension                         ← Cotations                        │
+│   └─ render(ctx) utilise ctx.drawDimension()                            │
+│       → appelle drawArrowWithString du moteur                           │
+└─────────────────────────────────────────────────────────────────────────┘
+
+
+═══════════════════════════════════════════════════════════════════════════════
+
+CONCLUSION
+
+L'architecture a été COMPLÈTEMENT refactorisée pour résoudre vos 3 problèmes.
+
+Tous les tests que vous avez demandés sont maintenant présents:
+  ✓ Objets métier avec rotation et translation
+  ✓ Hiérarchie d'objets (machines contenant composants)
+  ✓ Texte et mesures suivant les transformations
+  ✓ Taille de texte FIXE malgré zoom et rotations
+  ✓ AffineTransform COMPLÈTEMENT CACHÉ
+
+Le code est production-ready et facilement extensible.
+
+
+═══════════════════════════════════════════════════════════════════════════════
+
+Questions? Consultez CORRECTIONS-ARCHITECTURE.md pour les détails complets.
+
+Date: 2025-10-10
+Package: io.github.warnotte.waxlib3.W2D.PanelGraphique.demo.cadworkshop
+Version: WaxLibrary3 v3.2

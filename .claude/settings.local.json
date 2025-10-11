@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//c/Users/mulph/IdeaProjects/FloatSolarWindFarm_2/**)",
+      "Bash(mvn clean:*)",
+      "Bash(\"C:\\apache-maven-3.8.8\\bin\\mvn.cmd\" clean compile -q)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
