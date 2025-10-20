@@ -33,9 +33,18 @@
 
  
     <Loggers>
-        <Logger name="waxliblog" level="debug" additivity="true">
-            
-        </Logger>
+        <Logger name="waxliblog" level="debug" additivity="true"/>
+          <!-- Désactiver les logs Hibernate -->
+          <Logger name="org.hibernate" level="OFF" additivity="false"/>
+          <Logger name="org.hibernate.validator" level="OFF" additivity="false"/>
+          <Logger name="org.hibernate.SQL" level="OFF" additivity="false"/>
+          <Logger name="org.hibernate.type" level="OFF" additivity="false"/>
+        
+          <!-- Désactiver les logs Apache POI -->
+          <Logger name="org.apache.poi" level="OFF" additivity="false"/>
+          <Logger name="org.apache.xmlbeans" level="OFF" additivity="false"/>
+          <Logger name="org.openxmlformats" level="OFF" additivity="false"/>
+        
         <Root level="debug" additivity="false">
             <appender-ref ref="console" />
             <appender-ref ref="fileLogger" level="warn" />
