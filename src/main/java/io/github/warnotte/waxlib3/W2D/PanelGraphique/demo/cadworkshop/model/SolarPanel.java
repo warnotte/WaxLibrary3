@@ -2,7 +2,9 @@ package io.github.warnotte.waxlib3.W2D.PanelGraphique.demo.cadworkshop.model;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Graphics2D;
 import java.awt.Shape;
+import java.awt.Stroke;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
@@ -110,9 +112,9 @@ public class SolarPanel implements CADObject {
     public List<SelectionTuple<Shape, Object>> render(RenderContext ctx, boolean isSelected, boolean isHovered) {
         List<SelectionTuple<Shape, Object>> selectables = new ArrayList<>();
 
-        var g = ctx.getGraphics();
+        Graphics2D g = ctx.getGraphics();
         Color oldColor = g.getColor();
-        var oldStroke = g.getStroke();
+        Stroke oldStroke = g.getStroke();
 
         // Utilise withLocalTransform pour position + rotation LOCALES
         ctx.withLocalTransform(localPosition.x, localPosition.y, localRotation, () -> {

@@ -1,6 +1,7 @@
 package io.github.warnotte.waxlib3.W2D.PanelGraphique.demo.cadworkshop.model;
 
 import java.awt.Color;
+import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
@@ -116,7 +117,7 @@ public class FloatingPlatform implements CADObject {
         List<SelectionTuple<Shape, Object>> selectables = new ArrayList<>();
 
         // Change la couleur selon l'état
-        var g = ctx.getGraphics();
+        Graphics2D g = ctx.getGraphics();
         Color oldColor = g.getColor();
 
         Color renderColor = color;

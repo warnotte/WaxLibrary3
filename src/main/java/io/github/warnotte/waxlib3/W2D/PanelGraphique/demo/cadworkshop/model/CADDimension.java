@@ -1,6 +1,7 @@
 package io.github.warnotte.waxlib3.W2D.PanelGraphique.demo.cadworkshop.model;
 
 import java.awt.Color;
+import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
@@ -110,7 +111,7 @@ public class CADDimension implements CADObject {
     public List<SelectionTuple<Shape, Object>> render(RenderContext ctx, boolean isSelected, boolean isHovered) {
         List<SelectionTuple<Shape, Object>> selectables = new ArrayList<>();
 
-        var g = ctx.getGraphics();
+        Graphics2D g = ctx.getGraphics();
         Color oldColor = g.getColor();
 
         // Calcule la distance

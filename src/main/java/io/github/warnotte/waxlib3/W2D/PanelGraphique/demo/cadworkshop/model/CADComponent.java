@@ -2,7 +2,9 @@ package io.github.warnotte.waxlib3.W2D.PanelGraphique.demo.cadworkshop.model;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Graphics2D;
 import java.awt.Shape;
+import java.awt.Stroke;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
@@ -137,9 +139,9 @@ public class CADComponent implements CADObject {
         List<SelectionTuple<Shape, Object>> selectables = new ArrayList<>();
 
         // Accède au Graphics2D pour les formes
-        var g = ctx.getGraphics();
+        Graphics2D g = ctx.getGraphics();
         Color oldColor = g.getColor();
-        var oldStroke = g.getStroke();
+        Stroke oldStroke = g.getStroke();
 
         // Couleur selon état
         Color renderColor;
