@@ -102,27 +102,6 @@ public abstract class PanelGraphiqueBaseBase extends PanelGraphiqueBase<Object> 
 		fps_counter_sum_render_time = 0;
 		fps_counter_cpt_render_time = 0;
 	}
-
-	/**
-	 * Remise a 1 du zoom et scroll au centre.
-	 */
-	public void reinit_view()
-	{
-		ScrollX = 0;
-		ScrollY = 0;
-		Zoom = 10.0d;
-		repaint();
-		reinit_fps_counter();
-	}
-	
-	/**
-	 * Remise a 1 du zoom et scroll au centre.
-	 */
-	public void reset_viewport()
-	{
-		reinit_view();
-	}
-
 	
 	public void mouseMoved(java.awt.event.MouseEvent e)
 	{

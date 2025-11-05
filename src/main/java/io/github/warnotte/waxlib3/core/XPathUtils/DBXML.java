@@ -140,7 +140,6 @@ public class DBXML
 		for (Iterator<Document> iterator = docs.iterator(); iterator.hasNext();)
 		{
 			Document document = iterator.next();
-	         // TODO : Peut être mettre le nom du fichier ou autre chose que int ... mais j'ai mis int parce document passait pas bien je crois ? plutot que le hashcode
 			returned_files.add(new AbstractMap.SimpleEntry<>(map_dbxml_doc_to_file.get(document.hashCode()), document));
 		}
 		return returned_files;

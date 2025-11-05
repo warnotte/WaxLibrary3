@@ -284,25 +284,6 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 
 	}
 
-	public void gridc(int w, int h)
-	{
-		/*
-		 * grid = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
-		 * Graphics2D g = grid.createGraphics();
-		 * g.setColor(contxt.getColorConfig
-		 * ().getCOLOR_FOND_GRILLE().getColor()); g.fillRect(0, 0, w, h);
-		 * g.setColor(contxt.getColorConfig().getCOLOR_GRILLE_1().getColor());
-		 * for (int x = 0; x < w; x += contxt.getConfig().getGRID_SIZE())
-		 * g.drawLine(x, 0, x, h); for (int y = 0; y < h; y +=
-		 * contxt.getConfig().getGRID_SIZE()) g.drawLine(0, y, w, y);
-		 * g.setColor(contxt.getColorConfig().getCOLOR_GRILLE_2().getColor());
-		 * for (int x = 0; x < w; x += (contxt.getConfig().getGRID_SIZE() * 2))
-		 * g.drawLine(x, 0, x, h); for (int y = 0; y < h; y +=
-		 * (contxt.getConfig().getGRID_SIZE() * 2)) g.drawLine(0, y, w, y);
-		 */
-		repaint();
-	}
-
 	public BufferedImage getImage()
 	{
 		BufferedImage	myBufferedImage	= new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_RGB);
@@ -807,6 +788,86 @@ public abstract class PanelGraphiqueBase<T> extends JPanel implements ComponentL
 	{
 		return Vision;
 	}
+	
+	/**
+	 * Remise a 1 du zoom et scroll au centre.
+	 */
+	public void reinit_view()
+	{
+		ScrollX = 0;
+		ScrollY = 0;
+		Zoom = 10.0d;
+		repaint();
+
+	}
+	
+	/**
+	 * Remise a 1 du zoom et scroll au centre.
+	 */
+	public void reset_viewport()
+	{
+		reinit_view();
+	}
+	
+	
+	/**
+     * Centre la vue et ajuste le niveau de zoom pour que la zone définie par
+     * les bornes (minX, minY) - (maxX, maxY) soit visible dans le composant.
+     *
+     * Comportement détaillé :
+     * - Calcule la largeur et la hauteur du "monde" à afficher (widthWorld / heightWorld)
+     *   et protège contre des valeurs nulles en utilisant une petite valeur minimale.
+     * - Calcule le centre géométrique de la zone (centerX / centerY).
+     * - Détermine la taille de la vue (getWidth/getHeight) et garantit qu'elles
+     *   sont au moins égales à 1 pour éviter les divisions par zéro.
+     * - Calcule deux facteurs de zoom (zoomX et zoomY) pour faire tenir la zone
+     *   dans la vue en tenant compte d'un facteur de marge (marginFactor).
+     * - Prend le zoom minimal entre zoomX et zoomY, applique un coefficient
+     *   d'ajustement (ici 0.8) puis contraint le résultat entre ZoomMin et ZoomMax.
+     * - Applique l'inversion des axes si nécessaire (invertXAxis / invertYAxis)
+     *   pour calculer ScrollX et ScrollY de façon à centrer la zone dans la vue.
+     * - Demande le redessin via repaint().
+     *
+     * Cas particuliers gérés :
+     * - Si la zone est de taille nulle ou quasi nulle (minimisée par 1e-6),
+     *   on évite les divisions par zéro.
+     * - Si le zoom calculé n'est pas fini (NaN/Inf) ou non positif, on n'applique
+     *   pas la mise à jour du zoom.
+     *
+     * Paramètres :
+     * @param minX  coordonnée X minimale de la zone à afficher
+     * @param minY  coordonnée Y minimale de la zone à afficher
+     * @param maxX  coordonnée X maximale de la zone à afficher
+     * @param maxY  coordonnée Y maximale de la zone à afficher
+     * @param marginFactor facteur (0..1) représentant le ratio de la vue à utiliser pour laisser un espace autour des traces
+     */
+	protected void CenterViewToBounds(double minX, double minY, double maxX, double maxY, double marginFactor) {        
+        double widthWorld = Math.max(1e-6, maxX - minX);
+        double heightWorld = Math.max(1e-6, maxY - minY);
+        double centerX = (minX + maxX) / 2.0;
+        double centerY = (minY + maxY) / 2.0;
+        double viewWidth = Math.max(1, getWidth());
+        double viewHeight = Math.max(1, getHeight());
+        //double marginFactor = 0.9; // leave some padding around the traces
+        double zoomX = (viewWidth * marginFactor) / widthWorld;
+        double zoomY = (viewHeight * marginFactor) / heightWorld;
+        double computedZoom = Math.min(zoomX, zoomY)*0.8;
+        //logger.info("CenterViewToBounds bounds min=({}, {}), max=({}, {}), size=({}, {}), view=({}, {}), computedZoom={}", minX, minY, maxX, maxY, widthWorld, heightWorld, viewWidth, viewHeight, computedZoom);
+
+        if (Double.isFinite(computedZoom) && computedZoom > 0) {
+            Zoom = View2D_Utils.constrains(computedZoom, ZoomMin, ZoomMax);
+            //logger.info("ZoomAndCenterToBounds applied zoom={}, constrained between [{}, {}].", Zoom, ZoomMin, ZoomMax);
+        } else {
+            System.err.println("CenterViewToBounds ignored zoom update: computedZoom="+computedZoom+" (invalid).");
+        }
+        double axisXFactor = invertXAxis ? -1.0 : 1.0;
+        double axisYFactor = invertYAxis ? -1.0 : 1.0;
+        ScrollX = -axisXFactor * centerX;
+        ScrollY = -axisYFactor * centerY;
+        //logger.info("CenterViewToBounds scroll set to ScrollX={}, ScrollY={} (center=({}, {}), invertX={}, invertY={}).", ScrollX, ScrollY, centerX, centerY, invertXAxis, invertYAxis);
+        repaint();
+    }
+	
 
 	@SuppressWarnings("unused")
 	private void drawTextHighlight(Graphics2D g2, String title, int size, float opacity)
