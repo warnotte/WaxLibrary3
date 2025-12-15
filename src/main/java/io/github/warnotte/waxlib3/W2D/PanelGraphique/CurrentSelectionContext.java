@@ -51,7 +51,7 @@ public abstract class CurrentSelectionContext
 		}
 		return cls;
 	}
-	
+	/*
 	public synchronized List<?> getSelection(Class<?> filterClass)
 	{
 		List<Object> list = new ArrayList<Object>();
@@ -62,19 +62,18 @@ public abstract class CurrentSelectionContext
 				list.add(o);
 		}
 		return list;
-	}
-	 /*
-	public synchronized <U>  List<U> getSelection(Class<U> filterClass)
-	{
-		List<U> list = new ArrayList<U>();
-		for (int i = 0; i < selection.size(); i++)
-		{
-			Object o = selection.get(i);
-			if (filterClass.isInstance(o))
-				list.add((U)o);
-		}
-		return list;
 	}*/
+	
+	public synchronized <U> List<U> getSelection(Class<U> filterClass)
+    {
+        List<U> list = new ArrayList<>();
+        for (Object o : selection) {
+            if (filterClass.isInstance(o))
+                list.add(filterClass.cast(o));
+        }
+        return list;
+    }
+
 		
 	public synchronized void setSelection(List<Object> selection, Object fromSource)
 	{
