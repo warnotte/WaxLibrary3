@@ -29,7 +29,7 @@ add-opens java.desktop/java.awt.font=ALL-UNNAMED
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>9</maven.compiler.source>
 		<maven.compiler.target>9</maven.compiler.target>
-		<log4j.version>2.24.3</log4j.version>
+		<log4j.version>2.25.3</log4j.version>
 	</properties>
 
 
