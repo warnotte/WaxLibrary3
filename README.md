@@ -52,14 +52,14 @@ W2D is a sophisticated 2D graphics engine built upon Java Swing, enabling rapid 
 <dependency>
     <groupId>io.github.warnotte</groupId>
     <artifactId>waxlib3</artifactId>
-    <version>0.3.7</version>
+    <version>0.4.4</version>
 </dependency>
 ```
 
 ### Gradle
 
 ```groovy
-implementation 'io.github.warnotte:waxlib3:0.3.7'
+implementation 'io.github.warnotte:waxlib3:0.4.4'
 ```
 
 ---
